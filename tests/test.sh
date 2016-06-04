@@ -19,4 +19,4 @@ do
 done
 
 cd $FILES_PATH
-./url_scrape_div.py $URL | ./rename_mp3.py
+./mp3_formatter.sh $URL
