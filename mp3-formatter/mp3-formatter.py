@@ -26,5 +26,4 @@ for f in files:
         files.remove(f)
         continue
 
-for f in files:
-    print(f)
+print(files)
