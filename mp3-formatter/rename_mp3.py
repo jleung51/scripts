@@ -10,6 +10,14 @@ def read_tracklist():
         tracklist.append(line)
     return tracklist
 
+def match_length(files, tracklist):
+    if len(files) != len(tracklist):
+        raise RuntimeError(
+            str(len(tracklist)) +
+            " file names were given but " +
+            str(len(files)) +
+            " files were found.")
+
 tracklist = read_tracklist()
 mp3_extension = ".mp3"
 
@@ -34,13 +42,7 @@ for f in files_all:
 
     files.append(f)
 
-if len(files) != len(tracklist):
-    raise RuntimeError(
-        str(len(tracklist)) +
-        " file names were given but " +
-        str(len(files)) +
-        " files were found.")
-    sys.exit()
+match_length(files, tracklist)
 
 files.sort()
 
