@@ -4,8 +4,14 @@ import ID3
 import os
 import sys
 
+def read_tracklist():
+    tracklist = []
+    for line in sys.stdin:
+        tracklist.append(line)
+    return tracklist
+
+tracklist = read_tracklist()
 mp3_extension = ".mp3"
-names = ["final_name_1", "final_name_2", "final_name_3"]
 
 files_all = os.listdir('.')
 files = []
@@ -28,9 +34,9 @@ for f in files_all:
 
     files.append(f)
 
-if len(files) != len(names):
+if len(files) != len(tracklist):
     raise RuntimeError(
-        str(len(names)) +
+        str(len(tracklist)) +
         " file names were given but " +
         str(len(files)) +
         " files were found.")
@@ -40,5 +46,5 @@ files.sort()
 
 i = 0
 for f in files:
-    os.rename(f, names[i] + mp3_extension)
+    os.rename(f, tracklist[i] + mp3_extension)
     i += 1
