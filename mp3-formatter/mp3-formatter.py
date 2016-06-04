@@ -14,6 +14,12 @@ for f in files:
         files.remove(f)
         continue
 
+    # Prune non-MP3 files
+    filename, extension = os.path.splitext(f)
+    if extension != mp3_extension:
+        files.remove(f)
+        continue
+
     # Prune this file
     f_temp = os.path.abspath(f)
     if f_temp == os.path.abspath(__file__):
