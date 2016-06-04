@@ -26,4 +26,6 @@ for f in files:
         files.remove(f)
         continue
 
+files.sort()
+
 print(files)
