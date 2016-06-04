@@ -215,7 +215,7 @@ class ID3:
         try:
             self.file.seek(-128, 2)
 
-        except IOError, msg:
+        except IOError as msg:
             self.modified = 0
             raise InvalidTagError("Can't open %s: %s" % (self.filename, msg))
             return
@@ -246,7 +246,7 @@ class ID3:
 
                 self.setup_dict()
 
-        except IOError, msg:
+        except IOError as msg:
             self.modified = 0
             raise InvalidTagError("Invalid ID3 tag in %s: %s" % (self.filename,
                                                                  msg))
@@ -350,7 +350,7 @@ class ID3:
                         self.file.write(chr(self.genre))
                         self.had_tag = 1
                 self.file.flush()
-            except IOError, msg:
+            except IOError as msg:
                 raise InvalidTagError("Cannot write modified ID3 tag to %s: %s" % (self.filename, msg))
             else:
                 self.modified = 0
@@ -404,11 +404,11 @@ class ID3:
             else:
                 self.genre = self.find_genre(str(v))
                 if self.genre == -1:
-                    print v, "not found"
+                    print(v, "not found")
                     self.genre = 255
                     self.d[k] = self.tupleize("Unknown Genre")
                 else:
-                    print self.genre, v
+                    print(self.genre, v)
                     self.d[k] = self.tupleize(str(v))
         else:
             self.__dict__[string.lower(key)] = v
