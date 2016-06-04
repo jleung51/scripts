@@ -2,6 +2,7 @@
 
 import ID3
 import os
+import sys
 
 mp3_extension = ".mp3"
 names = ["final_name_1", "final_name_2", "final_name_3"]
@@ -26,6 +27,14 @@ for f in files_all:
         continue
 
     files.append(f)
+
+if len(files) != len(names):
+    raise RuntimeError(
+        str(len(names)) +
+        " file names were given but " +
+        str(len(files)) +
+        " files were found.")
+    sys.exit()
 
 files.sort()
 
