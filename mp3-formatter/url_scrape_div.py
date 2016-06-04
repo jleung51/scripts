@@ -1,13 +1,20 @@
 #!/usr/bin/python3
 
-# sudo apt-get install python3-pip
-# pip3 install requests
+# This Python 3 file takes the URL for a tracklist from the website
+# www.hikarinoakariost.info, scrapes the tracklist (removing leading/trailing
+# whitespace and leading numbering), and prints the tracklist to the console
+# with each track separated by a newline.
+#
+# Usage: ./url_scrape_div.py URL_TO_TRACKLIST
 
 import lxml.html
 import requests
 import sys
 
 def validate_url(url):
+    """Ensure the URL is non-empty and uses the HTTP protocol.
+    """
+
     if not url:
         raise SystemError("validate_url() was given an empty URL")
 
@@ -22,6 +29,9 @@ def validate_url(url):
         raise protocol_error_message
 
 def scrape_div(url, div_id):
+    """Return the content of the div at the given URL.
+    """
+
     div_id_lookup_string = '//div[contains(@id, "' + div_id + '")]'
 
     try:
@@ -43,8 +53,13 @@ def scrape_div(url, div_id):
 
     return str(content[0].text_content())
 
-# A line is determined to be the name of a track if it begins with a number
 def extract_tracklist_begin_num(content):
+    """Return list of track names extracted from messy web content.
+
+    The name of a track is defined as a line which begins with a number
+    (excluding whitespace).
+    """
+
     tracklist = []
     for line in content.splitlines():
 
@@ -61,8 +76,10 @@ def extract_tracklist_begin_num(content):
 
     return tracklist
 
-# Removes leading numbers and whitespace
 def strip_leading_index(tracklist):
+    """Remove the leading numbers/whitespace for each track.
+    """
+
     tracklist_new = []
     for track in tracklist:
 
@@ -82,8 +99,8 @@ url = sys.argv[1]  # sys.argv[0] is the name of this script
 validate_url(url)
 
 div_id = "stcpDiv"
-
 content = scrape_div(url, div_id)
+
 tracklist = extract_tracklist_begin_num(content)
 strip_leading_index(tracklist)
 
