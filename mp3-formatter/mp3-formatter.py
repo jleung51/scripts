@@ -38,4 +38,7 @@ if len(files) != len(names):
 
 files.sort()
 
-print(files)
+i = 0
+for f in files:
+    os.rename(f, names[i] + mp3_extension)
+    i += 1
