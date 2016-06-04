@@ -1,16 +1,25 @@
 #!/usr/bin/python3
 
+# This Python 3 file reads (from stdin) a list of tracks, each separated by
+# a newline, and renames the MP3 files in the current folder to the tracklist.
+
 import ID3
 import os
 import sys
 
 def read_tracklist():
+    """Return list of tracks from stdin.
+    """
+
     tracklist = []
     for line in sys.stdin:
         tracklist.append(line)
     return tracklist
 
 def match_length(files, tracklist):
+    """Raise error if the two lists have different lengths.
+    """
+
     if len(files) != len(tracklist):
         raise RuntimeError(
             str(len(tracklist)) +
