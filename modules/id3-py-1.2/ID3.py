@@ -135,10 +135,15 @@
 import string, types
 
 try:
-    string_types = [ types.StringType, types.UnicodeType ]
-except AttributeError:                  # if no unicode support
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    basestring = (str,bytes)
 
-    string_types = [ types.StringType ]
+try:
+    string_and_unicode = isinstance(object, basestring)
+except AttributeError:                  # if no unicode support
+    string_and_unicode = isinstance(object, str)
 
 def lengthen(string, num_spaces):
     string = string[:num_spaces]
@@ -190,7 +195,7 @@ class ID3:
         ]
 
     def __init__(self, file, name='unknown filename', as_tuple=0):
-        if type(file) in string_types:
+        if string_and_unicode:
             self.filename = file
         # We don't open in r+b if we don't have to, to allow read-only access
             self.file = open(file, 'rb')
