@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # This sh script scrapes a tracklist from www.hikarinoakariost.info
-# (don't judge me) and renames all the MP3 files in the current directory
+# (don't judge me) and renames all the MP3 files in the directory mp3/
 # (assumed to be organized in correct track order) correspondingly.
 
 if [ "$1" = "--help" ] ; then

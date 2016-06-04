@@ -29,14 +29,15 @@ def match_length(files, tracklist):
 
 tracklist = read_tracklist()
 mp3_extension = ".mp3"
+mp3_location = "./mp3/"
 
-files_all = os.listdir('.')
+files_all = os.listdir(mp3_location)
 files = []
 
 for f in files_all:
 
     # Prune directories
-    if not os.path.isfile(f):
+    if not os.path.isfile(mp3_location + f):
         continue
 
     # Prune non-MP3 files
@@ -45,7 +46,7 @@ for f in files_all:
         continue
 
     # Prune this file
-    f_temp = os.path.abspath(f)
+    f_temp = os.path.abspath(mp3_location + f)
     if f_temp == os.path.abspath(__file__):
         continue
 
@@ -57,5 +58,5 @@ files.sort()
 
 i = 0
 for f in files:
-    os.rename(f, tracklist[i] + mp3_extension)
+    os.rename(mp3_location + f, mp3_location + tracklist[i] + mp3_extension)
     i += 1
