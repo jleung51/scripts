@@ -24,7 +24,7 @@ def read_track_details():
 
     tracklist = []
     for line in sys.stdin:
-        tracklist.append(line)
+        tracklist.append(line.strip())  # Remove whitespace
     if not tracklist:
         raise ValueError("No track names were given")
 
