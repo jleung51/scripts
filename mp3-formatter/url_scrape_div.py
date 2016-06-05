@@ -76,21 +76,14 @@ def extract_tracklist_begin_num(content):
 
     return tracklist
 
-def strip_leading_index(tracklist):
-    """Remove the leading numbers/whitespace for each track.
-
-    A consecutive sequence of digits are removed, then a consecutive sequence
-    of spaces are removed.
+def strip_leading_number(tracklist):
+    """Remove the leading numbers for each track.
     """
 
     for track in tracklist:
-
         i = 0
         while(track[i].isdigit()):
             i += 1
-        while(track[i] == " "):
-            i += 1
-
         tracklist[tracklist.index(track)] = track[i:]
 
 if len(sys.argv) < 2:
@@ -104,7 +97,7 @@ div_id = "stcpDiv"
 content = scrape_div(url, div_id)
 
 tracklist = extract_tracklist_begin_num(content)
-strip_leading_index(tracklist)
+strip_leading_number(tracklist)
 
 for track in tracklist:
-    print(track)
+    print(track.strip())
