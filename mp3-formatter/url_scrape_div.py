@@ -78,18 +78,20 @@ def extract_tracklist_begin_num(content):
 
 def strip_leading_index(tracklist):
     """Remove the leading numbers/whitespace for each track.
+
+    A consecutive sequence of digits are removed, then a consecutive sequence
+    of spaces are removed.
     """
 
-    tracklist_new = []
     for track in tracklist:
 
-        for i in range(len(track)):
-            if track[i].isdigit() or track[i] == " ":
-                i += 1
-            else:
-                tracklist_new.append(track[i:])
-                tracklist[tracklist.index(track)] = track[i:]
-                break
+        i = 0
+        while(track[i].isdigit()):
+            i += 1
+        while(track[i] == " "):
+            i += 1
+
+        tracklist[tracklist.index(track)] = track[i:]
 
 if len(sys.argv) < 2:
     raise RuntimeError("Please provide the URL to the page with "\
