@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# This sh script removes all files with the .mp3 extension from
+# mp3-formatter/mp3, adds empty test mp3 files to that directory,
+# then runs the mp3_formatter.sh script to rename them with the artist
+# name and track name.
+#
+# Run ./cleanup.sh afterwards to remove the leftover files.
+
 ./cleanup.sh
 
 FILES_PATH=../mp3-formatter
