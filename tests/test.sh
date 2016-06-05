@@ -2,8 +2,8 @@
 
 # This sh script removes all files with the .mp3 extension from
 # mp3-formatter/mp3, adds empty test mp3 files to that directory,
-# then runs the mp3_formatter.sh script to rename them with the artist
-# name and track name.
+# then runs the mp3_formatter.sh script to rename and tag them with the
+# artist and title.
 #
 # Run ./cleanup.sh afterwards to remove the leftover files.
 
@@ -19,9 +19,9 @@ until [ $i -ge 17 ]
 do
     if [ $i -le 9 ];
     then
-      touch $MP3_PATH/0$i.mp3
+      cp file.mp3 $MP3_PATH/0$i.mp3
     else
-      touch $MP3_PATH/$i.mp3
+      cp file.mp3 $MP3_PATH/$i.mp3
     fi
 
     i=`expr $i + 1`

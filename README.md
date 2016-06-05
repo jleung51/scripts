@@ -1,6 +1,6 @@
 # MP3 Formatter
 
-Python 3 script to rename MP3 files to the format `Artist - Title.mp3`.
+Python 3 script to rename MP3 files to the format `Artist - Title.mp3`, and ID3-tag the MP3 files with the corresponding title and artist.
 
 ## Usage
 
@@ -26,11 +26,13 @@ sudo apt-get install python3
 
 ### External Modules
 
-#### [ID3](http://id3-py.sourceforge.net/)  
-To install, navigate to the `id3-py-1.2 directory` and run:
+#### [Pytag](http://pytag.readthedocs.io/en/latest/)
+
+To install, run:
 
 ```
-python3 setup.py install
+sudo apt-get install python3-pip
+pip3 install pytag
 ```
 
 #### [Requests](http://docs.python-requests.org/en/master/)

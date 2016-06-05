@@ -2,9 +2,10 @@
 
 # This Python 3 file reads (from the command-line arguments) an artist name
 # and (from stdin) a list of tracks, each separated by a newline, and
-# renames the MP3 files in the mp3/ directory to the tracklist.
+# renames the MP3 files in the mp3/ directory to "Artist - Title.mp3",
+# in addition to ID3-tagging them with the artist and title.
 
-import ID3
+import pytag
 import os
 import sys
 
@@ -72,7 +73,13 @@ files.sort()
 
 i = 0
 for f in files:
+
+    file_id3 = pytag.Audio(os.path.abspath(mp3_location + f))
+    file_id3.write_tags({ 'title' : tracklist[i], 'artist' : artist })
+    # print(file_id3.get_tags())
+
     os.rename(
         mp3_location + f,
         mp3_location + artist + " - " + tracklist[i] + mp3_extension)
+
     i += 1
