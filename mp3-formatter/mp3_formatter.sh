@@ -8,5 +8,5 @@
 if [ "$1" = "--help" ] ; then
     echo "Usage: ./mp3_formatter.sh URL_TO_TRACKLIST ARTIST_NAME"
 else
-    ./url_scrape_div.py $1 | ./rename_mp3.py $2
+    ./url_scrape_div.py $1 | ./format_mp3.py $2
 fi
