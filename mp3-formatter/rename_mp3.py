@@ -1,20 +1,33 @@
 #!/usr/bin/python3
 
-# This Python 3 file reads (from stdin) a list of tracks, each separated by
-# a newline, and renames the MP3 files in the current folder to the tracklist.
+# This Python 3 file reads (from the command-line arguments) an artist name
+# and (from stdin) a list of tracks, each separated by a newline, and
+# renames the MP3 files in the mp3/ directory to the tracklist.
 
 import ID3
 import os
 import sys
 
-def read_tracklist():
-    """Return list of tracks from stdin.
+def read_track_details():
+    """Return the artist name and track names.
+
+    Artist name must be the first line in the command-line argument.
+    Track names must be inputted to stdin with newlines separating each
+    name.
     """
+
+    if len(sys.argv) < 2:  # sys.argv[0] is this script
+        raise ValueError("No artist was given")
+    sys.argv.pop(0)
+    artist = ' '.join(sys.argv)
 
     tracklist = []
     for line in sys.stdin:
         tracklist.append(line)
-    return tracklist
+    if not tracklist:
+        raise ValueError("No track names were given")
+
+    return artist, tracklist
 
 def match_length(files, tracklist):
     """Raise error if the two lists have different lengths.
@@ -27,7 +40,8 @@ def match_length(files, tracklist):
             str(len(files)) +
             " files were found.")
 
-tracklist = read_tracklist()
+artist, tracklist = read_track_details()
+
 mp3_extension = ".mp3"
 mp3_location = "./mp3/"
 
@@ -58,5 +72,7 @@ files.sort()
 
 i = 0
 for f in files:
-    os.rename(mp3_location + f, mp3_location + tracklist[i] + mp3_extension)
+    os.rename(
+        mp3_location + f,
+        mp3_location + artist + " - " + tracklist[i] + mp3_extension)
     i += 1

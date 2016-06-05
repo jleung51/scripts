@@ -5,6 +5,7 @@
 FILES_PATH=../mp3-formatter
 MP3_PATH=$FILES_PATH/mp3
 URL=http://hikarinoakariost.info/koutetsujou-no-kabaneri-original-soundtrack/
+ARTIST="Hiroyuki Sawano"
 
 i=1
 until [ $i -ge 17 ]
@@ -20,4 +21,4 @@ do
 done
 
 cd $FILES_PATH
-./mp3_formatter.sh $URL
+./mp3_formatter.sh "$URL" "$ARTIST"
