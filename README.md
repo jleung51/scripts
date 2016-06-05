@@ -5,7 +5,7 @@ Python 3 script to rename MP3 files to the format `Artist - Title.mp3`.
 ## Usage
 
 1. Find the music album to rename at [HikarinoAkari](http://hikarinoakariost.info/)
-  * Don't judge me; if you judge me for this you can't modify this. It's in the [LICENCE](https://github.com/jleung51/mini_programs/blob/master/mp3-formatter/LICENCE), I swear, this is legit
+  * Don't judge me; if you judge me for this you can't use this. It's in the [LICENCE](https://github.com/jleung51/mini_programs/blob/master/mp3-formatter/LICENCE#L14), I swear, this is legit
 2. Place the MP3 files into the directory `mp3-formatter/mp3/`, making sure that they are ordered by track number
 3. `cd` to `mp3-formatter/`
 4. Run:
