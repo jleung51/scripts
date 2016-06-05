@@ -6,6 +6,8 @@
 # artist and title.
 #
 # Run ./cleanup.sh afterwards to remove the leftover files.
+#
+# Usage: ./test_mp3_formatter.sh
 
 ./cleanup.sh
 
