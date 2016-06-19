@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd Downloads/
+cd ~/Downloads/
 
 sudo apt-get -y install curl git vim
 
@@ -8,6 +8,7 @@ sudo apt-get -y install guake
 gsettings set org.gnome.desktop.default-applications.terminal exec 'guake --new-tab'
 gsettings set org.gnome.desktop.default-applications.terminal exec-arg '-e'
 sudo cp /usr/share/applications/guake.desktop /etc/xdg/autostart/
+cp guake.desktop ~/.config/autostart/guake.desktop
 
 sudo apt-get -y install xubuntu-community-wallpapers
 mkdir ~/Pictures/Wallpapers
