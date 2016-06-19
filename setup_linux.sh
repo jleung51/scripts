@@ -4,30 +4,11 @@ cd ~/Downloads/
 
 sudo apt-get -y install curl git vim
 
-sudo apt-get -y install guake
-gsettings set org.gnome.desktop.default-applications.terminal exec 'guake --new-tab'
-gsettings set org.gnome.desktop.default-applications.terminal exec-arg '-e'
-sudo cp /usr/share/applications/guake.desktop /etc/xdg/autostart/
-cp files/guake.desktop ~/.config/autostart/
+./setup_guake.sh
+./setup_ohmyzsh_agnoster.sh
 
-sudo apt-get -y install xubuntu-community-wallpapers
-mkdir ~/Pictures/Wallpapers
-cp /usr/share/xfce4/backdrops/Mountainous_View_by_Sven_Scheuermier.jpg ~/Pictures/Wallpapers/
-gsettings set org.gnome.desktop.background picture-uri file://~/Pictures/Wallpapers/Mountainous_View_by_Sven_Scheuermier.jpg
-
-sudo apt-get -y install zsh
-# oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-sed -i 's/ZSH_THEME.*/ZSH_THEME="agnoster"/g' ~/.zshrc
-# agnoster font
-sudo wget -P /usr/share/fonts/opentype https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20M%20DZ%20Regular%20for%20Powerline.otf
-fc-cache -fv
-
-# Xubuntu
-
-#xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor0/image-path --set ~/Pictures/Wallpapers/Mountainous_View_by_Sven_Scheuermier.jpg
-#xfdesktop --reload
-
+./setup_wallpaper.sh
+# ./setup_wallpaper_xubuntu.sh
 
 # Manual
 #guake --preferences
