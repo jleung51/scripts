@@ -2,7 +2,8 @@
 
 SCRIPTS="./sub-scripts"
 
-cd ~/Downloads/
+mkdir tmp/
+cd tmp/
 
 sudo apt-get -y install curl git vim
 
