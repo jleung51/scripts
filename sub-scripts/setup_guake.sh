@@ -6,4 +6,5 @@ gsettings set org.gnome.desktop.default-applications.terminal exec 'guake --new-
 gsettings set org.gnome.desktop.default-applications.terminal exec-arg '-e'
 
 sudo cp /usr/share/applications/guake.desktop /etc/xdg/autostart/
+mkdir -p ~/.config/autostart/
 cp ../files/guake.desktop ~/.config/autostart/
