@@ -58,7 +58,16 @@ if [ $# -ge 1 ] ; then
       fi
 
     ;;
+    status)
+
+      if [ -f $PID_PATH_NAME ] ; then
+        echo "Service ${NAME} is running."
+      else
+        echo "Service ${NAME} is not running."
+      fi
+
+    ;;
   esac
 else
-  echo "Usage: service ${NAME} start|stop"
+  echo "Usage: service ${NAME} start|stop|status"
 fi
