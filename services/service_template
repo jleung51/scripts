@@ -16,7 +16,7 @@
 
 NAME=
 DESC=""
-CMD=
+CMD=""
 
 PID_PATH_NAME=/tmp/${NAME}-pid
 PIDFILE=/var/run/${NAME}.pid
