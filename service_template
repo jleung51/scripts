@@ -1,0 +1,60 @@
+#!/bin/sh
+#
+# This script is a template for creating a Linux service to run a command.
+#
+# Fill in the name, description, and command to run.
+# Rename this file to the name of your service.
+# Place this file in /etc/init.d/
+# Invoke the service using the following commands:
+#   service <service_name> start
+#   service <service_name> stop
+#
+
+NAME=
+DESC=""
+CMD=
+
+PID_PATH_NAME=/tmp/${NAME}-pid
+PIDFILE=/var/run/${NAME}.pid
+LOGFILE=/var/log/${NAME}.log
+
+start()
+{
+  nohup ${CMD} /tmp 2>> /dev/null >> /dev/null &
+  echo $! > ${PID_PATH_NAME}
+}
+
+stop()
+{
+  kill $(cat ${PID_PATH_NAME});
+  rm ${PID_PATH_NAME}
+}
+
+if [ $# -ge 1 ] ; then
+  case "$1" in
+    start)
+
+      if [ ! -f $PID_PATH_NAME ] ; then
+        echo "Starting service ${NAME}..."
+        start
+        echo "Started."
+      else
+        echo "Service ${NAME} is already running."
+      fi
+
+    ;;
+    stop)
+
+      if [ -f $PID_PATH_NAME ] ; then
+       echo "Stopping service ${NAME}..."
+       stop
+       echo "Stopped."
+      else
+        echo "Service ${NAME} is not running."
+      fi
+
+    ;;
+  esac
+else
+  echo "Usage: service ${NAME} start|stop"
+fi
