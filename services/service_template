@@ -1,8 +1,12 @@
 #!/bin/sh
 #
+# chkconfig: 345 99 84
+# description: 
+#
 # This script is a template for creating a Linux service to run a command.
 #
-# Fill in the name, description, and command to run.
+# Above, fill in the description of the service.
+# Below, fill in the name, description, and command to run.
 # Rename this file to the name of your service.
 # Place this file in /etc/init.d/
 # Invoke the service using the following commands:
