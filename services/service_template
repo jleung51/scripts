@@ -58,6 +58,24 @@ if [ $# -ge 1 ] ; then
       fi
 
     ;;
+    restart)
+
+      if [ -f $PID_PATH_NAME ] ; then
+        echo "Restarting service ${NAME}..."
+        stop
+        echo "Stopped."
+        start
+        echo "Restarted."
+      else
+        echo "Service ${NAME} is not running."
+      fi
+
+    ;;
+    info)
+
+      echo ${DESC}
+
+    ;;
     status)
 
       if [ -f $PID_PATH_NAME ] ; then
@@ -69,5 +87,5 @@ if [ $# -ge 1 ] ; then
     ;;
   esac
 else
-  echo "Usage: service ${NAME} start|stop|status"
+  echo "Usage: service ${NAME} start|stop|restart|info|status"
 fi
