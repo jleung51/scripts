@@ -12,10 +12,13 @@ import time
 slack_token = ""
 # The name of the channel (without #)
 # E.g. "random"
-channel     = ""
+channel = ""
+# The name of the Slackbot user which will send the message
+# E.g. "Weekday Greeter Slackbot"
+slackbot_name = ""
 # The message which should be sent to the channel
 # E.g. "Hello World!"
-message     = ""
+message = ""
 
 # SLACK TEAM WHICH A REPORT SHOULD BE SENT TO:
 
@@ -24,17 +27,17 @@ message     = ""
 report = False
 # The API token of the Slackbot (see README:Setup)
 # E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
-report_slack_token   = ""
+report_slack_token = ""
 # The name of the channel (without a "#")
 # E.g. "random"
-report_channel       = ""
-# The name of this Slackbot so the report can be identifiable
+report_channel = ""
+# The name of the Slackbot user which will send the message
 # E.g. "Weekday Greeter Slackbot"
 report_slackbot_name = ""
 # The usernames of Slack users who should be alerted upon a failure
 # Each username must begin with a "@"
 # E.g. "@jleung51 | @jleung52 | @jleung53"
-report_alert_list    = ""
+report_alert_list = ""
 
 def report_result(result):
     if result.get("ok"):
@@ -47,8 +50,8 @@ def report_result(result):
         "chat.postMessage",
         channel = "#" + report_channel,
         link_names = 1,
-        text = ">>> " + time.strftime("%Y-%m-%d %H:%M:%S") + " | " +
-                "Report from _" + report_slackbot_name + '_' + '\n' +
+        username = report_slackbot_name,
+        text = ">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' + '\n' +
                 "Operation status: " + report_message +
                 "Response body:\n```\n" +
                 json.dumps(result, indent=4, sort_keys=True) + '\n```'
@@ -58,6 +61,7 @@ def main():
     result = SlackClient(slack_token).api_call(
         "chat.postMessage",
         channel = "#" + channel,
+        username = slackbot_name,
         text = message
     )
     if report:
