@@ -19,6 +19,9 @@ message     = ""
 
 # SLACK TEAM WHICH A REPORT SHOULD BE SENT TO:
 
+# Change this to True and fill in the following fields if you would like
+# to send a report; otherwise, ignore the following fields
+report = False
 # The API token of the Slackbot (see README:Setup)
 # E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
 report_slack_token   = ""
@@ -57,7 +60,8 @@ def main():
         channel = "#" + channel,
         text = message
     )
-    report_result(result)
+    if report:
+        report_result(result)
 
 if __name__ == "__main__":
     main()
