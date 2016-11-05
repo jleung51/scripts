@@ -5,13 +5,32 @@ from slackclient import SlackClient
 import json
 import time
 
+# SLACK TEAM WHICH THE MESSAGE SHOULD BE SENT TO:
+
+# The API token of the Slackbot (see README:Setup)
+# E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
 slack_token = ""
+# The name of the channel (without #)
+# E.g. "random"
 channel     = ""
+# The message which should be sent to the channel
+# E.g. "Hello World!"
 message     = ""
 
+# SLACK TEAM WHICH A REPORT SHOULD BE SENT TO:
+
+# The API token of the Slackbot (see README:Setup)
+# E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
 report_slack_token   = ""
+# The name of the channel (without a "#")
+# E.g. "random"
 report_channel       = ""
+# The name of this Slackbot so the report can be identifiable
+# E.g. "Weekday Greeter Slackbot"
 report_slackbot_name = ""
+# The usernames of Slack users who should be alerted upon a failure
+# Each username must begin with a "@"
+# E.g. "@jleung51 | @jleung52 | @jleung53"
 report_alert_list    = ""
 
 def report_result(result):
