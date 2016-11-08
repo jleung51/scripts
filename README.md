@@ -1,4 +1,4 @@
-# Slackbot Messager
+# Slackbot Messenger
 
 Python 3 script which sends a single, customizable message to a Slack channel. The script can be easily set up as a cron job so it posts a message on a consistent basis.
 
@@ -13,7 +13,7 @@ Prerequisites:
 
 Invite your Slack bot to the channel they should send a message to.
 
-Copy the `slackbot_messager.py` script to a new file. Don't edit and commit the original `slackbot_messager.py` because it will contain sensitive authentication data.
+Copy the `slackbot_messenger.py` script to a new file. Don't edit and commit the original `slackbot_messenger.py` because it will contain sensitive authentication data.
 
 Edit the new file and fill in the empty fields at the top as described. If you do not want a report to be sent to another Slack team/channel (for error monitoring), simply leave `report = False` and don't set the following `report_` variables.
 
