@@ -39,22 +39,31 @@ report_slackbot_name = ""
 # E.g. "@jleung51 | @jleung52 | @jleung53"
 report_alert_list = ""
 
+def log_result(result):
+    message = "[ " + time.strftime("%Y-%m-%d %H:%M:%S") + " | "
+    if result.get("ok"):
+        message += "SUCCESS"
+    else:
+        message += "ERROR  "
+    message += " ] Response body: " + json.dumps(result)
+    print(message)
+
 def report_result(result):
     if result.get("ok"):
-        report_message = "*SUCCESS*\n"
+        report_message = "*SUCCESS*"
     else:
         report_message = \
-                "*ERROR* (Alerting user(s) " + report_alert_list + ")" + '\n'
+                "*ERROR* (Alerting user(s) " + report_alert_list + ")"
 
     SlackClient(report_slack_token).api_call(
         "chat.postMessage",
         channel = "#" + report_channel,
         link_names = 1,
         username = report_slackbot_name,
-        text = ">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' + '\n' +
-                "Operation status: " + report_message +
+        text = ">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
+                '\n' + "Operation status: " + report_message + '\n' +
                 "Response body:\n```\n" +
-                json.dumps(result, indent=4, sort_keys=True) + '\n```'
+                json.dumps(result, indent=4, sort_keys=True) + "\n```"
     )
 
 def main():
@@ -64,6 +73,8 @@ def main():
         username = slackbot_name,
         text = message
     )
+
+    log_result(result)
     if report:
         report_result(result)
 
