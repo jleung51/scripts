@@ -23,10 +23,11 @@ def get_traffic_data():
     map_area = ",".join([coordinate_southwest, coordinate_northeast])
     url = "http://dev.virtualearth.net/REST/v1/Traffic/Incidents/" + map_area
 
-    req_params = {}
-    req_params["severity"] = severity
-    req_params["type"] = type
-    req_params["key"] = bing_maps_auth_key
+    req_params = dict(
+        severity = severity,
+        type = type,
+        key = bing_maps_auth_key
+    )
 
     return requests.get(url, params=req_params)
 
