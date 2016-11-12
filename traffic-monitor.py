@@ -19,6 +19,12 @@ coordinate_northeast = "46.610, -122.107"
 severity = "1, 2, 3, 4"
 type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
 
+def string_list_from(original_list):
+    string_list = []
+    for i in original_list:
+        string_list.append(str(i))
+    return string_list
+
 def get_traffic_data():
     map_area = ",".join([coordinate_southwest, coordinate_northeast])
     url = "http://dev.virtualearth.net/REST/v1/Traffic/Incidents/" + map_area
@@ -31,9 +37,22 @@ def get_traffic_data():
 
     return requests.get(url, params=req_params)
 
-if __name__ == "__main__":
+def alert_for_incidents(response_body):
+    incidents_container = response_body["resourceSets"]
+    if len(incidents_container) is 0:
+        return
+    incidents = incidents_container[0].get("resources")
 
+    for i in incidents:
+        print(str(i.get("severity")) + ' ' + str(i.get("type")))
+        print(i.get("description"))
+
+        coordinates = i.get("point").get("coordinates")
+        print('(' + ", ".join(string_list_from(coordinates)) + ')')
+        print()
+
+if __name__ == "__main__":
     response = get_traffic_data()
     response_body = response.json()
 
-    print(json.dumps(response_body, sort_keys=True, indent=4))
+    alert_for_incidents(response_body)
