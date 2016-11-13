@@ -133,23 +133,26 @@ def alert_for_incidents(response_body):
     if len(incidents_container) is 0:
         return
     incidents = incidents_container[0].get("resources")
+
+    message_text = ""
     for i in incidents:
         coordinates_float = i.get("point").get("coordinates")
         coordinates = '(' + ", ".join(string_list_from(coordinates_float)) + ')'
-        print(
-                "Alert: " +
-                decode_severity(i.get("severity")) + " traffic disruption"
-        )
-
         description = i.get("description")
         description = description[0].lower() + description[1:]
-        print(
-                decode_type(i.get("type")) + " " +
-                description + " Coordinates: " +
-                coordinates + "."
-        )
 
-        print()
+        message_text += \
+                decode_severity(i.get("severity")) + " traffic disruption. " + \
+                decode_type(i.get("type")) + " " + \
+                description + " Coordinates: " + \
+                coordinates + "." + \
+                '\n\n'
+
+    if message_text:
+        message_text += \
+                "\nSincerely,\n\n" + \
+                "- Your friendly neighborhood Traffic Monitor"
+        alert_to_mail("Traffic Incident Alert", message_text)
 
 def get_gmail_credentials():
     credential_path = os.path.join(
@@ -195,5 +198,6 @@ if __name__ == "__main__":
     response = get_traffic_data()
     response_body = response.json()
 
+    print(response_body)
+
     alert_for_incidents(response_body)
-    alert_to_mail("test_subject", "test_body")
