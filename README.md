@@ -2,6 +2,11 @@
 
 Python 3 script which sends a single, customizable message to a Slack channel. The script can be easily set up as a cron job so it posts a message on a consistent basis.
 
+The result of the script is outputted in a loggable fashion like this:
+```
+[ 2016-11-11 09:00:07 | SUCCESS ] Response body: {"message": {"username": "SLACKBOT_USERNAME_HERE", "subtype": "bot_message", "text": "YOUR_MESSAGE_HERE", "type": "message", "ts": "1478883606.000126", "bot_id": "B2Y2L8BMW"}, "ok": true, "ts": "1478883606.000126", "channel": "C2DB4Q0SF"}
+```
+
 ## Setup
 
 Prerequisites:
