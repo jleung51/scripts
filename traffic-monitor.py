@@ -17,7 +17,7 @@ from oauth2client import tools
 from oauth2client.file import Storage
 from oauth2client.service_account import ServiceAccountCredentials
 
-# Configuration
+# Configuration for traffic incident data:
 
 # To create an authentication key, see
 # https://msdn.microsoft.com/en-ca/library/ff701720.aspx
@@ -34,6 +34,7 @@ coordinate_northeast = "46.610, -122.107"
 severity = "1, 2, 3, 4"
 type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
 
+# Preset list of incident severity meanings
 severity_list = {
     "1" : "Low impact",
     "2" : "Minor",
@@ -41,6 +42,7 @@ severity_list = {
     "4" : "Serious"
 }
 
+# Preset list of incident type meanings
 type_list = {
     "1" : "Accident",
     "2" : "Congestion",
@@ -55,8 +57,15 @@ type_list = {
     "11" : "Weather alert"
 }
 
+# Configuration for email notifications:
+
+# Preferred application name from which the email is sent
 mail_source_application_name = "Traffic Monitor"
+
+# The Gmail account from which your notification emails will be sent
 mail_source_email = "gmail_source@email.com"
+
+# Destination email account to which your notification emails will be sent
 mail_target_email = "email_target@gmail.com"
 
 def decode_severity(severity):
