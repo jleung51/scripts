@@ -53,7 +53,7 @@ severity = "1, 2, 3, 4"
 type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
 
 # Preset list of incident severity meanings
-# Do not edit!
+# Do not modify if you are setting up this script!
 severity_list = {
     "1" : "Low impact",
     "2" : "Minor",
@@ -62,7 +62,7 @@ severity_list = {
 }
 
 # Preset list of incident type meanings
-# Do not edit!
+# Do not modify if you are setting up this script!
 type_list = {
     "1" : "Accident",
     "2" : "Congestion",
@@ -92,6 +92,30 @@ mail_source_email = "gmail_source@email.com"
 # This should include the "@gmail.com".
 mail_target_email = "email_target@gmail.com"
 
+# Configuration for a report to a Slack channel:
+
+# Change this to True and fill in the following fields if you would like
+# to send a report; otherwise, ignore the following fields
+report = False
+# The API token of the Slackbot (see README:Setup:Reports to a Slack Channel)
+# E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
+report_slack_token = ""
+# The name of the channel (without a "#")
+# E.g. "random"
+report_channel = ""
+# The name of the Slackbot user which will send the message
+# E.g. "Traffic Monitor Slackbot"
+report_slackbot_name = ""
+# The usernames of Slack users who should be alerted upon a failure
+# Each username must begin with a "@"
+# E.g. "@jleung51 | @jleung52 | @jleung53"
+report_alert_list = ""
+
+# Conditional imports
+# Do not modify if you are setting up this script!
+if report:
+    from slackclient import SlackClient
+
 # Functions:
 
 def log_debug(message):
@@ -112,6 +136,19 @@ def log(log_level, message):
             " ] " +
             message
     )
+
+def slack_report_message(operation_status, message_text):
+    if report:
+        SlackClient(report_slack_token).api_call(
+                "chat.postMessage",
+                channel = "#" + report_channel,
+                link_names = 1,
+                username = report_slackbot_name,
+                text = ">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
+                        '\n' + "Operation status: " + operation_status + '\n' +
+                        message_text
+        )
+        log_debug("Slack report sent.")
 
 def decode_severity(severity):
     string_severity = severity_list[str(severity)]
@@ -174,6 +211,12 @@ def alert_for_incidents(response_body):
                 "\nSincerely,\n\n" + \
                 "- Your friendly neighborhood Traffic Monitor"
         alert_to_mail("Traffic Incident Alert", message_text)
+        slack_report_message(
+                "*SUCCESS*",
+                "Traffic incident alert sent to " + mail_target_email + "."
+        )
+    else:
+        slack_report_message("*SUCCESS*", "No incidents found.")
 
 def get_gmail_credentials():
     credential_path = os.path.join(
@@ -220,7 +263,7 @@ def alert_to_mail(subject, message):
 
     log_debug("Mail sent.")
 
-if __name__ == "__main__":
+def main():
     response = get_traffic_data()
     response_body = response.json()
 
@@ -234,3 +277,12 @@ if __name__ == "__main__":
     alert_for_incidents(response_body)
 
     log_success("Operation completed.")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except:
+        slack_report_message(
+                "*ERROR* (Alerting user(s) " + report_alert_list + ")",
+                "Internal Error. Please check the logs."
+        )
