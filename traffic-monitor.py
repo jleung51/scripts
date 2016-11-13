@@ -281,8 +281,9 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except:
+    except Exception as e:
         slack_report_message(
                 "*ERROR* (Alerting user(s) " + report_alert_list + ")",
                 "Internal Error. Please check the logs."
         )
+        raise
