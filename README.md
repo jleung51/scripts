@@ -6,11 +6,7 @@ Email notifications are configurable using the [Gmail API](https://developers.go
 
 ## Setup
 
-Edit the script `traffic-monitor.py` to configure the authentication and authorization variables correctly.
-
-Set the variables up to (but not including) the email variables for the traffic incident data. Each variable has its own explanation
-
-Set the variables beginning with `mail_` for the email notification data.
+Edit the script `traffic-monitor.py` to configure the authentication and authorization variables at the beginning of the file. Each variable has its own explanation; read the explanation carefully.
 
 #### Authorizing Emails from a Gmail account
 

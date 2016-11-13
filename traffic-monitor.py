@@ -19,22 +19,39 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 # Configuration for traffic incident data:
 
-# To create an authentication key, see
-# https://msdn.microsoft.com/en-ca/library/ff701720.aspx
+# Bing Maps authentication key for map data requests.
+# Details about the key parameter for the HTTP request:
+#   https://msdn.microsoft.com/en-ca/library/ff701720.aspx
+#
+# Go to the Bing Maps Portal to retrieve your key:
+# https://www.bingmapsportal.com/
+# Sign in, go to "My Account" -> "My Keys", create a new key, and fill out
+# the form. Paste the key into the variable below.
 bing_maps_auth_key = ""
 
-# Coordinates of the bounding box where traffic incidents are to be monitored
-# See https://msdn.microsoft.com/en-us/library/ff701726.aspx
+# Coordinates of the bounding box where traffic incidents are to be monitored.
+# Details about the bounding box:
+#   https://msdn.microsoft.com/en-us/library/ff701726.aspx
+#
+# To find a coordinate, go to Google Maps (yes, I'm aware of the irony):
+# https://maps.google.com/
+# Right-click on any point and select "What's here?". A small box will appear
+# with the coordinate at that location
 coordinate_southwest = "45.219, -122.325"
 coordinate_northeast = "46.610, -122.107"
 
-# See below for the meanings of the severity levels and types.
-# Keep only the security levels and types useful to you.
-# See https://msdn.microsoft.com/en-ca/library/hh441726.aspx
+# Severity and type of traffic incident.
+# Details about severity and type:
+#   https://msdn.microsoft.com/en-ca/library/hh441726.aspx
+# See the lists below for the interpretation of each level.
+#
+# Keep only the security levels and types which you want to be notified of,
+# and remove the rest.
 severity = "1, 2, 3, 4"
 type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
 
 # Preset list of incident severity meanings
+# Do not edit!
 severity_list = {
     "1" : "Low impact",
     "2" : "Minor",
@@ -43,6 +60,7 @@ severity_list = {
 }
 
 # Preset list of incident type meanings
+# Do not edit!
 type_list = {
     "1" : "Accident",
     "2" : "Congestion",
@@ -59,14 +77,20 @@ type_list = {
 
 # Configuration for email notifications:
 
-# Preferred application name from which the email is sent
+# Application name from which the email is sent
 mail_source_application_name = "Traffic Monitor"
 
-# The Gmail account from which your notification emails will be sent
+# Gmail account from which your notification emails will be sent.
+#
+# This should include the "@gmail.com".
 mail_source_email = "gmail_source@email.com"
 
-# Destination email account to which your notification emails will be sent
+# Destination email account to which your notification emails will be sent.
+#
+# This should include the "@gmail.com".
 mail_target_email = "email_target@gmail.com"
+
+# Functions:
 
 def decode_severity(severity):
     string_severity = severity_list[str(severity)]
