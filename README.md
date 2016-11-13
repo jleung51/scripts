@@ -2,7 +2,29 @@
 
 Python 3 script which uses the [Microsoft/Bing Maps Traffic API](https://msdn.microsoft.com/en-us/library/hh441725.aspx) to notify a user if there are any traffic disruptions within a range of coordinates.
 
-Email notifications are configurable using the [Gmail API](https://developers.google.com/gmail/api/).
+Configurable mail notifications are set up to use the [Gmail API](https://developers.google.com/gmail/api/). By default, the subject is `Traffic Incident Alert` and the message body is formatted like this:
+```
+Serious traffic disruption. Uncategorized alert at 116th St/Exit 202 - Exit ramp closed. Coordinates: (48.09642, -122.18471).
+
+Moderate traffic disruption. Road hazard at Pavilion-Clinton Rd - Incident. Coordinates: (50.742394, -121.864216).
+
+Moderate traffic disruption. Road hazard at Fountain Valley Hwy - Incident. Coordinates: (50.880798, -121.829067).
+
+
+Sincerely,
+
+- Your friendly neighborhood Traffic Monitor
+```
+
+Execution details are outputted in a loggable format like so:
+```
+[ 2016-11-12 22:27:24 | DEBUG   ] Mail source:  email@email.com
+[ 2016-11-12 22:27:24 | DEBUG   ] Mail target:  email@email.com
+[ 2016-11-12 22:27:24 | DEBUG   ] Mail subject: Traffic Incident Alert
+[ 2016-11-12 22:27:24 | DEBUG   ] Mail message: Serious traffic disruption. Uncategorized alert at 116th St/Exit 202 - Exit ramp closed. Coordinates: (48.09642, -122.18471).[newline][newline]Moderate traffic disruption. Road hazard at Pavilion-Clinton Rd - Incident. Coordinates: (50.742394, -121.864216).[newline][newline]Moderate traffic disruption. Road hazard at Fountain Valley Hwy - Incident. Coordinates: (50.880798, -121.829067).[newline][newline][newline]Sincerely,[newline][newline]- Your friendly neighborhood Traffic Monitor
+[ 2016-11-12 22:27:25 | DEBUG   ] Mail sent.
+[ 2016-11-12 22:27:25 | SUCCESS ] Operation completed.
+```
 
 ## Setup
 
