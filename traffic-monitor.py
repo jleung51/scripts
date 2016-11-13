@@ -5,6 +5,8 @@ import base64
 import json
 import os
 import requests
+import sys
+import time
 
 from argparse import Namespace
 from email.mime.text import MIMEText
@@ -91,6 +93,25 @@ mail_source_email = "gmail_source@email.com"
 mail_target_email = "email_target@gmail.com"
 
 # Functions:
+
+def log_debug(message):
+    log("DEBUG  ", message)
+
+def log_success(message):
+    log("SUCCESS", message)
+
+def log_error(message):
+    log("ERROR  ", message)
+
+def log(log_level, message):
+    print(
+            "[ " +
+            time.strftime("%Y-%m-%d %H:%M:%S") +
+            " | " +
+            log_level +
+            " ] " +
+            message
+    )
 
 def decode_severity(severity):
     string_severity = severity_list[str(severity)]
@@ -185,6 +206,11 @@ def create_message(sender, recipient, subject, message_text):
     }
 
 def alert_to_mail(subject, message):
+    log_debug("Mail source:  " + mail_source_email)
+    log_debug("Mail target:  " + mail_target_email)
+    log_debug("Mail subject: " + subject)
+    log_debug("Mail message: " + message.replace("\n", "[newline]"))
+
     http_auth = get_gmail_credentials().authorize(Http())
     service = build("gmail", "v1", http=http_auth)
 
@@ -192,12 +218,19 @@ def alert_to_mail(subject, message):
     response = service.users().messages() \
             .send(userId=mail_source_email, body=mail).execute()
 
-    print(json.dumps(response, sort_keys=True, indent=4))
+    log_debug("Mail sent.")
 
 if __name__ == "__main__":
     response = get_traffic_data()
     response_body = response.json()
 
-    print(response_body)
+    log_message = "Bing Maps response: " + str(response_body)
+    if response.status_code == requests.codes.ok:
+        log_debug(log_message)
+    else:
+        log_error(log_message)
+        sys.exit(1)
 
     alert_for_incidents(response_body)
+
+    log_success("Operation completed.")
