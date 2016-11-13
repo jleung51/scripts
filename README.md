@@ -32,8 +32,9 @@ Edit the script `traffic-monitor.py` to configure the authentication and authori
 
 ### Authorizing Emails from a Gmail account
 
-Install the following pip 3 dependency:
+Install the following pip 3 dependencies:
 * google-api-python-client
+* httplib2
 
 From the [Gmail Developer APIs](https://developers.google.com/gmail/api/quickstart/python), follow **Step 1: Turn on the Gmail API** to get an authentication key for the Gmail account from which you'll be sending the email. Make sure you keep `client_secret.json` in the same directory as the traffic monitor script.
 
