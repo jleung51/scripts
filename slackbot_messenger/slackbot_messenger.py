@@ -39,6 +39,9 @@ report_slackbot_name = ""
 # E.g. "@jleung51 | @jleung52 | @jleung53"
 report_alert_list = ""
 
+if report:
+    from slack_logger import SlackLogger
+
 def log_result(result):
     message = "[ " + time.strftime("%Y-%m-%d %H:%M:%S") + " | "
     if result.get("ok"):
@@ -55,13 +58,11 @@ def report_result(result):
         report_message = \
                 "*ERROR* (Alerting user(s) " + report_alert_list + ")"
 
-    SlackClient(report_slack_token).api_call(
-        "chat.postMessage",
-        channel = "#" + report_channel,
-        link_names = 1,
-        username = report_slackbot_name,
-        text = ">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
-                '\n' + "Operation status: " + report_message + '\n' +
+    slack_logger = SlackLogger(
+            report_slack_token, report_channel, report_slackbot_name
+    )
+    slack_logger.report(
+                report_message,
                 "Response body:\n```\n" +
                 json.dumps(result, indent=4, sort_keys=True) + "\n```"
     )
