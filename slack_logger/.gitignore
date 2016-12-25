@@ -87,7 +87,3 @@ ENV/
 
 # Rope project settings
 .ropeproject
-
-# Gmail API files
-client_secret.json
-generated_credentials.json
