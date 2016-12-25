@@ -47,3 +47,8 @@ For detailed information on the parameters and usage, see the documentation in t
 ### Configuration
 
 If you want to enable debug logging output, change the value of the variable `print_debug_logs` in `slack_logger.py` to True.
+
+Debug output is formatted like so:
+```
+[ 2016-12-24 22:44:41 | DEBUG   ] Slack report sent.
+```
