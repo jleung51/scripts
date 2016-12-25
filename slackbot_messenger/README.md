@@ -43,5 +43,7 @@ Fill in the remaining Slack variables in the script as necessary.
 Simply run:
 
 ```
-./slackbot_messenger.py
+./slackbot_messenger.py "message"
 ```
+
+where `message` is the text to send to the Slack channel.

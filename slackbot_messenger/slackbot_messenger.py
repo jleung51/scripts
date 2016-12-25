@@ -3,6 +3,7 @@
 from slackclient import SlackClient
 
 import json
+import sys
 import time
 
 # SLACK TEAM WHICH THE MESSAGE SHOULD BE SENT TO:
@@ -16,9 +17,6 @@ channel = ""
 # The name of the Slackbot user which will send the message
 # E.g. "Weekday Greeter Slackbot"
 slackbot_name = ""
-# The message which should be sent to the channel
-# E.g. "Hello World!"
-message = ""
 
 # SLACK TEAM WHICH A REPORT SHOULD BE SENT TO:
 
@@ -68,11 +66,15 @@ def report_result(result):
     )
 
 def main():
+    if len(sys.argv) < 2:
+        print("Error: One argument (the message to send) must be provided.")
+        sys.exit(1)
+
     result = SlackClient(slack_token).api_call(
         "chat.postMessage",
         channel = "#" + channel,
         username = slackbot_name,
-        text = message
+        text = sys.argv[1]
     )
 
     log_result(result)
