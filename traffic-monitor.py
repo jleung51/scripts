@@ -114,7 +114,7 @@ report_alert_list = ""
 # Conditional imports
 # Do not modify if you are setting up this script!
 if report:
-    from slackclient import SlackClient
+    from slack_logger import SlackLogger
 
 # Functions:
 
@@ -139,16 +139,13 @@ def log(log_level, message):
 
 def slack_report_message(operation_status, message_text):
     if report:
-        SlackClient(report_slack_token).api_call(
-                "chat.postMessage",
-                channel = "#" + report_channel,
-                link_names = 1,
-                username = report_slackbot_name,
-                text = ">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
-                        '\n' + "Operation status: " + operation_status + '\n' +
-                        message_text
+        slack_logger = SlackLogger(
+                report_slack_token, report_channel, report_slackbot_name
         )
+        slack_logger.report(operation_status, message_text)
         log_debug("Slack report sent.")
+    else:
+        log_debug("No Slack report sent.")
 
 def decode_severity(severity):
     string_severity = severity_list[str(severity)]

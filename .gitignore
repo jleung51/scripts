@@ -91,3 +91,6 @@ ENV/
 # Gmail API files
 client_secret.json
 generated_credentials.json
+
+# Custom modules
+slack_logger.py
