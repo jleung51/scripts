@@ -1,23 +1,15 @@
 #!/usr/bin/env python3
 
 import argparse
-import base64
 import json
-import os
 import requests
 import sys
 import time
 
 from argparse import Namespace
-from email.mime.text import MIMEText
 from httplib2 import Http
 
-# Gmail API
-from apiclient.discovery import build
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
-from oauth2client.service_account import ServiceAccountCredentials
+from gmail_sender import GmailSender
 
 # Configuration for traffic incident data:
 
@@ -85,12 +77,12 @@ mail_source_application_name = "Traffic Monitor"
 # Gmail account from which your notification emails will be sent.
 #
 # This should include the "@gmail.com".
-mail_source_email = "gmail_source@email.com"
+mail_source_email = "gmail_source@gmail.com"
 
 # Destination email account to which your notification emails will be sent.
 #
-# This should include the "@gmail.com".
-mail_target_email = "email_target@gmail.com"
+# This should include the "@email.com".
+mail_target_email = "email_target@email.com"
 
 # Configuration for a report to a Slack channel:
 
@@ -207,58 +199,20 @@ def alert_for_incidents(response_body):
         message_text += \
                 "\nSincerely,\n\n" + \
                 "- Your friendly neighborhood Traffic Monitor"
-        alert_to_mail("Traffic Incident Alert", message_text)
+
+        email_sender = GmailSender(
+                mail_source_email, mail_source_application_name
+        )
+        email_sender.send_email(
+                mail_target_email, "Traffic Incident Alert", message_text
+        )
+
         slack_report_message(
                 "*SUCCESS*",
                 "Traffic incident alert sent to " + mail_target_email + "."
         )
     else:
         slack_report_message("*SUCCESS*", "No incidents found.")
-
-def get_gmail_credentials():
-    credential_path = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)),
-            "generated_credentials.json"
-    )
-    store = Storage(credential_path)
-    credentials = store.get()
-    if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets(
-                "client_secret.json",
-                "https://www.googleapis.com/auth/gmail.send"
-        )
-        flow.user_agent = mail_source_application_name
-
-        flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-        flags.noauth_local_webserver = True
-        credentials = tools.run_flow(flow, store, flags)
-    return credentials
-
-def create_message(sender, recipient, subject, message_text):
-    message = MIMEText(message_text)
-    message["from"] = sender
-    message["to"] = recipient
-    message["subject"] = subject
-    return {"raw":
-            base64.urlsafe_b64encode(
-                    message.as_string().encode()
-            ).decode("utf-8")
-    }
-
-def alert_to_mail(subject, message):
-    log_debug("Mail source:  " + mail_source_email)
-    log_debug("Mail target:  " + mail_target_email)
-    log_debug("Mail subject: " + subject)
-    log_debug("Mail message: " + message.replace("\n", "[newline]"))
-
-    http_auth = get_gmail_credentials().authorize(Http())
-    service = build("gmail", "v1", http=http_auth)
-
-    mail = create_message(mail_source_email, mail_target_email, subject, message)
-    response = service.users().messages() \
-            .send(userId=mail_source_email, body=mail).execute()
-
-    log_debug("Mail sent.")
 
 def main():
     response = get_traffic_data()
