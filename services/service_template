@@ -20,28 +20,27 @@
 NAME=
 DESC=""
 CMD=""
+LOGFILE=/dev/null
 
-PID_PATH_NAME=/tmp/${NAME}-pid
 PIDFILE=/var/run/${NAME}.pid
-LOGFILE=/var/log/${NAME}.log
 
 start()
 {
   nohup ${CMD} >> ${LOGFILE} 2>&1 &
-  echo $! > ${PID_PATH_NAME}
+  echo $! > ${PIDFILE}
 }
 
 stop()
 {
-  kill $(cat ${PID_PATH_NAME});
-  rm ${PID_PATH_NAME}
+  kill $(cat ${PIDFILE});
+  rm ${PIDFILE}
 }
 
 if [ $# -ge 1 ] ; then
   case "$1" in
     start)
 
-      if [ ! -f $PID_PATH_NAME ] ; then
+      if [ ! -f ${PIDFILE} ] ; then
         echo "Starting service ${NAME}..."
         start
         echo "Started."
@@ -52,7 +51,7 @@ if [ $# -ge 1 ] ; then
     ;;
     stop)
 
-      if [ -f $PID_PATH_NAME ] ; then
+      if [ -f ${PIDFILE} ] ; then
        echo "Stopping service ${NAME}..."
        stop
        echo "Stopped."
@@ -63,7 +62,7 @@ if [ $# -ge 1 ] ; then
     ;;
     restart)
 
-      if [ -f $PID_PATH_NAME ] ; then
+      if [ -f ${PIDFILE} ] ; then
         echo "Restarting service ${NAME}..."
         stop
         echo "Stopped."
@@ -81,7 +80,7 @@ if [ $# -ge 1 ] ; then
     ;;
     status)
 
-      if [ -f $PID_PATH_NAME ] ; then
+      if [ -f ${PIDFILE} ] ; then
         echo "Service ${NAME} is running."
       else
         echo "Service ${NAME} is not running."
