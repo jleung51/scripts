@@ -5,13 +5,16 @@
 #
 # This script is a template for creating a Linux service to run a command.
 #
-# Above, fill in the description of the service.
-# Below, fill in the name, description, and command to run.
+# Above:
+#   Fill in the description of the service, below the chkconfig line.
+# Below:
+#   Fill in the name, description, and command to run.
+#   If you would like logging, change the output file from /dev/null.
 # Rename this file to the name of your service.
 # Place this file in /etc/init.d/
 # Invoke the service using the following commands:
-#   service <service_name> start
-#   service <service_name> stop
+#   sudo service <script_name> start
+#   sudo service <script_name> stop
 #
 
 NAME=
