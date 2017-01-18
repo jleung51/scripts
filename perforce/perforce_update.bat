@@ -11,7 +11,7 @@ SET FILEPATH=%DIR%\last_updated
 
 p4 login -s
 p4 info
-p4 sync -q
+p4 sync -q -f
 
 REM If the file does not exist, ADD will be successful; if the file does exist, EDIT will be successful
 p4 add %FILEPATH%
