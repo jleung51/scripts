@@ -14,7 +14,7 @@ print_debug_logs = True
 # Configuration variables
 
 config = configparser.ConfigParser()
-config.read("dropbox_distributor.cfg")
+config.read("file_distributor.cfg")
 
 section_local = "Local"
 file_path_local = config[section_local]["file_path_local"]
