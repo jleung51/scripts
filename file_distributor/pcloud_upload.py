@@ -41,83 +41,87 @@ def log_success(message):
 def log_error(message):
     log("ERROR  ", message)
 
-def get_digest():
-    response = requests.get("https://api.pcloud.com/getdigest")
-    response_body = response.json()
-
-    log_debug("GET /getdigest status code: " + str(response.status_code))
-    log_debug("GET /getdigest response body: " + str(response_body))
-    if(response.status_code != requests.codes.ok or
-            response_body is None or
-            response_body["result"] != 0 or
-            response_body["digest"] is None):
-        log_error(
-                "Incorrect response (HTTP/1.1 " + response.status_code +
-                ") from GET /getdigest: " + str(response_body)
-        )
-        sys.exit(1)
-
-    return response_body["digest"]
-
 def sha1_encode(val):
     return hashlib.sha1(val.encode("utf-8")).hexdigest()
 
-def get_auth_token():
-    digest = get_digest()
+class pcloud:
+    def __init__(self):
+        self.auth_token = None
 
-    password_digest = sha1_encode(
-            password +
-            sha1_encode(username.lower()) +
-            digest
-    )
+    def _api_call(self, rest_api, url, params=None,
+            response_body_validity_check=None):
+        """Makes a REST API call designed for the pCloud service.
 
-    request_params = dict(
-            getauth = 1,
-            username = username,
-            digest = digest,
-            passworddigest = password_digest
-    )
+        The authentication token will automatically be added to the parameters,
+        if it exists.
+        """
+        if params is None:
+            params = dict()
+        if response_body_validity_check is None:
+            response_body_validity_check = True
+        params["auth"] = self.auth_token
 
-    response = requests.get(
-            "https://api.pcloud.com/userinfo", params=request_params
-    )
-    response_body = response.json()
+        response = requests.get(url=url, params=params)
+        response_body = response.json()
 
-    log_debug("GET /userinfo status code: " + str(response.status_code))
-    log_debug("GET /userinfo response body: " + str(response_body))
-    if(response.status_code != requests.codes.ok or
-            response_body is None or
-            response_body["auth"] is None):
-        log_error(
-                "Incorrect response (HTTP/1.1 " + response.status_code +
-                ") from GET /userinfo: " + str(response_body)
+        log_debug(rest_api + " status code: " + str(response.status_code))
+        log_debug(rest_api + " response body: " + str(response_body))
+        if(response.status_code != requests.codes.ok or
+                response_body_validity_check(response_body) is False):
+            log_error(
+                    "Incorrect response (HTTP/1.1 " + str(response.status_code)
+                    + ") from " + rest_api + ": " + str(response_body)
+            )
+            sys.exit(1)
+
+        return response_body
+
+    def _get_digest(self):
+        response_body = self._api_call(
+                "GET /getdigest", "https://api.pcloud.com/getdigest",
+                response_body_validity_check=lambda response_body:
+                        response_body is not None and
+                        response_body["result"] == 0 and
+                        response_body["digest"] is not None
         )
-        sys.exit(1)
+        return response_body["digest"]
 
-    log_debug("Authentication token: " + response_body["auth"])
-    return response_body["auth"]
-
-def logout(auth_token):
-    request_params = dict(auth = auth_token)
-    response = requests.get(
-            "https://api.pcloud.com/logout", params=request_params
-    )
-    response_body = response.json()
-
-    log_debug("GET /logout status code: " + str(response.status_code))
-    log_debug("GET /logout response body: " + str(response_body))
-    if(response.status_code != requests.codes.ok or
-            response_body is None or
-            response_body["auth_deleted"] is None or
-            response_body["auth_deleted"] is False):
-        log_error(
-                "Incorrect response (HTTP/1.1 " + response.status_code +
-                ") from GET /logout: " + str(response_body)
+    def login(self):
+        digest = self._get_digest()
+        password_digest = sha1_encode(
+                password +
+                sha1_encode(username.lower()) +
+                digest
         )
-        sys.exit(1)
 
-    log_debug("Successfully logged out.")
+        request_params = dict(
+                getauth = 1,
+                username = username,
+                digest = digest,
+                passworddigest = password_digest
+        )
+        response_body = self._api_call(
+                "GET /userinfo", "https://api.pcloud.com/userinfo",
+                request_params, lambda response_body:
+                        response_body is not None and
+                        response_body["auth"] is not None
+        )
+
+        self.auth_token = response_body["auth"]
+        log_debug("Successfully logged in.")
+
+    def logout(self):
+        self._api_call(
+                "GET /logout", "https://api.pcloud.com/logout",
+                response_body_validity_check=lambda response_body:
+                        response_body is not None and
+                        response_body["auth_deleted"] is not None and
+                        response_body["auth_deleted"] is True
+        )
+        self.auth_token = None
+        log_debug("Successfully logged out.")
 
 if __name__ == "__main__":
-    auth_token = get_auth_token()
-    logout(auth_token)
+    p = pcloud()
+    p.login()
+    p.logout()
