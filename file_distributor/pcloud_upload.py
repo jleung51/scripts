@@ -36,9 +36,6 @@ class Logger:
     def log_error(message):
         Logger.__log("ERROR  ", message)
 
-def sha1_encode(val):
-    return hashlib.sha1(val.encode("utf-8")).hexdigest()
-
 class PCloud:
     def __init__(self):
         self.auth_token = None
@@ -89,11 +86,15 @@ class PCloud:
         )
         return response_body["digest"]
 
+    @staticmethod
+    def __sha1_encode(val):
+        return hashlib.sha1(val.encode("utf-8")).hexdigest()
+
     def login(self, username, password):
         digest = self.__get_digest()
-        password_digest = sha1_encode(
+        password_digest = PCloud.__sha1_encode(
                 password +
-                sha1_encode(username.lower()) +
+                PCloud.__sha1_encode(username.lower()) +
                 digest
         )
 
