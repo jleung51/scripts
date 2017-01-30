@@ -13,50 +13,55 @@ config_filename = "file_distributor.cfg"
 # Change this to True to enable output debug logging for this module.
 print_debug_logs = True
 
-def log(log_level, message):
-    if print_debug_logs:
-        print(
-                "[ " +
-                time.strftime("%Y-%m-%d %H:%M:%S") +
-                " | " +
-                log_level +
-                " ] " +
-                message
-        )
+class Logger:
+    @staticmethod
+    def __log(log_level, message):
+        if print_debug_logs:
+            print(
+                    "[ " +
+                    time.strftime("%Y-%m-%d %H:%M:%S") +
+                    " | " +
+                    log_level +
+                    " ] " +
+                    message
+            )
 
-def log_debug(message):
-    log("DEBUG  ", message)
+    @staticmethod
+    def debug(message):
+        Logger.__log("DEBUG  ", message)
 
-def log_success(message):
-    log("SUCCESS", message)
+    @staticmethod
+    def success(message):
+        Logger.__log("SUCCESS", message)
 
-def log_error(message):
-    log("ERROR  ", message)
+    @staticmethod
+    def log_error(message):
+        Logger.__log("ERROR  ", message)
 
 def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
     d = dropbox.Dropbox(access_token)
     try:
         account_info = d.users_get_current_account()
     except AuthError as e:
-        log_error("Failed to authenticate to Dropbox: " + str(e))
+        Logger.error("Failed to authenticate to Dropbox: " + str(e))
         exit(1)
-    log_debug("Account information: " + str(account_info))
+    Logger.debug("Account information: " + str(account_info))
 
     try:
         download_result = d.files_download_to_file(
                 file_path_local, file_path_dropbox
         )
     except ApiError as e:
-        log_error(
+        Logger.error(
                 "Failed to download file " + file_path_dropbox +
                 " from Dropbox: " + str(e)
         )
         exit(1)
-    log_debug(
+    Logger.debug(
             "Result of downloading file " + file_path_dropbox + ": " +
             str(download_result)
     )
-    log_success(
+    Logger.success(
             "Downloaded file " + file_path_dropbox +
             " from Dropbox."
     )

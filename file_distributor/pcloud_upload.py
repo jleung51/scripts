@@ -11,25 +11,30 @@ config_filename = "file_distributor.cfg"
 # Change this to True to enable output debug logging for this module.
 print_debug_logs = True
 
-def log(log_level, message):
-    if print_debug_logs:
-        print(
-                "[ " +
-                time.strftime("%Y-%m-%d %H:%M:%S") +
-                " | " +
-                log_level +
-                " ] " +
-                message
-        )
+class Logger:
+    @staticmethod
+    def __log(log_level, message):
+        if print_debug_logs:
+            print(
+                    "[ " +
+                    time.strftime("%Y-%m-%d %H:%M:%S") +
+                    " | " +
+                    log_level +
+                    " ] " +
+                    message
+            )
 
-def log_debug(message):
-    log("DEBUG  ", message)
+    @staticmethod
+    def debug(message):
+        Logger.__log("DEBUG  ", message)
 
-def log_success(message):
-    log("SUCCESS", message)
+    @staticmethod
+    def success(message):
+        Logger.__log("SUCCESS", message)
 
-def log_error(message):
-    log("ERROR  ", message)
+    @staticmethod
+    def log_error(message):
+        Logger.__log("ERROR  ", message)
 
 def sha1_encode(val):
     return hashlib.sha1(val.encode("utf-8")).hexdigest()
@@ -62,11 +67,11 @@ class PCloud:
             )
         response_body = response.json()
 
-        log_debug(rest_api + " status code: " + str(response.status_code))
-        log_debug(rest_api + " response body: " + str(response_body))
+        Logger.debug(rest_api + " status code: " + str(response.status_code))
+        Logger.debug(rest_api + " response body: " + str(response_body))
         if(response.status_code != requests.codes.ok or
                 response_body_validity_check(response_body) is False):
-            log_error(
+            Logger.error(
                     "Incorrect response (HTTP/1.1 " + str(response.status_code)
                     + ") from " + rest_api + ": " + str(response_body)
             )
@@ -108,7 +113,7 @@ class PCloud:
         )
 
         self.auth_token = response_body["auth"]
-        log_debug("Successfully logged in.")
+        Logger.debug("Successfully logged in.")
 
     def upload_file(self, file_path_local, dir_path_pcloud, file_name_pcloud):
         if dir_path_pcloud == "":  # Will be empty string for root folder
@@ -128,11 +133,11 @@ class PCloud:
                         response_body["fileids"] is not None and
                         len(response_body["fileids"]) > 0
         )
-        log_success("File " + file_name_pcloud + " uploaded to pCloud.")
+        Logger.success("File " + file_name_pcloud + " uploaded to pCloud.")
 
     def logout(self):
         if self.auth_token is None:
-            log_error("Logout attempt failed because you are not logged in.")
+            Logger.error("Logout attempt failed because you are not logged in.")
             sys.exit(1)
         self._api_call(
                 "GET /logout", "https://api.pcloud.com/logout",
@@ -142,7 +147,7 @@ class PCloud:
                         response_body["auth_deleted"] is True
         )
         self.auth_token = None
-        log_debug("Successfully logged out.")
+        Logger.debug("Successfully logged out.")
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
