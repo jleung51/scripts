@@ -34,7 +34,7 @@ def log_error(message):
 def sha1_encode(val):
     return hashlib.sha1(val.encode("utf-8")).hexdigest()
 
-class pcloud:
+class PCloud:
     def __init__(self):
         self.auth_token = None
 
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     dir_path_pcloud = config[section_pcloud]["dir_path"]
     file_name_pcloud = config[section_pcloud]["file_name"]
 
-    p = pcloud()
+    p = PCloud()
     p.login()
     p.upload_file(file_path_local, dir_path_pcloud, file_name_pcloud)
     p.logout()
