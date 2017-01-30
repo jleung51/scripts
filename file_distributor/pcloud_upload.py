@@ -140,7 +140,7 @@ class pcloud:
                         response_body["fileids"] is not None and
                         len(response_body["fileids"]) > 0
         )
-        log_success("File " + file_name_pcloud + " uploaded.")
+        log_success("File " + file_name_pcloud + " uploaded to pCloud.")
 
     def logout(self):
         if self.auth_token is None:

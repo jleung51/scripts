@@ -66,6 +66,10 @@ def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
             "Result of downloading file " + file_path_dropbox + ": " +
             str(download_result)
     )
+    log_success(
+            "Downloaded file " + file_path_dropbox +
+            " from Dropbox."
+    )
 
 if __name__ == "__main__":
     download_dropbox_file(
