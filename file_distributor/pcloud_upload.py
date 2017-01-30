@@ -89,7 +89,7 @@ class PCloud:
         )
         return response_body["digest"]
 
-    def login(self):
+    def login(self, username, password):
         digest = self.__get_digest()
         password_digest = sha1_encode(
                 password +
@@ -157,12 +157,12 @@ if __name__ == "__main__":
     file_path_local = config[section_local]["file_path"]
 
     section_pcloud = "pCloud"
-    username = config[section_pcloud]["username"]
-    password = config[section_pcloud]["password"]
+    username_pcloud = config[section_pcloud]["username"]
+    password_pcloud = config[section_pcloud]["password"]
     dir_path_pcloud = config[section_pcloud]["dir_path"]
     file_name_pcloud = config[section_pcloud]["file_name"]
 
     p = PCloud()
-    p.login()
+    p.login(username_pcloud, password_pcloud)
     p.upload_file(file_path_local, dir_path_pcloud, file_name_pcloud)
     p.logout()
