@@ -6,22 +6,10 @@ import requests
 import sys
 import time
 
+config_filename = "file_distributor.cfg"
+
 # Change this to True to enable output debug logging for this module.
 print_debug_logs = True
-
-# Configuration variables
-
-config = configparser.ConfigParser()
-config.read("file_distributor.cfg")
-
-section_local = "Local"
-file_path_local = config[section_local]["file_path"]
-
-section_pcloud = "pCloud"
-username = config[section_pcloud]["username"]
-password = config[section_pcloud]["password"]
-dir_path_pcloud = config[section_pcloud]["dir_path"]
-file_name_pcloud = config[section_pcloud]["file_name"]
 
 def log(log_level, message):
     if print_debug_logs:
@@ -157,6 +145,18 @@ class pcloud:
         log_debug("Successfully logged out.")
 
 if __name__ == "__main__":
+    config = configparser.ConfigParser()
+    config.read(config_filename)
+
+    section_local = "Local"
+    file_path_local = config[section_local]["file_path"]
+
+    section_pcloud = "pCloud"
+    username = config[section_pcloud]["username"]
+    password = config[section_pcloud]["password"]
+    dir_path_pcloud = config[section_pcloud]["dir_path"]
+    file_name_pcloud = config[section_pcloud]["file_name"]
+
     p = pcloud()
     p.login()
     p.upload_file(file_path_local, dir_path_pcloud, file_name_pcloud)

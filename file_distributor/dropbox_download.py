@@ -8,20 +8,10 @@ from contextlib import closing
 import dropbox
 from dropbox.exceptions import ApiError, AuthError
 
+config_filename = "file_distributor.cfg"
+
 # Change this to True to enable output debug logging for this module.
 print_debug_logs = True
-
-# Configuration variables
-
-config = configparser.ConfigParser()
-config.read("file_distributor.cfg")
-
-section_local = "Local"
-file_path_local = config[section_local]["file_path"]
-
-section_dropbox = "Dropbox"
-dropbox_access_token = config[section_dropbox]["access_token"]
-file_path_dropbox = config[section_dropbox]["file_path"]
 
 def log(log_level, message):
     if print_debug_logs:
@@ -72,6 +62,16 @@ def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
     )
 
 if __name__ == "__main__":
+    config = configparser.ConfigParser()
+    config.read(config_filename)
+
+    section_local = "Local"
+    file_path_local = config[section_local]["file_path"]
+
+    section_dropbox = "Dropbox"
+    dropbox_access_token = config[section_dropbox]["access_token"]
+    file_path_dropbox = config[section_dropbox]["file_path"]
+
     download_dropbox_file(
             dropbox_access_token, file_path_dropbox, file_path_local
     )
