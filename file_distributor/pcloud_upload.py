@@ -43,7 +43,7 @@ class PCloud:
     def __init__(self):
         self.auth_token = None
 
-    def _api_call(self, rest_api, url, params=None, file_path_upload=None,
+    def __api_call(self, rest_api, url, params=None, file_path_upload=None,
             response_body_validity_check=None):
         """Makes a REST API call designed for the pCloud service.
 
@@ -79,8 +79,8 @@ class PCloud:
 
         return response_body
 
-    def _get_digest(self):
-        response_body = self._api_call(
+    def __get_digest(self):
+        response_body = self.__api_call(
                 "GET /getdigest", "https://api.pcloud.com/getdigest",
                 response_body_validity_check=lambda response_body:
                         response_body is not None and
@@ -90,7 +90,7 @@ class PCloud:
         return response_body["digest"]
 
     def login(self):
-        digest = self._get_digest()
+        digest = self.__get_digest()
         password_digest = sha1_encode(
                 password +
                 sha1_encode(username.lower()) +
@@ -103,7 +103,7 @@ class PCloud:
                 digest = digest,
                 passworddigest = password_digest
         )
-        response_body = self._api_call(
+        response_body = self.__api_call(
                 "GET /userinfo",
                 "https://api.pcloud.com/userinfo",
                 request_params,
@@ -124,7 +124,7 @@ class PCloud:
                 filename = file_name_pcloud,
                 nopartial = 1
         )
-        self._api_call(
+        self.__api_call(
                 "POST /uploadfile", "https://api.pcloud.com/uploadfile",
                 request_params, file_path_local, lambda response_body:
                         response_body is not None and
@@ -139,7 +139,7 @@ class PCloud:
         if self.auth_token is None:
             Logger.error("Logout attempt failed because you are not logged in.")
             sys.exit(1)
-        self._api_call(
+        self.__api_call(
                 "GET /logout", "https://api.pcloud.com/logout",
                 response_body_validity_check=lambda response_body:
                         response_body is not None and
