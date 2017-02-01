@@ -110,8 +110,8 @@ class PCloud:
         Logger.debug(rest_api + " response body: " + str(response_body))
         if(response.status_code != requests.codes.ok or
                 response_body_validity_check(response_body) is False):
-            error_message = "Incorrect response (HTTP/1.1 "
-                    + str(response.status_code) + ") from " + rest_api +
+            error_message = "Incorrect response (HTTP/1.1 " + \
+                    str(response.status_code) + ") from " + rest_api + \
                     ": " + str(response_body)
             Logger.error(error_message)
             raise Exception(error_message)
