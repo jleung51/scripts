@@ -10,13 +10,13 @@ from dropbox.exceptions import ApiError, AuthError
 
 config_filename = "file_distributor.cfg"
 
-# Change this to True to enable output debug logging for this module.
-print_debug_logs = True
-
 class Logger:
-    @staticmethod
-    def __log(log_level, message):
-        if print_debug_logs:
+    # Change this to True to enable output debug logging for this module.
+    print_debug_logs = True
+
+    @classmethod
+    def __log(self, log_level, message):
+        if self.print_debug_logs:
             print(
                     "[ " +
                     time.strftime("%Y-%m-%d %H:%M:%S") +
