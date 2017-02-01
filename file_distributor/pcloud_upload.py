@@ -40,6 +40,14 @@ class PCloud:
     def __init__(self):
         self.auth_token = None
 
+    def __must_be_logged_in(self):
+        if self.auth_token == None:
+            raise Exception("Cannot perform this operation while logged out.")
+
+    def __must_be_logged_out(self):
+        if self.auth_token != None:
+            raise Exception("Cannot perform this operation while logged in.")
+
     def __api_call(self, rest_api, url, params=None, file_path_upload=None,
             response_body_validity_check=None):
         """Makes a REST API call designed for the pCloud service.
@@ -91,6 +99,8 @@ class PCloud:
         return hashlib.sha1(val.encode("utf-8")).hexdigest()
 
     def login(self, username, password):
+        self.__must_be_logged_out()
+
         digest = self.__get_digest()
         password_digest = PCloud.__sha1_encode(
                 password +
@@ -117,6 +127,8 @@ class PCloud:
         Logger.debug("Successfully logged in.")
 
     def upload_file(self, file_path_local, dir_path_pcloud, file_name_pcloud):
+        self.__must_be_logged_in()
+
         if dir_path_pcloud == "":  # Will be empty string for root folder
             dir_path_pcloud = None
 
@@ -137,6 +149,8 @@ class PCloud:
         Logger.success("File " + file_name_pcloud + " uploaded to pCloud.")
 
     def logout(self):
+        self.__must_be_logged_in()
+
         if self.auth_token is None:
             Logger.error("Logout attempt failed because you are not logged in.")
             sys.exit(1)
