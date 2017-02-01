@@ -9,11 +9,19 @@ import time
 config_filename = "file_distributor.cfg"
 
 class Logger:
+    """Outputs formatted log messages."""
+
     # Change this to True to enable output debug logging for this module.
     print_debug_logs = True
 
     @classmethod
     def __log(self, log_level, message):
+        """Outputs a formatted log message if logging is activated.
+
+        Parameters:
+        log_level -- String. Severity of the log message.
+        message -- String. Message to be logged.
+        """
         if self.print_debug_logs:
             print(
                     "[ " +
@@ -26,18 +34,24 @@ class Logger:
 
     @staticmethod
     def debug(message):
+        """Outputs a debug level log message."""
         Logger.__log("DEBUG  ", message)
 
     @staticmethod
     def success(message):
+        """Outputs a success level log message."""
         Logger.__log("SUCCESS", message)
 
     @staticmethod
     def log_error(message):
+        """Outputs a error level log message."""
         Logger.__log("ERROR  ", message)
 
 class PCloud:
+    """Provides simple methods to access the pCloud API."""
+
     def __init__(self):
+        """Variable initializer."""
         self.auth_token = None
 
     def __must_be_logged_in(self):
@@ -50,13 +64,20 @@ class PCloud:
 
     def __api_call(self, rest_api, url, params=None, file_path_upload=None,
             response_body_validity_check=None):
-        """Makes a REST API call designed for the pCloud service.
+        """Sends a REST API call designed for the pCloud service.
 
-        The authentication token will automatically be added to the parameters,
-        if it exists.
+        The authentication token will automatically be added to the REST
+        parameters, if it exists.
+
         Parameters:
-        file_path_upload -- String. If passed, the request will be a
-            POST request; else, the request will be a GET request.
+        rest_api -- String. Name of the API called. Used for logging and errors.
+            E.g. "GET /data"
+        url -- String. URL of the API. E.g. "http://www.google.com"
+        params -- Dictionary (optional). Mapping between REST parameter names
+            and values.
+        file_path_upload -- String (optional). If passed, the request will be a
+            POST request and the file at the given path will be sent;
+            else, the request will be a GET request.
         """
         if params is None:
             params = dict()
@@ -85,6 +106,10 @@ class PCloud:
         return response_body
 
     def __get_digest(self):
+        """Retrieves a digest from the API.
+
+        Returns a string containing the digest.
+        """
         response_body = self.__api_call(
                 "GET /getdigest", "https://api.pcloud.com/getdigest",
                 response_body_validity_check=lambda response_body:
@@ -96,9 +121,25 @@ class PCloud:
 
     @staticmethod
     def __sha1_encode(val):
+        """Encodes a value using SHA1 and returns it in hexadecimal format.
+
+        Parameters:
+        val -- String. Value to encode.
+
+        Returns a string containing the encoded value.
+        """
         return hashlib.sha1(val.encode("utf-8")).hexdigest()
 
     def login(self, username, password):
+        """Logs into pCloud.
+
+        Fails if already logged in.
+        If successful, the authentication token will be saved in the object.
+
+        Parameters:
+        username -- String. Username of the pCloud account (usually the email).
+        password -- String. Password of the pCloud account.
+        """
         self.__must_be_logged_out()
 
         digest = self.__get_digest()
@@ -127,6 +168,19 @@ class PCloud:
         Logger.debug("Successfully logged in.")
 
     def upload_file(self, file_path_local, dir_path_pcloud, file_name_pcloud):
+        """Uploads a file to a pCloud account.
+
+        Fails if not logged in.
+
+        Parameters:
+        file_path_local -- String. Path to the file locally (relative to the
+            location where this script was executed).
+        dir_path_pcloud -- String (optional). Path to the file in pCloud.
+            Should not include the filename.
+            If the root folder is the target, this should be None or an
+            empty string.
+        file_name_pcloud -- String. Name of the file.
+        """
         self.__must_be_logged_in()
 
         if dir_path_pcloud == "":  # Will be empty string for root folder
@@ -149,6 +203,11 @@ class PCloud:
         Logger.success("File " + file_name_pcloud + " uploaded to pCloud.")
 
     def logout(self):
+        """Logs out of the account.
+
+        Fails if already logged out.
+        The authentication token stored in this object will be cleared.
+        """
         self.__must_be_logged_in()
 
         if self.auth_token is None:
