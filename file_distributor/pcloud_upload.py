@@ -127,7 +127,9 @@ class PCloud:
                 "GET /getdigest", "https://api.pcloud.com/getdigest",
                 response_body_validity_check=lambda response_body:
                         response_body is not None and
+                        "result" in response_body and
                         response_body["result"] == 0 and
+                        "digest" in response_body and
                         response_body["digest"] is not None
         )
         return response_body["digest"]
@@ -174,6 +176,7 @@ class PCloud:
                 request_params,
                 response_body_validity_check=lambda response_body:
                         response_body is not None and
+                        "auth" in response_body and
                         response_body["auth"] is not None
         )
 
@@ -208,9 +211,9 @@ class PCloud:
                 "POST /uploadfile", "https://api.pcloud.com/uploadfile",
                 request_params, file_path_local, lambda response_body:
                         response_body is not None and
-                        response_body["result"] is not None and
+                        "result" in response_body and
                         response_body["result"] == 0 and
-                        response_body["fileids"] is not None and
+                        "fileids" in response_body and
                         len(response_body["fileids"]) > 0
         )
         Logger.success("File " + file_name_pcloud + " uploaded to pCloud.")
@@ -230,6 +233,7 @@ class PCloud:
                 "GET /logout", "https://api.pcloud.com/logout",
                 response_body_validity_check=lambda response_body:
                         response_body is not None and
+                        "auth_deleted" in response_body and
                         response_body["auth_deleted"] is not None and
                         response_body["auth_deleted"] is True
         )
