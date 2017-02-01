@@ -11,11 +11,19 @@ from dropbox.exceptions import ApiError, AuthError
 config_filename = "file_distributor.cfg"
 
 class Logger:
+    """Outputs formatted log messages."""
+
     # Change this to True to enable output debug logging for this module.
     print_debug_logs = True
 
     @classmethod
     def __log(self, log_level, message):
+        """Outputs a formatted log message if logging is activated.
+
+        Parameters:
+        log_level -- String. Severity of the log message.
+        message -- String. Message to be logged.
+        """
         if self.print_debug_logs:
             print(
                     "[ " +
@@ -28,17 +36,30 @@ class Logger:
 
     @staticmethod
     def debug(message):
+        """Outputs a debug level log message."""
         Logger.__log("DEBUG  ", message)
 
     @staticmethod
     def success(message):
+        """Outputs a success level log message."""
         Logger.__log("SUCCESS", message)
 
     @staticmethod
     def log_error(message):
+        """Outputs a error level log message."""
         Logger.__log("ERROR  ", message)
 
 def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
+    """Logs into a Dropbox account and downloads one specific file.
+
+    Parameters:
+    access_token -- String. Dropbox access token. See README.md for
+        instructions.
+    file_path_dropbox -- String. Path of the file in Dropbox. Begins with a "/".
+        E.g. /directory1/directory2/file
+    file_path_local -- String. Path to the file locally (relative to the
+        location where this script was executed).
+    """
     d = dropbox.Dropbox(access_token)
     try:
         account_info = d.users_get_current_account()

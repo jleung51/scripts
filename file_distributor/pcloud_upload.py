@@ -151,9 +151,6 @@ class PCloud:
     def logout(self):
         self.__must_be_logged_in()
 
-        if self.auth_token is None:
-            Logger.error("Logout attempt failed because you are not logged in.")
-            sys.exit(1)
         self.__api_call(
                 "GET /logout", "https://api.pcloud.com/logout",
                 response_body_validity_check=lambda response_body:
