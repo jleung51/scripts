@@ -55,10 +55,20 @@ class PCloud:
         self.auth_token = None
 
     def __must_be_logged_in(self):
+        """Checks that the authentication token is present from a login.
+
+        Throws:
+        Exception -- If the token is not present.
+        """
         if self.auth_token == None:
             raise Exception("Cannot perform this operation while logged out.")
 
     def __must_be_logged_out(self):
+        """Checks that the authentication token is not present.
+
+        Throws:
+        Exception -- If the token is present.
+        """
         if self.auth_token != None:
             raise Exception("Cannot perform this operation while logged in.")
 
@@ -78,6 +88,9 @@ class PCloud:
         file_path_upload -- String (optional). If passed, the request will be a
             POST request and the file at the given path will be sent;
             else, the request will be a GET request.
+
+        Throws:
+        Exception -- If the response from the API is invalid.
         """
         if params is None:
             params = dict()
@@ -97,11 +110,11 @@ class PCloud:
         Logger.debug(rest_api + " response body: " + str(response_body))
         if(response.status_code != requests.codes.ok or
                 response_body_validity_check(response_body) is False):
-            Logger.error(
-                    "Incorrect response (HTTP/1.1 " + str(response.status_code)
-                    + ") from " + rest_api + ": " + str(response_body)
-            )
-            sys.exit(1)
+            error_message = "Incorrect response (HTTP/1.1 "
+                    + str(response.status_code) + ") from " + rest_api +
+                    ": " + str(response_body)
+            Logger.error(error_message)
+            raise Exception(error_message)
 
         return response_body
 

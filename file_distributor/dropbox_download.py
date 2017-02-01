@@ -59,13 +59,17 @@ def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
         E.g. /directory1/directory2/file
     file_path_local -- String. Path to the file locally (relative to the
         location where this script was executed).
+
+    Throws:
+    dropbox.exceptions.AuthError -- If authentication fails.
+    dropbox.exceptions.ApiError -- If the download fails.
     """
     d = dropbox.Dropbox(access_token)
     try:
         account_info = d.users_get_current_account()
     except AuthError as e:
         Logger.error("Failed to authenticate to Dropbox: " + str(e))
-        exit(1)
+        raise e
     Logger.debug("Account information: " + str(account_info))
 
     try:
@@ -77,7 +81,7 @@ def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
                 "Failed to download file " + file_path_dropbox +
                 " from Dropbox: " + str(e)
         )
-        exit(1)
+        raise e
     Logger.debug(
             "Result of downloading file " + file_path_dropbox + ": " +
             str(download_result)
