@@ -3,6 +3,7 @@
 import argparse
 import configparser
 import httplib2
+import json
 import os
 import sys
 import time
@@ -96,6 +97,14 @@ class GoogleDrive:
         http_auth = self.__get_credentials().authorize(httplib2.Http())
         self.__service = build("drive", "v3", http=http_auth)
 
+    def list_files(self):
+        """Retrieves the data of all files in the Google Drive account."""
+        Logger.debug("File and directory details:")
+
+        file_list = self.__service.files().list().execute()["files"]
+        for file in file_list:
+            print("  " + json.dumps(file))
+
     def upload_file(self, file_path_local, file_name_gdrive):
         """Uploads a file to a Google Drive account.
 
@@ -126,6 +135,9 @@ if __name__ == "__main__":
     client_secret_file_path = "client_secret.json"
 
     g = GoogleDrive(application_name, client_secret_file_path)
+
+    # g.list_files()  # Can be used to find the FileId of a specific directory
+
     g.upload_file(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), file_path_local
     ), file_name_gdrive)
