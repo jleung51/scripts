@@ -55,8 +55,17 @@ class Logger:
         Logger.__log("ERROR  ", message)
 
 class GoogleDrive:
+    """Wrapper for the Google Drive API."""
 
     def __get_credentials(self):
+        """Refreshes Google Drive credentials, authorizing if necessary.
+
+        self.__application_name and self.__client_secret_file_path must have
+        been set.
+        The credentials will be saved to generated_credentials.json.
+
+        Returns OAuth credentials.
+        """
         credential_path = os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
                 "generated_credentials.json"
@@ -79,6 +88,7 @@ class GoogleDrive:
         return credentials
 
     def __init__(self, application_name, client_secret_file_path):
+        """Initializes and pre-authenticates the Google Drive credentials."""
         self.__application_name = application_name
         self.__client_secret_file_path = client_secret_file_path
 
