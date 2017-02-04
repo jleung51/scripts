@@ -86,7 +86,10 @@ class GoogleDrive:
                     .parse_args()
             flags.noauth_local_webserver = True
             credentials = tools.run_flow(flow, store, flags)
-            Logger.debug("Credentials saved to [" + credential_path + "]")
+            Logger.debug(
+                    "Google Drive credentials saved to [" +
+                    credential_path + "]"
+            )
         return credentials
 
     def __init__(self, application_name, client_secret_file_path):
@@ -126,7 +129,7 @@ class GoogleDrive:
                 media_body=MediaFileUpload(file_path_local),
         ).execute()
 
-        Logger.debug("File [" + file_path_local + "] uploaded.")
+        Logger.debug("File [" + file_path_local + "] uploaded to Google Drive.")
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
