@@ -96,7 +96,7 @@ class GoogleDrive:
 
     def upload_file(self):
         http_auth = self.__get_credentials().authorize(httplib2.Http())
-        service = build("drive", "v2", http=http_auth)
+        service = build("drive", "v3", http=http_auth)
 
         # TODO: Add file upload functionality
 
