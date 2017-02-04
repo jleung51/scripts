@@ -93,7 +93,8 @@ class GoogleDrive:
         self.__application_name = application_name
         self.__client_secret_file_path = client_secret_file_path
 
-        self.__get_credentials()
+        http_auth = self.__get_credentials().authorize(httplib2.Http())
+        self.__service = build("drive", "v3", http=http_auth)
 
     def upload_file(self, file_path_local, file_name_gdrive):
         """Uploads a file to a Google Drive account.
@@ -103,10 +104,8 @@ class GoogleDrive:
         file_name_gdrive -- String. Filename for the uploaded file in
             Google Drive.
         """
-        http_auth = self.__get_credentials().authorize(httplib2.Http())
-        service = build("drive", "v3", http=http_auth)
 
-        service.files().create(
+        self.__service.files().create(
                 media_body=MediaFileUpload(file_path_local),
                 body={"name":file_name_gdrive}
         ).execute()
