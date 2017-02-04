@@ -1,6 +1,7 @@
 # This Python 3 module provides a function to access the Gmail API in order
 # to send an email from a Gmail account.
 
+import argparse
 import base64
 import os
 import time

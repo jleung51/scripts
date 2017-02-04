@@ -7,6 +7,7 @@ Python 3 module which utilizes the [Gmail APIs](https://developers.google.com/gm
 ### Authorizing Emails from a Gmail account
 
 Install the following pip 3 dependencies:
+* argparse
 * google-api-python-client
 * httplib2
 
