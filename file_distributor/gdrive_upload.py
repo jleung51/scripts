@@ -96,6 +96,13 @@ class GoogleDrive:
         self.__get_credentials()
 
     def upload_file(self, file_path_local, file_name_gdrive):
+        """Uploads a file to a Google Drive account.
+
+        Parameters:
+        file_path_local -- String. Absolute path to the file to be uploaded.
+        file_name_gdrive -- String. Filename for the uploaded file in
+            Google Drive.
+        """
         http_auth = self.__get_credentials().authorize(httplib2.Http())
         service = build("drive", "v3", http=http_auth)
 
