@@ -105,18 +105,25 @@ class GoogleDrive:
         for file in file_list:
             print("  " + json.dumps(file))
 
-    def upload_file(self, file_path_local, file_name_gdrive):
+    def upload_file(self, file_path_local, file_name_gdrive, parent_dir_id=None):
         """Uploads a file to a Google Drive account.
 
         Parameters:
         file_path_local -- String. Absolute path to the file to be uploaded.
         file_name_gdrive -- String. Filename for the uploaded file in
             Google Drive.
+        parent_dir_id -- String (optional). File ID for the parent directory
+            of the uploaded file. See README.md for instructions.
         """
+        body = {
+                "name" : file_name_gdrive
+        }
+        if parent_dir_id is not None:
+            body["parents"] = [parent_dir_id]
 
         self.__service.files().create(
+                body=body,
                 media_body=MediaFileUpload(file_path_local),
-                body={"name":file_name_gdrive}
         ).execute()
 
         Logger.debug("File [" + file_path_local + "] uploaded.")
@@ -131,6 +138,7 @@ if __name__ == "__main__":
     section_gdrive = "Google Drive"
     application_name = config[section_gdrive]["application_name"]
     file_name_gdrive = config[section_gdrive]["file_name"]
+    parent_dir_id = config[section_gdrive]["parent_dir_id"]
 
     client_secret_file_path = "client_secret.json"
 
@@ -140,4 +148,4 @@ if __name__ == "__main__":
 
     g.upload_file(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), file_path_local
-    ), file_name_gdrive)
+    ), file_name_gdrive, parent_dir_id)
