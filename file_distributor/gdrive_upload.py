@@ -9,6 +9,7 @@ import time
 
 # Google Drive API
 from apiclient.discovery import build
+from apiclient.http import MediaFileUpload
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
@@ -94,13 +95,16 @@ class GoogleDrive:
 
         self.__get_credentials()
 
-    def upload_file(self):
+    def upload_file(self, file_path_local, file_name_gdrive):
         http_auth = self.__get_credentials().authorize(httplib2.Http())
         service = build("drive", "v3", http=http_auth)
 
-        # TODO: Add file upload functionality
+        service.files().create(
+                media_body=MediaFileUpload(file_path_local),
+                body={"name":file_name_gdrive}
+        ).execute()
 
-        Logger.debug("File uploaded.")
+        Logger.debug("File [" + file_path_local + "] uploaded.")
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
@@ -111,8 +115,11 @@ if __name__ == "__main__":
 
     section_gdrive = "Google Drive"
     application_name = config[section_gdrive]["application_name"]
+    file_name_gdrive = config[section_gdrive]["file_name"]
 
     client_secret_file_path = "client_secret.json"
 
     g = GoogleDrive(application_name, client_secret_file_path)
-    g.upload_file()
+    g.upload_file(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), file_path_local
+    ), file_name_gdrive)
