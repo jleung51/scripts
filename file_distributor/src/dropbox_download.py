@@ -48,7 +48,7 @@ class Logger:
         Logger.__log("SUCCESS", message)
 
     @staticmethod
-    def log_error(message):
+    def error(message):
         """Outputs a error level log message."""
         Logger.__log("ERROR  ", message)
 
@@ -94,7 +94,7 @@ def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
             " from Dropbox."
     )
 
-if __name__ == "__main__":
+def main():
     config = configparser.ConfigParser()
     config.read(config_filename)
 
@@ -108,3 +108,9 @@ if __name__ == "__main__":
     download_dropbox_file(
             dropbox_access_token, file_path_dropbox, file_path_local
     )
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        Logger.error("File not downloaded from Dropbox: " + str(e))

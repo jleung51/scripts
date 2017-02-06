@@ -46,7 +46,7 @@ class Logger:
         Logger.__log("SUCCESS", message)
 
     @staticmethod
-    def log_error(message):
+    def error(message):
         """Outputs a error level log message."""
         Logger.__log("ERROR  ", message)
 
@@ -243,7 +243,7 @@ class PCloud:
         self.auth_token = None
         Logger.debug("Successfully logged out.")
 
-if __name__ == "__main__":
+def main():
     config = configparser.ConfigParser()
     config.read(config_filename)
 
@@ -260,3 +260,9 @@ if __name__ == "__main__":
     p.login(username_pcloud, password_pcloud)
     p.upload_file(file_path_local, dir_path_pcloud, file_name_pcloud)
     p.logout()
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        Logger.error("File not uploaded to pCloud: " + str(e))

@@ -57,7 +57,7 @@ class Logger:
         Logger.__log("SUCCESS", message)
 
     @staticmethod
-    def log_error(message):
+    def error(message):
         """Outputs a error level log message."""
         Logger.__log("ERROR  ", message)
 
@@ -136,7 +136,7 @@ class GoogleDrive:
 
         Logger.debug("File [" + file_path_local + "] uploaded to Google Drive.")
 
-if __name__ == "__main__":
+def main():
     config = configparser.ConfigParser()
     config.read(config_filename)
 
@@ -157,3 +157,9 @@ if __name__ == "__main__":
     g.upload_file(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), file_path_local
     ), file_name_gdrive, parent_dir_id)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        Logger.error("File not uploaded to Google Drive: " + str(e))
