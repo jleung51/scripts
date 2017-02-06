@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#
+# This Python 3 script authenticates with Google Drive and uploads a file.
+# Authentication details are set in a configuration file. OAuth 2.0 credentials
+# are generated from a file named client_secret.json and stored in a file
+# named generated_credentials.json. See the README for more details.
 
 import argparse
 import configparser

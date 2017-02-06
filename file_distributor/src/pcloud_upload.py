@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+#
+# This Python 3 script authenticates with pCloud and downloads a file.
+# Authentication details are set in a configuration file.
 
 import configparser
 import hashlib
