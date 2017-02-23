@@ -1,5 +1,10 @@
+@ECHO OFF
+SETLOCAL ENABLEEXTENSIONS
+
 REM This Windows batch script logs into Perforce and updates a file named `last_updated` in the depot with the current date and timestamp.
 REM This can be set up to be executed upon startup/login to avoid expiration of access permissions upon a lack of recent Perforce updates.
+
+ECHO [Script executed at %DATE%-%TIME%]
 
 SET P4PORT=
 SET P4CLIENT=
@@ -21,3 +26,5 @@ ECHO %DATE%-%TIME% > %FILEPATH%
 p4 submit -d "Update" %FILEPATH%
 
 p4 logout
+
+EXIT /B 0
