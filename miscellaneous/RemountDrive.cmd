@@ -39,7 +39,7 @@ IF %RETVAL% neq 0 (
 
 REM Mount and check volume
 MOUNTVOL %DRIVE% %VOLUME%
-CALL :CheckMounted %DRIVE% RETVAl
+CALL :CheckMounted %DRIVE% RETVAL
 IF %RETVAL% neq 0 (
   ECHO Error: Failed to mount volume on drive %DRIVE%. Errorlevel %RETVAL%.
   EXIT /B %RETVAL%
