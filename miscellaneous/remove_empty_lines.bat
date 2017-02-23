@@ -1,12 +1,22 @@
-REM This Windows batch script removes empty lines from a text file.
+@ECHO OFF
+SETLOCAL ENABLEEXTENSIONS
 
-IF "%1"=="" (
+REM This Windows batch script removes empty lines from a text file.
+ECHO [Script executed at %DATE%-%TIME%] Removing empty lines from file %FILEPATH%
+
+SET FILEPATH=%1
+
+IF "%FILEPATH%"=="" (
     ECHO Error: An absolute file path must be provided as the argument.
     EXIT /B 1
 )
+IF NOT EXIST "%FILEPATH%" (
+    ECHO Error: The given file does not exist.
+    EXIT /B 1
+)
 
-REM [%DATE%-%TIME%] Removing empty lines from file %1
+COPY %FILEPATH% %FILEPATH%.tmp
+FINDSTR "." %FILEPATH%.tmp > %FILEPATH%
+DEL %FILEPATH%.tmp
 
-COPY %1 %1.tmp
-FINDSTR "." %1.tmp > %1
-DEL %1.tmp
+EXIT
