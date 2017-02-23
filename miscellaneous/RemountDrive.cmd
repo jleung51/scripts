@@ -64,7 +64,7 @@ REM This function checks that a certain drive is mounted.
 REM
 REM Parameters:
 REM   1: Drive letter with trailing colon (e.g. C:)
-REM   2. Return value
+REM   2: Return value
 REM     Equals 0 if the drive is mounted
 REM     Equals Non-zero in any other case
 :CheckMounted
@@ -77,7 +77,7 @@ REM This function checks that a certain drive is unmounted.
 REM
 REM Parameters:
 REM   1: Drive letter with trailing colon (e.g. C:)
-REM   2. Return value
+REM   2: Return value
 REM     Equals 0 if the drive is not mounted
 REM     Equals 1 in any other case
 :CheckUnmounted
