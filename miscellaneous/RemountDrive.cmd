@@ -88,9 +88,10 @@ REM   2. Return value
 REM     Equals 0 if the drive is successfully attached
 REM     Equals 1 in any other case
 :AttachDrive
+SET VIRTUALDRIVEPATH=%~1
 SET TEMPSCRIPT=%TEMP%\diskpart-script-%RANDOM%
 TYPE NUL > %TEMPSCRIPT%
-ECHO SELECT VDISK FILE=%~1 >> %TEMPSCRIPT%
+ECHO SELECT VDISK FILE=%VIRTUALDRIVEPATH% >> %TEMPSCRIPT%
 ECHO ATTACH VDISK >> %TEMPSCRIPT%
 
 SET EXITCODE=0
@@ -111,9 +112,10 @@ REM   2. Return value
 REM     Equals 0 if the drive is successfully detached
 REM     Equals 1 in any other case
 :DetachDrive
+SET VIRTUALDRIVEPATH=%~1
 SET TEMPSCRIPT=%TEMP%\diskpart-script-%RANDOM%
 TYPE NUL > %TEMPSCRIPT%
-ECHO SELECT VDISK FILE=%~1 >> %TEMPSCRIPT%
+ECHO SELECT VDISK FILE=%VIRTUALDRIVEPATH% >> %TEMPSCRIPT%
 ECHO DETACH VDISK >> %TEMPSCRIPT%
 
 SET EXITCODE=0
