@@ -13,8 +13,9 @@ REM   6.  Right-click on the unallocated space in the new disk and select _New S
 REM   7.  Follow the wizard; in the screen _Assign Drive Letter or Path_, choose not to assign them
 REM   8.  Open a new command line window and type MOUNTVOL
 REM   9.  From the output, copy the volume name of your newly created hard drive (e.g. \\?\Volume{2f823551-0df2-11e6-96ba-806e6f6e6963}) into the configuration variable VOLUME below
-REM   10. Assign the volume an unused drive letter in the configuration variable DRIVE below
-REM   11. Execute this script
+REM   10. Detach the drive from _Disk Management_ by right-clicking the new disk and selecting _Detach VHD_
+REM   11. Assign the volume an unused drive letter in the configuration variable DRIVE below
+REM   12. Execute this script
 
 ECHO [Script executed at %DATE%-%TIME%]
 
@@ -36,17 +37,17 @@ SET DRIVE=
 REM Flesh out configuration variables
 SET DRIVE=%DRIVE%:
 
-REM Attach virtual hard drive
-CALL :AttachDrive %VIRTUALDRIVE% RETVAL
-IF %RETVAL% neq 0 (
-  ECHO Error: Virtual hard drive %VIRTUALDRIVE% could not be attached.
-  EXIT /B %RETVAL%
-)
-
 REM Check for empty drive letter
 CALL :CheckUnmounted %DRIVE% RETVAL
 IF %RETVAL% neq 0 (
   ECHO Error: Drive %DRIVE% is already in use.
+  EXIT /B %RETVAL%
+)
+
+REM Attach virtual hard drive
+CALL :AttachDrive %VIRTUALDRIVE% RETVAL
+IF %RETVAL% neq 0 (
+  ECHO Error: Virtual hard drive %VIRTUALDRIVE% could not be attached.
   EXIT /B %RETVAL%
 )
 
