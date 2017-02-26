@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 #
-# This bash script sets up a brand-new Apache Cassandra installation by enabling
+# This shell script sets up a brand-new Apache Cassandra installation by enabling
 # password authentication, adding new user roles, and changing the default
 # administrator account password.
 
@@ -15,18 +15,18 @@
 #   3: Message to print if the loops finish but the command never returned
 #      success.
 # Returns whether the command eventually returned success.
-function loop_check_for_success() {
+loop_check_for_success() {
   COMMAND=$1
   LOOP_MESSAGE=$2
   FAILURE_MESSAGE=$3
 
   STATUS=1
-  for i in {1..5}
+  for i in 1 2 3 4 5
   do
     echo "$LOOP_MESSAGE"
     $COMMAND > /dev/null 2>&1
     STATUS=$?
-    if [ "$STATUS" == 0 ] ; then
+    if [ $STATUS -eq 0 ] ; then
       break
     fi
     sleep 5
@@ -43,7 +43,7 @@ function loop_check_for_success() {
 #
 # Parameters: None.
 # Returns whether startup was succesful.
-function wait_for_cassandra_start {
+wait_for_cassandra_start() {
 
   COMMAND="nodetool status"
   LOOP_MESSAGE="Checking if Cassandra is running..."
@@ -75,12 +75,12 @@ function wait_for_cassandra_start {
 #
 # Parameters:
 #   1: Command to run in cqlsh.
-function cqlsh_run {
+cqlsh_run() {
   COMMAND=$1
   cqlsh -u cassandra -p cassandra -e "$COMMAND"
 }
 
-if (( EUID != 0 )); then
+if [ "$(id -u)" != "0" ] ; then
     echo "This script must be run with root permissions." >&2
     exit 1
 fi
@@ -98,7 +98,10 @@ if [ $STATUS != 0 ] ; then
 fi
 
 echo "Adding users..."
-cqlsh_run "CREATE USER backend WITH PASSWORD 'password' SUPERUSER;"
+cqlsh_run "CREATE USER username WITH PASSWORD 'password' SUPERUSER;"
+cqlsh_run "CREATE USER backend WITH PASSWORD 'password' NOSUPERUSER;"
 
-# echo "Changing the default administrator account password..."
-# cqlsh_run "ALTER USER cassandra WITH PASSWORD 'cassandra';"
+echo "Changing the default administrator account password..."
+cqlsh_run "ALTER USER cassandra WITH PASSWORD 'password';"
+
+echo "Setup complete."
