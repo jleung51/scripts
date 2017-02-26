@@ -87,6 +87,7 @@ fi
 
 echo "Enabling authentication and restarting Cassandra..."
 sed -i 's/authenticator: AllowAllAuthenticator/authenticator: PasswordAuthenticator/g' /etc/cassandra/cassandra.yaml
+sed -i 's/authorizer: AllowAllAuthorizer/authorizer: CassandraAuthorizer/g' /opt/${CASSANDRA_FOLDER}/conf/cassandra.yaml
 service cassandra restart
 
 wait_for_cassandra_start
