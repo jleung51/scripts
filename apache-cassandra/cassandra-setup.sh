@@ -21,7 +21,7 @@ loop_check_for_success() {
   FAILURE_MESSAGE=$3
 
   STATUS=1
-  for i in 1 2 3 4 5
+  for i in 1 2 3 4 5 6 7 8 9 10
   do
     echo "$LOOP_MESSAGE"
     $COMMAND > /dev/null 2>&1
@@ -87,7 +87,7 @@ fi
 
 echo "Enabling authentication and restarting Cassandra..."
 sed -i 's/authenticator: AllowAllAuthenticator/authenticator: PasswordAuthenticator/g' /etc/cassandra/cassandra.yaml
-sed -i 's/authorizer: AllowAllAuthorizer/authorizer: CassandraAuthorizer/g' /opt/${CASSANDRA_FOLDER}/conf/cassandra.yaml
+sed -i 's/authorizer: AllowAllAuthorizer/authorizer: CassandraAuthorizer/g' /etc/cassandra/cassandra.yaml
 service cassandra restart
 
 wait_for_cassandra_start
