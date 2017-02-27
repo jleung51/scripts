@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# This shell script sets up a brand-new Apache Cassandra installation by enabling
-# password authentication, adding new user roles, and changing the default
+# This shell script installs an Apache Cassandra installation for Ubuntu, enables
+# password authentication, adds new user roles, and changes the default
 # administrator account password.
 
 # Runs a command 5 times with a 5 second delay, or until the command returns
@@ -84,6 +84,21 @@ if [ "$(id -u)" != "0" ] ; then
     echo "This script must be run with root permissions." >&2
     exit 1
 fi
+
+echo "Installing cURL package..."
+apt-get update
+apt-get install -y curl
+
+echo "Installing Java 8 package..."
+sudo add-apt-repository ppa:webupd8team/java
+apt-get update
+apt-get install -y openjdk-8-jre
+
+echo "Installing Cassandra package..."
+echo "deb http://www.apache.org/dist/cassandra/debian 310x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
+curl https://www.apache.org/dist/cassandra/KEYS | apt-key add -
+apt-get update
+apt-get install -y cassandra
 
 echo "Enabling authentication and restarting Cassandra..."
 sed -i 's/authenticator: AllowAllAuthenticator/authenticator: PasswordAuthenticator/g' /etc/cassandra/cassandra.yaml
