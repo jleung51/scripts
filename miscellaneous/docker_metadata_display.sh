@@ -46,7 +46,7 @@ echo \
   "The source Dockerfile is embedded in the image, and can be found by running"\
   "the following command:\n" \
   "\n" \
-  "  $ docker run -it <image_name> \"cat "${DOCKERFILE_FILEPATH}"\" \n" \
+  "  $ docker run <image_name> cat "${DOCKERFILE_FILEPATH}" \n" \
   "\n" \
   "The contents of the Dockerfile are:\n"
 
