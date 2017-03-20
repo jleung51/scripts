@@ -1,5 +1,6 @@
 #!/bin/python3
 
+
 import json
 import sys
 from argparse import ArgumentParser
@@ -34,11 +35,6 @@ def get(bucket, doc):
 
 
 def replace(bucket, doc, set_json_key, set_json_value):
-    if set_json_key is None:
-        sys.exit("Error: A REPLACE operation requires a key to set (use the flag -sk KEY).")
-    elif set_json_value is None:
-        sys.exit("Error: A REPLACE operation requires a value to set (use the flag -sv VALUE).")
-
     document = get_document_catch_error(bucket, doc)
 
     iterator = document
@@ -93,6 +89,10 @@ def main():
         if args.operation == "GET":
             get(bucket, args.document)
         elif args.operation == "REPLACE":
+            if args.set_key is None:
+                sys.exit("Error: A REPLACE operation requires a key to set (use the flag -sk KEY).")
+            elif args.set_value is None:
+                sys.exit("Error: A REPLACE operation requires a value to set (use the flag -sv VALUE).")
             replace(bucket, args.document, args.set_key, args.set_value)
         elif args.operation == "DELETE":
             delete(bucket, args.document)
