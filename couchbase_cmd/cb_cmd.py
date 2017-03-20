@@ -40,17 +40,22 @@ def replace(bucket, doc, set_json_key, set_json_value):
     bucket.replace(doc, document)
     print("REPLACE operation was successful.")
 
+
 def delete(bucket, doc):
     try:
         bucket.remove(doc)
     except NotFoundError:
         sys.exit("Error: No document with ID " + doc + " exists.")
 
+
 def main():
     url = "http://localhost:8091"
 
     parser = ArgumentParser(description="Utility tool for interacting with Couchbase from the command line.")
-    parser.add_argument("operation", type=str, choices=["GET", "REPLACE", "DELETE"], help="Operation to perform on Couchbase")
+    parser.add_argument(
+        "operation", type=str, choices=["GET", "REPLACE", "DELETE"],
+        help="Operation to perform on Couchbase"
+    )
     parser.add_argument("bucket", type=str, help="Name of the bucket")
     parser.add_argument("document", type=str, help="Unique ID of the Document")
     parser.add_argument("-sk", "--set_key", nargs="?", type=str, help="(REPLACE only) Key to replace")
@@ -60,7 +65,6 @@ def main():
     )
     args = parser.parse_args()
 
-    bucket = None
     try:
         bucket = Bucket(url + "/" + args.bucket)  # Instantiate bucket connection
     except CouchbaseNetworkError:
