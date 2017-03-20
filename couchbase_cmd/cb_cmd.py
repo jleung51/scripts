@@ -14,7 +14,7 @@ def get_document_catch_error(bucket, doc):
     try:
         return bucket.get(doc).value
     except NotFoundError:
-        sys.exit("Error: The given document ID " + doc + " is invalid.")
+        sys.exit("Error: No document with ID " + doc + " exists.")
 
 
 def get(bucket, doc):
@@ -40,12 +40,17 @@ def replace(bucket, doc, set_json_key, set_json_value):
     bucket.replace(doc, document)
     print("REPLACE operation was successful.")
 
+def delete(bucket, doc):
+    try:
+        bucket.remove(doc)
+    except NotFoundError:
+        sys.exit("Error: No document with ID " + doc + " exists.")
 
 def main():
     url = "http://localhost:8091"
 
     parser = ArgumentParser(description="Utility tool for interacting with Couchbase from the command line.")
-    parser.add_argument("operation", type=str, choices=["GET", "REPLACE"], help="Operation to perform on Couchbase")
+    parser.add_argument("operation", type=str, choices=["GET", "REPLACE", "DELETE"], help="Operation to perform on Couchbase")
     parser.add_argument("bucket", type=str, help="Name of the bucket")
     parser.add_argument("document", type=str, help="Unique ID of the Document")
     parser.add_argument("-sk", "--set_key", nargs="?", type=str, help="(REPLACE only) Key to replace")
@@ -67,6 +72,8 @@ def main():
         get(bucket, args.document)
     elif args.operation == "REPLACE":
         replace(bucket, args.document, args.set_key, args.set_value)
+    elif args.operation == "DELETE":
+        delete(bucket, args.document)
     else:
         print("Error: Operation not supported.")
 
