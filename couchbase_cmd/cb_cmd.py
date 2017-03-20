@@ -5,6 +5,8 @@ import sys
 from argparse import ArgumentParser
 
 from couchbase.bucket import Bucket
+from couchbase.exceptions import BucketNotFoundError
+from couchbase.exceptions import CouchbaseNetworkError
 from couchbase.exceptions import NotFoundError
 
 
@@ -12,7 +14,7 @@ def get_document_catch_error(bucket, doc):
     try:
         return bucket.get(doc).value
     except NotFoundError:
-        sys.exit("Error: The given document ID is invalid.")
+        sys.exit("Error: The given document ID " + doc + " is invalid.")
 
 
 def get(bucket, doc):
@@ -53,7 +55,13 @@ def main():
     )
     args = parser.parse_args()
 
-    bucket = Bucket(url + "/" + args.bucket)  # Instantiate bucket connection
+    bucket = None
+    try:
+        bucket = Bucket(url + "/" + args.bucket)  # Instantiate bucket connection
+    except CouchbaseNetworkError:
+        sys.exit("Error: Could not connect to Couchbase at " + url + ".")
+    except BucketNotFoundError:
+        sys.exit("Error: The given bucket name " + args.bucket + " is invalid.")
 
     if args.operation == "GET":
         get(bucket, args.document)
