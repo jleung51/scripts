@@ -4,6 +4,7 @@
 import json
 import sys
 from argparse import ArgumentParser
+from enum import Enum
 
 import requests
 from couchbase.bucket import Bucket
@@ -55,12 +56,19 @@ def delete(bucket, doc):
         sys.exit("Error: No document with ID " + doc + " exists.")
 
 
+class Operation(Enum):
+    GET_BUCKETS = "GET_BUCKETS"
+    GET = "GET"
+    REPLACE = "REPLACE"
+    DELETE = "DELETE"
+
+
 def main():
     url = "http://localhost:8091"
 
     parser = ArgumentParser(description="Utility tool for interacting with Couchbase from the command line.")
     parser.add_argument(
-        "operation", type=str, choices=["GET_BUCKETS", "GET", "REPLACE", "DELETE"],
+        "operation", type=str, choices=list(Operation.__members__),
         help="Operation to perform on Couchbase"
     )
     parser.add_argument("bucket", nargs="?", type=str, help="Name of the bucket")
@@ -71,9 +79,10 @@ def main():
         help="(REPLACE only) Value to assign to the replaced key"
     )
     args = parser.parse_args()
+    operation = Operation(args.operation)
 
-    operations_require_document_and_bucket = ["GET", "REPLACE", "DELETE"]
-    if args.operation in operations_require_document_and_bucket:
+    operations_require_document_and_bucket = [Operation.GET, Operation.REPLACE, Operation.DELETE]
+    if operation in operations_require_document_and_bucket:
         if args.bucket is None:
             sys.exit("Error: This operation requires a bucket name as one of the arguments.")
         elif args.document is None:
@@ -86,18 +95,18 @@ def main():
         except BucketNotFoundError:
             sys.exit("Error: The given bucket name " + args.bucket + " is invalid.")
 
-        if args.operation == "GET":
+        if operation is Operation.GET:
             get(bucket, args.document)
-        elif args.operation == "REPLACE":
+        elif operation is Operation.REPLACE:
             if args.set_key is None:
                 sys.exit("Error: A REPLACE operation requires a key to set (use the flag -sk KEY).")
             elif args.set_value is None:
                 sys.exit("Error: A REPLACE operation requires a value to set (use the flag -sv VALUE).")
             replace(bucket, args.document, args.set_key, args.set_value)
-        elif args.operation == "DELETE":
+        elif operation is Operation.DELETE:
             delete(bucket, args.document)
 
-    elif args.operation == "GET_BUCKETS":
+    elif operation is Operation.GET_BUCKETS:
         get_buckets(url)
     else:
         print("Error: Operation not supported.")
