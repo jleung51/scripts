@@ -8,17 +8,20 @@ The Couchbase SDK is supported only up to [Python 2.7](https://www.python.org/do
 
 Install the Couchbase Python SDK from the download list at the bottom of [this page](https://pypi.python.org/pypi/couchbase).
 
+Install the pip dependency `requests`.
+
 ## Usage
 
 The syntax for this tool is as follows:
 ```
-python cb_cmd.py OPERATION BUCKET_NAME DOCUMENT_NAME ADDITIONAL_FLAGS
+python cb_cmd.py OPERATION [BUCKET_NAME] [DOCUMENT_NAME] [ADDITIONAL_FLAGS]
 ```
 
-Operations are executed on a specific document. The supported operations are as follows:
+The supported operations are as follows:
 
 | Supported Operation | Functionality |
 | --- | --- |
+| GET_BUCKETS | Lists the names of all buckets |
 | GET | Retrieves the contents of a document |
 | REPLACE | Changes the value of a specific JSON element in a document |
 | DELETE | Permanently removes a document |
