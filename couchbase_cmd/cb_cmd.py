@@ -64,8 +64,6 @@ class Operation(Enum):
 
 
 def main():
-    url = "http://localhost:8091"
-
     parser = ArgumentParser(description="Utility tool for interacting with Couchbase from the command line.")
     parser.add_argument(
         "operation", type=str, choices=list(Operation.__members__),
@@ -73,6 +71,10 @@ def main():
     )
     parser.add_argument("bucket", nargs="?", type=str, help="Name of the bucket")
     parser.add_argument("document", nargs="?", type=str, help="Unique ID of the Document")
+    parser.add_argument(
+        "--url", nargs="?", default="http://localhost:8091", type=str,
+        help="URL and port of the Couchbase server (must include 'http://'; local server by default)"
+    )
     parser.add_argument("-sk", "--set_key", nargs="?", type=str, help="(REPLACE only) Key to replace")
     parser.add_argument(
         "-sv", "--set_value", nargs="?", type=str,
@@ -89,7 +91,7 @@ def main():
             sys.exit("Error: This operation requires a document ID as one of the arguments.")
 
         try:
-            bucket = Bucket(url + "/" + args.bucket)  # Instantiate bucket connection
+            bucket = Bucket(args.url + "/" + args.bucket)  # Instantiate bucket connection
         except CouchbaseNetworkError:
             sys.exit("Error: Could not connect to Couchbase at " + url + ".")
         except BucketNotFoundError:
@@ -107,7 +109,7 @@ def main():
             delete(bucket, args.document)
 
     elif operation is Operation.GET_BUCKETS:
-        get_buckets(url)
+        get_buckets(args.url)
     else:
         print("Error: Operation not supported.")
 
