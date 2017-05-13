@@ -1,4 +1,7 @@
 #!/bin/python3
+#
+# This Python 3 script allows for simple command-line interactions with a
+# Couchbase server (local or remote).
 
 
 import json
