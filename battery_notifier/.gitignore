@@ -105,4 +105,5 @@ venv.bak/
 
 # Project-specific files
 battery_state
+battery_notifier.cfg
 slack_logger.py
