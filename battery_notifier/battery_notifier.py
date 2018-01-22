@@ -141,7 +141,7 @@ def main():
     if current_percent < last_percent:
         alert_percentages.sort()  # Only alert for the lowest percentage
         for i in alert_percentages:
-            if current_percent < i and i < last_percent:
+            if current_percent <= i and i < last_percent:
                 log_info("Alert: Battery is below " + str(i) + "%.")
                 report_battery_level_alert(i)
                 break;
