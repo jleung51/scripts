@@ -7,12 +7,32 @@
 import os
 import subprocess
 import sys
+import time
 
 # Change the values in this array to modify at what percentages the
 # notification should be sent.
 alert_percentages = [20, 50]
 
 # Functions:
+
+def log(log_level, message):
+    print(
+            "[ " +
+            time.strftime("%Y-%m-%d %H:%M:%S") +
+            " | " +
+            log_level +
+            " ] " +
+            message
+    )
+
+def log_debug(message):
+    log("DEBUG", message)
+
+def log_info(message):
+    log("INFO ", message)
+
+def log_error(message):
+    log("ERROR", message)
 
 def run_cmd(args):
     '''Executes a set of arguments in the command line.
@@ -52,7 +72,7 @@ def main():
             current_percent += char
     current_percent = int(current_percent)
 
-    print("Current battery: " + str(current_percent) + "%")
+    log_debug("Current battery: " + str(current_percent) + "%")
 
     # Place battery state file in the same directory
     location = os.path.realpath(
@@ -64,7 +84,7 @@ def main():
         # Read and write existing file
         file = open(battery_state_filename, mode='r+')
     except IOError:
-        print("Battery state file does not exist; creating new file.")
+        log_debug("Battery state file does not exist; creating new file.")
 
         # Read and write new file
         file = open(battery_state_filename, mode='x+')
@@ -76,16 +96,16 @@ def main():
     try:
         last_percent = int(file_contents)
     except ValueError:
-        print("Battery state file could not be parsed. Contents: ")
-        print(file.read(file_contents))
-        print("Recreating battery state file.")
+        log_error("Battery state file could not be parsed. Contents: ")
+        log_error(file.read(file_contents))
+        log_error("Recreating battery state file.")
         last_percent = current_percent
 
     if current_percent < last_percent:
         alert_percentages.sort()  # Only alert for the lowest percentage
         for i in alert_percentages:
             if current_percent < i and i < last_percent:
-                print("Alert: Battery is below " + str(i) + "%.")
+                log_info("Alert: Battery is below " + str(i) + "%.")
                 break;
 
     # Replace previous percentage with new percentage
