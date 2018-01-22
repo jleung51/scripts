@@ -17,26 +17,48 @@ from slack_logger import SlackLogger
 # notification should be sent.
 alert_percentages = [20, 50]
 
-# Functions:
+class Logger:
+    """Outputs formatted log messages."""
 
-def log(log_level, message):
-    print(
-            "[ " +
-            time.strftime("%Y-%m-%d %H:%M:%S") +
-            " | " +
-            log_level +
-            " ] " +
-            message
-    )
+    # Change this to True to enable output debug logging for this module.
+    print_debug_logs = True
 
-def log_debug(message):
-    log("DEBUG", message)
+    @classmethod
+    def __log(self, log_level, message):
+        """Outputs a formatted log message if logging is activated.
+        Parameters:
+        log_level -- String. Severity of the log message.
+        message -- String. Message to be logged.
+        """
+        if self.print_debug_logs:
+            print(
+                    "[ " +
+                    time.strftime("%Y-%m-%d %H:%M:%S") +
+                    " | " +
+                    log_level +
+                    " ] " +
+                    message
+            )
 
-def log_info(message):
-    log("INFO ", message)
+    @staticmethod
+    def debug(message):
+        """Outputs a debug level log message."""
+        Logger.__log("DEBUG  ", message)
 
-def log_error(message):
-    log("ERROR", message)
+    @staticmethod
+    def info(message):
+        """Outputs an info level log message."""
+        Logger.__log("INFO   ", message)
+
+    @staticmethod
+    def success(message):
+        """Outputs a success level log message."""
+        Logger.__log("SUCCESS", message)
+
+    @staticmethod
+    def error(message):
+        """Outputs a error level log message."""
+        Logger.__log("ERROR  ", message)
 
 def report_battery_level(slack_config, battery_level):
     slack_logger = SlackLogger(
@@ -103,7 +125,7 @@ def main():
             current_percent += char
     current_percent = int(current_percent)
 
-    log_debug("Current battery: " + str(current_percent) + "%")
+    Logger.debug("Current battery: " + str(current_percent) + "%")
     report_battery_level(slack_config, current_percent)
 
     # Place battery state file in the same directory
@@ -116,7 +138,7 @@ def main():
         # Read and write existing file
         file = open(battery_state_filename, mode='r+')
     except IOError:
-        log_debug("Battery state file does not exist; creating new file.")
+        Logger.debug("Battery state file does not exist; creating new file.")
 
         # Read and write new file
         file = open(battery_state_filename, mode='x+')
@@ -128,16 +150,16 @@ def main():
     try:
         last_percent = int(file_contents)
     except ValueError:
-        log_error("Battery state file could not be parsed. Contents: ")
-        log_error(file.read(file_contents))
-        log_error("Recreating battery state file.")
+        Logger.error("Battery state file could not be parsed. Contents: ")
+        Logger.error(file.read(file_contents))
+        Logger.error("Recreating battery state file.")
         last_percent = current_percent
 
     if current_percent < last_percent:
         alert_percentages.sort()  # Only alert for the lowest percentage
         for i in alert_percentages:
             if current_percent <= i and i < last_percent:
-                log_info("Alert: Battery is below " + str(i) + "%.")
+                Logger.info("Alert: Battery is below " + str(i) + "%.")
                 report_battery_level_alert(slack_config, i)
                 break;
 
@@ -152,4 +174,6 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        log_error("Script experienced an error and could not complete.")
+        Logger.error(
+                "Script experienced an error and could not complete: " + str(e)
+        )
