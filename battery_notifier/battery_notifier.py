@@ -148,4 +148,8 @@ def main():
 
     file.close()
 
-main()
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        log_error("Script experienced an error and could not complete.")
