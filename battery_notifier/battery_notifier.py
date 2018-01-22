@@ -72,7 +72,15 @@ def main():
         file.flush()
         file.seek(0)  # Rewind to beginning of file
 
-    last_percent = int(file.read())
+    file_contents = file.read()
+    try:
+        last_percent = int(file_contents)
+    except ValueError:
+        print("Battery state file could not be parsed. Contents: ")
+        print(file.read(file_contents))
+        print("Recreating battery state file.")
+        last_percent = current_percent
+
     if current_percent < last_percent:
         alert_percentages.sort()  # Only alert for the lowest percentage
         for i in alert_percentages:
