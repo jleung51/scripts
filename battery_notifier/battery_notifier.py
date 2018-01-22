@@ -9,9 +9,28 @@ import subprocess
 import sys
 import time
 
+# Custom modules:
+from slack_logger import SlackLogger
+
 # Change the values in this array to modify at what percentages the
 # notification should be sent.
 alert_percentages = [20, 50]
+
+# Configuration for a report to a Slack channel:
+
+# The API token of the Slackbot (see README:Setup:Reports to a Slack Channel)
+# E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
+report_slack_token = ""
+# The name of the channel (without a "#")
+# E.g. "random"
+report_channel = ""
+# The name of the Slackbot user which will send the message
+# E.g. "Traffic Monitor Slackbot"
+report_slackbot_name = ""
+# The usernames of Slack users who should be alerted upon a failure
+# Each username must begin with a "@"
+# E.g. "@jleung51 | @jleung52 | @jleung53"
+report_alert_list = ""
 
 # Functions:
 
@@ -33,6 +52,23 @@ def log_info(message):
 
 def log_error(message):
     log("ERROR", message)
+
+def report_battery_level(battery_level):
+    slack_logger = SlackLogger(
+            report_slack_token, report_channel, report_slackbot_name
+    )
+    slack_logger.report(
+            "SUCCESS", "Current battery level: " + str(battery_level) + "%."
+    )
+
+def report_battery_level_alert(alert_level):
+    slack_logger = SlackLogger(
+            report_slack_token, report_channel, report_slackbot_name
+    )
+    slack_logger.report(
+            "ALERT FOR " + report_alert_list,
+            "Battery is below " + str(alert_level) + "%."
+    )
 
 def run_cmd(args):
     '''Executes a set of arguments in the command line.
@@ -73,6 +109,7 @@ def main():
     current_percent = int(current_percent)
 
     log_debug("Current battery: " + str(current_percent) + "%")
+    report_battery_level(current_percent)
 
     # Place battery state file in the same directory
     location = os.path.realpath(
@@ -106,6 +143,7 @@ def main():
         for i in alert_percentages:
             if current_percent < i and i < last_percent:
                 log_info("Alert: Battery is below " + str(i) + "%.")
+                report_battery_level_alert(i)
                 break;
 
     # Replace previous percentage with new percentage
