@@ -23,6 +23,8 @@ cp battery_notifier.cfg.template battery_notifier.cfg
 
 Edit the new configuration file to include the Slack credentials.
 
+Customize the list of thresholds in `battery_notifier.py` for which an alert should be sent.
+
 ## Execution
 
 ```
