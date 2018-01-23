@@ -3,6 +3,7 @@
 # This Python 3 module provides a function to access the Slack API in order
 # to send a message to a Slack team.
 
+import json
 import time
 from slackclient import SlackClient
 
