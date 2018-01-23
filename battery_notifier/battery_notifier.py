@@ -105,7 +105,13 @@ def find_line_with(lines, str):
         if str in line:
             return line
 
-def main():
+def get_battery_percentage():
+    '''Returns the current battery level in percent.
+
+    Returns:
+        int -- The current battery level in percent.
+    '''
+
     config_filename = "battery_notifier.cfg"
     config = configparser.ConfigParser()
     config.read(config_filename)
@@ -123,7 +129,11 @@ def main():
     for char in percentage_line:
         if char.isdigit():
             current_percent += char
-    current_percent = int(current_percent)
+
+    return int(current_percent)
+
+def main():
+    current_percent = get_battery_percentage()
 
     Logger.debug("Current battery: " + str(current_percent) + "%")
     report_battery_level(slack_config, current_percent)
