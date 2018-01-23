@@ -29,10 +29,10 @@ def log_success(message):
 def log_error(message):
     log("ERROR  ", message)
 
-class SlackLogger:
+class SlackMessenger:
 
     def __init__(self, slack_token, channel, slackbot_name):
-        """Instantiates an Slack logging object.
+        """Instantiates a Slack messaging object.
 
         Parameters:
         slack_token -- String. The API token of the Slackbot (see
@@ -59,7 +59,7 @@ class SlackLogger:
 
         Does not throw exceptions; outputs any error messages.
         For an example report, see:
-        https://github.com/jleung51/scripts/blob/master/modules/slack_logger/README.md
+        https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
         """
 
         try:
@@ -72,7 +72,7 @@ class SlackLogger:
                             '\n' + "Operation status: " + operation_status +
                             '\n' + message_text
             )
-            log_success("Module slack_logger | Slack report sent.")
+            log_success("Module slack_messenger | Slack report sent.")
         except Exception as e:
-            log_error("Module slack_logger | Error: Slack report not sent.")
+            log_error("Module slack_messenger | Error: Slack report not sent.")
             raise

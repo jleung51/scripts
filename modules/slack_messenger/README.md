@@ -1,6 +1,6 @@
-# Slack Logger
+# Slack Messenger
 
-Python 3 module which provides easy functionality for customized operation status reports to a Slack channel.
+Python 3 module which provides easy functionality for customized messages to a Slack channel.
 
 ## Example
 
@@ -26,29 +26,29 @@ Invite your Slack bot to the channel they should send a message to.
 
 ### Reporting from the Program
 
-Add the `slack_logger.py` module to the directory of the Python program which needs to log reports to Slack. Import the module in your program:
+Add the `slack_messenger.py` module to the directory of the Python program which needs to log reports to Slack. Import the module in your program:
 
 ```
-from slack_logger import SlackLogger
+from slack_messenger import SlackMessenger
 ```
 
-Instantiate a SlackLogger object:
+Instantiate a SlackMessenger object:
 ```
-slack_logger = SlackLogger(slack_api_token, slack_channel, slackbot_name)
+slack_messenger = SlackMessenger(slack_api_token, slack_channel, slackbot_name)
 ```
 
 And send a report to the Slack team:
 ```
-slack_logger.report(operation_status, message_text)
+slack_messenger.report(operation_status, message_text)
 ```
 
-For detailed information on the parameters and usage, see the documentation in the `SlackLogger` class.
+For detailed information on the parameters and usage, see the documentation in the `SlackMessenger` class.
 
 ### Configuration
 
-If you want to enable debug logging output, change the value of the variable `print_debug_logs` in `slack_logger.py` to True.
+If you want to enable debug logging output, change the value of the variable `print_debug_logs` in `slack_messenger.py` to True.
 
 Debug output is formatted like so:
 ```
-[ 2016-12-24 22:44:41 | DEBUG   ] Slack report sent.
+[ 2016-12-24 22:44:41 | DEBUG   ] Message sent.
 ```
