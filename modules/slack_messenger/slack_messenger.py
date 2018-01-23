@@ -96,7 +96,7 @@ class SlackMessenger:
         https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
         """
 
-        self.message("Alerting users " + alert_users + ".\n" +
+        self.message("Alerting users " + alert_users + "\n" +
                 message_text)
 
     def operation_report(self, operation_status, message_text):
