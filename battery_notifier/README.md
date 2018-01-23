@@ -7,7 +7,8 @@ Python 3 script which sends an alert to a Slack channel if a battery level decre
 Prerequisites:
 * Python 3 installed on your system
 * The pip dependency `slackclient` installed
-* A Slack team with a channel which the bot will send a message to
+* A Slack team with a channel which the bot will send an alert to
+* A Slack team with a channel which the bot will send a report to (optional)
 
 Install the pip dependency:
 ```

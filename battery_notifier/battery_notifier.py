@@ -61,14 +61,15 @@ class Logger:
         Logger.__log("ERROR  ", message)
 
 def report_battery_level(slack_config, battery_level):
-    slack_messenger = SlackMessenger(
-            slack_config["report_slack_token"],
-            slack_config["report_channel"],
-            slack_config["report_slackbot_name"]
-    )
-    slack_messenger.message(
-            "Current laptop battery level: " + str(battery_level) + "%."
-    )
+    if slack_config.getboolean("reporting") is True:
+        slack_messenger = SlackMessenger(
+                slack_config["report_slack_token"],
+                slack_config["report_channel"],
+                slack_config["report_slackbot_name"]
+        )
+        slack_messenger.message(
+                "Current laptop battery level: " + str(battery_level) + "%."
+        )
 
 def alert_battery_level(slack_config, alert_level):
     slack_messenger = SlackMessenger(
