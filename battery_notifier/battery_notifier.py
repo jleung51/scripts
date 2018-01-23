@@ -79,7 +79,7 @@ def alert_battery_level(slack_config, alert_level):
     )
     slack_messenger.notify(
             slack_config["alert_list"],
-            "laptop battery is below " + str(alert_level) + "%."
+            "Laptop battery is below " + str(alert_level) + "%."
     )
 
 def run_cmd(args):
