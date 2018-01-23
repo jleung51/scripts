@@ -15,7 +15,7 @@ Install the pip dependency:
 pip3 install slackclient
 ```
 
-Set up the [Slack Logger](https://github.com/jleung51/scripts/tree/master/slack_logger) script in this directory.
+Set up the [Slack Messenger](https://github.com/jleung51/scripts/tree/master/modules/slack_messenger) script in this directory.
 
 Create a new configuration file (which will not be tracked by Git):
 ```

@@ -1,7 +1,7 @@
 # Configuration file for the Battery Notifier project
 
 [Slack]
-# The API token of the Slackbot which should send an alert (see README:Setup:Reports to a Slack Channel)
+# The API token of the Slackbot which should send an alert (see README:Setup - Slack Messenger)
 # E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
 alert_slack_token =
 # The name of the channel the alert should be sent to (without a "#")
@@ -16,7 +16,7 @@ alert_slackbot_name =
 alert_list =
 # Change this to 1 to enable Slackbot reporting for this module.
 reporting = 0
-# The API token of the Slackbot which should send a report (see README:Setup:Reports to a Slack Channel)
+# The API token of the Slackbot which should send a report (see README:Setup - Slack Messenger)
 # Only necessary if reporting is 1.
 # E.g. "xoxb-128312731823-FN3190FHDFK1L1099813UH10"
 report_slack_token =
