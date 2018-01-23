@@ -2,15 +2,6 @@
 
 Python 3 module which provides easy functionality for customized messages to a Slack channel.
 
-## Example
-
-The Slack message will be displayed as follows:
-
-> **Custom Slackbot Name**
-> > _2016-12-23 20:20:28_  
-> > Operation status: OPERATION_STATUS  
-> > MESSAGE_TEXT
-
 ## Setup
 
 ### Dependencies
