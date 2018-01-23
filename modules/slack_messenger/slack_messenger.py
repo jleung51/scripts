@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # This Python 3 module provides a function to access the Slack API in order
-# to send a log or operation report to a Slack team.
+# to send a message to a Slack team.
 
 import time
 from slackclient import SlackClient
@@ -48,8 +48,59 @@ class SlackMessenger:
         self.channel = channel
         self.slackbot_name = slackbot_name
 
-    def report(self, operation_status, message_text):
-        """Sends a report to the Slackbot configured during instantiation.
+    def message(self, message_text):
+        """Sends a message from the Slackbot.
+
+        Parameters:
+        message_text -- String. The detailed report message.
+            E.g. "Traffic accident on Kingsway and Patterson."
+
+        Does not throw exceptions; outputs any error messages.
+        For an example report, see:
+        https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
+        """
+
+        try:
+            result = SlackClient(self.slack_token).api_call(
+                    "chat.postMessage",
+                    channel = "#" + self.channel,
+                    link_names = 1,
+                    username = self.slackbot_name,
+                    text = message_text
+            )
+        except Exception as e:
+            log_error(
+                    "Module slack_messenger | Error: Message not sent. " +
+                    "Error message: " + str(e)
+            )
+
+        if result.get("ok"):
+            log_success("Module slack_messenger | Message sent.")
+        else:
+            log_error(
+                    "Module slack_messenger | Error: Message not sent. " +
+                    "Response body: " + json.dumps(result)
+            )
+
+    def notify(self, alert_users, message_text):
+        """Sends a notification with tagged user(s) from the Slackbot.
+
+        Parameters:
+        alert_users -- String. List of Slack users to be notified.
+            E.g. "@jleung51 | @jleung52 | @jleung53"
+        message_text -- String. The detailed report message.
+            E.g. "Traffic accident on Kingsway and Patterson."
+
+        Does not throw exceptions; outputs any error messages.
+        For an example report, see:
+        https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
+        """
+
+        self.message("Alerting users " + alert_users + ".\n" +
+                message_text)
+
+    def operation_report(self, operation_status, message_text):
+        """Sends an report with operation status from the Slackbot.
 
         Parameters:
         operation_status -- String. The general message to summarize the report.
@@ -62,17 +113,6 @@ class SlackMessenger:
         https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
         """
 
-        try:
-            SlackClient(self.slack_token).api_call(
-                    "chat.postMessage",
-                    channel = "#" + self.channel,
-                    link_names = 1,
-                    username = self.slackbot_name,
-                    text = ">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
-                            '\n' + "Operation status: " + operation_status +
-                            '\n' + message_text
-            )
-            log_success("Module slack_messenger | Slack report sent.")
-        except Exception as e:
-            log_error("Module slack_messenger | Error: Slack report not sent.")
-            raise
+        self.message(">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
+                '\n' + "Operation status: " + operation_status +
+                '\n' + message_text)
