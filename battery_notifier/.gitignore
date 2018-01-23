@@ -104,6 +104,6 @@ venv.bak/
 .mypy_cache/
 
 # Project-specific files
-battery_state
+last_battery_level
 battery_notifier.cfg
 slack_messenger.py

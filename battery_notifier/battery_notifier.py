@@ -131,17 +131,17 @@ def main():
     # Place battery state file in the same directory
     location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    battery_state_filename = os.path.join(location, 'battery_state')
+    battery_level_filename = os.path.join(location, 'last_battery_level')
 
     # Open file for reading and writing, or create one if it does not exist
     try:
         # Read and write existing file
-        file = open(battery_state_filename, mode='r+')
+        file = open(battery_level_filename, mode='r+')
     except IOError:
         Logger.debug("Battery state file does not exist; creating new file.")
 
         # Read and write new file
-        file = open(battery_state_filename, mode='x+')
+        file = open(battery_level_filename, mode='x+')
         file.write(str(current_percent))
         file.flush()
         file.seek(0)  # Rewind to beginning of file
@@ -150,7 +150,7 @@ def main():
     try:
         last_percent = int(file_contents)
     except ValueError:
-        Logger.error("Battery state file could not be parsed. Contents: ")
+        Logger.error("Last battery level could not be parsed. Contents: ")
         Logger.error(file.read(file_contents))
         Logger.error("Recreating battery state file.")
         last_percent = current_percent
