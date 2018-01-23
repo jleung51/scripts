@@ -11,7 +11,7 @@ import sys
 import time
 
 # Custom modules:
-from slack_logger import SlackLogger
+from slack_messenger import SlackMessenger
 
 # Change the values in this array to modify at what percentages the
 # notification should be sent.
@@ -61,23 +61,23 @@ class Logger:
         Logger.__log("ERROR  ", message)
 
 def report_battery_level(slack_config, battery_level):
-    slack_logger = SlackLogger(
+    slack_messenger = SlackMessenger(
             slack_config["report_slack_token"],
             slack_config["report_channel"],
             slack_config["report_slackbot_name"]
     )
-    slack_logger.report(
-            "SUCCESS", "Current battery level: " + str(battery_level) + "%."
+    slack_messenger.message(
+            "Current battery level: " + str(battery_level) + "%."
     )
 
 def report_battery_level_alert(slack_config, alert_level):
-    slack_logger = SlackLogger(
+    slack_messenger = SlackMessenger(
             slack_config["report_slack_token"],
             slack_config["report_channel"],
             slack_config["report_slackbot_name"]
     )
-    slack_logger.report(
-            "ALERT FOR " + slack_config["report_alert_list"],
+    slack_messenger.notify(
+            slack_config["report_alert_list"],
             "Battery is below " + str(alert_level) + "%."
     )
 
@@ -108,7 +108,6 @@ def main():
     config_filename = "battery_notifier.cfg"
     config = configparser.ConfigParser()
     config.read(config_filename)
-
     slack_config = config["Slack"]
 
     # Parse power data from OS
