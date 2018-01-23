@@ -70,14 +70,14 @@ def report_battery_level(slack_config, battery_level):
             "Current battery level: " + str(battery_level) + "%."
     )
 
-def report_battery_level_alert(slack_config, alert_level):
+def alert_battery_level(slack_config, alert_level):
     slack_messenger = SlackMessenger(
-            slack_config["report_slack_token"],
-            slack_config["report_channel"],
-            slack_config["report_slackbot_name"]
+            slack_config["alert_slack_token"],
+            slack_config["alert_channel"],
+            slack_config["alert_slackbot_name"]
     )
     slack_messenger.notify(
-            slack_config["report_alert_list"],
+            slack_config["alert_list"],
             "Battery is below " + str(alert_level) + "%."
     )
 
@@ -159,7 +159,7 @@ def main():
         for i in alert_percentages:
             if current_percent <= i and i < last_percent:
                 Logger.info("Alert: Battery is below " + str(i) + "%.")
-                report_battery_level_alert(slack_config, i)
+                alert_battery_level(slack_config, i)
                 break;
 
     # Replace previous percentage with new percentage
