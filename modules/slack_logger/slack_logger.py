@@ -59,7 +59,7 @@ class SlackLogger:
 
         Does not throw exceptions; outputs any error messages.
         For an example report, see:
-        https://github.com/jleung51/scripts/blob/master/slack_logger/README.md
+        https://github.com/jleung51/scripts/blob/master/modules/slack_logger/README.md
         """
 
         try:
