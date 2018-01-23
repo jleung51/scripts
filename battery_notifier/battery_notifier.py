@@ -155,6 +155,10 @@ def main():
         Logger.error("Recreating battery state file.")
         last_percent = current_percent
 
+    # # Tester
+    # current_percent = 0
+    # last_percent = 100
+
     if current_percent < last_percent:
         alert_percentages.sort()  # Only alert for the lowest percentage
         for i in alert_percentages:
