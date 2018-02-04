@@ -137,10 +137,7 @@ def main():
     Logger.debug("Current battery: " + str(current_percent) + "%")
     report_battery_level(slack_config, current_percent)
 
-    # Place battery state file in the same directory
-    location = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    battery_level_filename = os.path.join(location, 'last_battery_level')
+    battery_level_filename = "/tmp/last_battery_level"
 
     # Open file for reading and writing, or create one if it does not exist
     try:
