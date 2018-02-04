@@ -111,12 +111,6 @@ def get_battery_percentage():
     Returns:
         int -- The current battery level in percent.
     '''
-
-    config_filename = "battery_notifier.cfg"
-    config = configparser.ConfigParser()
-    config.read(config_filename)
-    slack_config = config["Slack"]
-
     # Parse power data from OS
     power_files = run_cmd(["upower", "-e"])
     power_file = find_line_with(power_files, "BAT")
@@ -133,6 +127,11 @@ def get_battery_percentage():
     return int(current_percent)
 
 def main():
+    config_filename = "battery_notifier.cfg"
+    config = configparser.ConfigParser()
+    config.read(config_filename)
+    slack_config = config["Slack"]
+
     current_percent = get_battery_percentage()
 
     Logger.debug("Current battery: " + str(current_percent) + "%")
