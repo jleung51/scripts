@@ -127,7 +127,9 @@ def get_battery_percentage():
     return int(current_percent)
 
 def main():
-    config_filename = "battery_notifier.cfg"
+    location = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    config_filename = os.path.join(location, "battery_notifier.cfg")
     config = configparser.ConfigParser()
     config.read(config_filename)
     slack_config = config["Slack"]
