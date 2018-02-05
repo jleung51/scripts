@@ -10,7 +10,7 @@ Prerequisites:
 * A Slack team with a channel which the bot will send an alert to
 * A Slack team with a channel which the bot will send a report to (optional)
 
-Add the [Slack Messenger](https://github.com/jleung51/scripts/tree/master/modules/slack_messenger) script into this directory, complete the dependencies, and set up the Slack team and bot.
+Setup the [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger) and [Slack Messenger](https://github.com/jleung51/scripts/tree/master/modules/slack_messenger) modules in this directory, complete the dependencies, and set up the Slack team and bot.
 
 Create a new configuration file (which will not be tracked by Git):
 ```
