@@ -11,46 +11,10 @@ from contextlib import closing
 import dropbox
 from dropbox.exceptions import ApiError, AuthError
 
+# Custom imports
+from logger import Logger
+
 config_filename = "file_distributor.cfg"
-
-class Logger:
-    """Outputs formatted log messages."""
-
-    # Change this to True to enable output debug logging for this module.
-    print_debug_logs = True
-
-    @classmethod
-    def __log(self, log_level, message):
-        """Outputs a formatted log message if logging is activated.
-
-        Parameters:
-        log_level -- String. Severity of the log message.
-        message -- String. Message to be logged.
-        """
-        if self.print_debug_logs:
-            print(
-                    "[ " +
-                    time.strftime("%Y-%m-%d %H:%M:%S") +
-                    " | " +
-                    log_level +
-                    " ] " +
-                    message
-            )
-
-    @staticmethod
-    def debug(message):
-        """Outputs a debug level log message."""
-        Logger.__log("DEBUG  ", message)
-
-    @staticmethod
-    def success(message):
-        """Outputs a success level log message."""
-        Logger.__log("SUCCESS", message)
-
-    @staticmethod
-    def error(message):
-        """Outputs a error level log message."""
-        Logger.__log("ERROR  ", message)
 
 def download_dropbox_file(access_token, file_path_dropbox, file_path_local):
     """Logs into a Dropbox account and downloads one specific file.

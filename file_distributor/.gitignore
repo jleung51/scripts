@@ -1,3 +1,6 @@
 # Google OAuth credential files
 client_secret*.json
 generated_credentials.json
+
+# Custom modules
+logger.py

@@ -4,9 +4,13 @@ Python 3 scripts which download a file from Dropbox and upload it to pCloud and 
 
 ## Setup
 
+### Custom Modules
+
+Setup the [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger) module in the directory `src/`.
+
 ### Dropbox
 
-Install the pip3 dependency `dropbox`.
+Install the pip dependency `dropbox`.
 
 Follow the first few steps in the [Dropbox Developers Tutorial](https://www.dropbox.com/developers/documentation/python#tutorial) to create a Dropbox API application and generate its access token.
 
