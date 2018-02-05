@@ -40,6 +40,17 @@ def alert_battery_level(slack_config, alert_level):
             "Laptop battery is below " + str(alert_level) + "%."
     )
 
+def alert_error(slack_config):
+    slack_messenger = SlackMessenger(
+            slack_config["alert_slack_token"],
+            slack_config["alert_channel"],
+            slack_config["alert_slackbot_name"]
+    )
+    slack_messenger.notify(
+            slack_config["alert_list"],
+            "Internal error for Battery Notifier, please check the logs."
+    )
+
 def run_cmd(args):
     '''Executes a set of arguments in the command line.
 
@@ -84,12 +95,7 @@ def get_battery_percentage():
 
     return int(current_percent)
 
-def main():
-    location = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    config_filename = os.path.join(location, "battery_notifier.cfg")
-    config = configparser.ConfigParser()
-    config.read(config_filename)
+def main(config):
     slack_config = config["Slack"]
 
     current_percent = get_battery_percentage()
@@ -141,9 +147,13 @@ def main():
     file.close()
 
 if __name__ == "__main__":
+    location = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    config_filename = os.path.join(location, "battery_notifier.cfg")
+    config = configparser.ConfigParser()
+    config.read(config_filename)
     try:
-        main()
+        main(config)
     except Exception as e:
-        Logger.error(
-                "Script experienced an error and could not complete: " + str(e)
-        )
+        alert_error(config["Slack"])
+        raise
