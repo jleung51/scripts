@@ -7,28 +7,48 @@ import json
 import time
 from slackclient import SlackClient
 
-# Change this to True to enable output debug logging for this module.
-print_debug_logs = False
+class Logger:
+    """Outputs formatted log messages."""
 
-def log(log_level, message):
-    if print_debug_logs:
-        print(
-                "[ " +
-                time.strftime("%Y-%m-%d %H:%M:%S") +
-                " | " +
-                log_level +
-                " ] " +
-                message
-        )
+    # Change this to False to disable all output logging for this module.
+    print_logs = True
 
-def log_debug(message):
-    log("DEBUG  ", message)
+    @classmethod
+    def __log(self, log_level, message):
+        """Outputs a formatted log message if logging is activated.
+        Parameters:
+        log_level -- String. Severity of the log message.
+        message -- String. Message to be logged.
+        """
+        if self.print_logs:
+            print(
+                    "[ " +
+                    time.strftime("%Y-%m-%d %H:%M:%S") +
+                    " | " +
+                    log_level +
+                    " ] " +
+                    message
+            )
 
-def log_success(message):
-    log("SUCCESS", message)
+    @staticmethod
+    def debug(message):
+        """Outputs a debug level log message."""
+        Logger.__log("DEBUG  ", message)
 
-def log_error(message):
-    log("ERROR  ", message)
+    @staticmethod
+    def info(message):
+        """Outputs an info level log message."""
+        Logger.__log("INFO   ", message)
+
+    @staticmethod
+    def success(message):
+        """Outputs a success level log message."""
+        Logger.__log("SUCCESS", message)
+
+    @staticmethod
+    def error(message):
+        """Outputs a error level log message."""
+        Logger.__log("ERROR  ", message)
 
 class SlackMessenger:
 
@@ -70,15 +90,15 @@ class SlackMessenger:
                     text = message_text
             )
         except Exception as e:
-            log_error(
+            Logger.error(
                     "Module slack_messenger | Error: Message not sent. " +
                     "Error message: " + str(e)
             )
 
         if result.get("ok"):
-            log_success("Module slack_messenger | Message sent.")
+            Logger.success("Module slack_messenger | Message sent.")
         else:
-            log_error(
+            Logger.error(
                     "Module slack_messenger | Error: Message not sent. " +
                     "Response body: " + json.dumps(result)
             )
