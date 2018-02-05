@@ -17,7 +17,7 @@ Setup the [Logger](https://github.com/jleung51/scripts/tree/master/modules/logge
 
 Invite your Slack bot to the channel they should send a message to.
 
-### Reporting from the Program
+## Usage
 
 Add the `slack_messenger.py` module to the directory of the Python program which needs to log reports to Slack. Import the module in your program:
 
