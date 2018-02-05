@@ -1,10 +1,15 @@
-# This Python 3 module provides a class to log formatted output to the console.
+#!/usr/bin/env python3
+#
+# This Python 3 module provides a function to access the Slack API in order
+# to send a message to a Slack team.
+
+import time
+
+# Change this to False to disable all output logging for this module.
+print_logs = True
 
 class Logger:
     """Outputs formatted log messages."""
-
-    # Change this to True to enable output debug logging for this module.
-    print_debug_logs = True
 
     @classmethod
     def __log(self, log_level, message):
@@ -13,7 +18,7 @@ class Logger:
         log_level -- String. Severity of the log message.
         message -- String. Message to be logged.
         """
-        if self.print_debug_logs:
+        if print_logs:
             print(
                     "[ " +
                     time.strftime("%Y-%m-%d %H:%M:%S") +

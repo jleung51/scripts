@@ -9,6 +9,8 @@ Python 3 module which provides easy functionality for customized messages to a S
 Install the following pip 3 dependency:
 * slackclient
 
+Setup the [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger) module in this directory.
+
 ### Slack Setup
 
 [Create a Slackbot bot](https://api.slack.com/bot-users) in the Slack team you want to send Slack messages to. Once you are finished the setup, navigate to the _Integration Settings_ section (if you lost the page, it's located at `App Directory > Browse Apps > Custom Integrations > Bots`) and save the API Token displayed there. You will need this API token to authenticate your bot.
