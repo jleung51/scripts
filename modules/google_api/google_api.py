@@ -17,30 +17,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 # Gmail
 from email.mime.text import MIMEText
 
-# Change this to True to enable output debug logging for this module.
-print_debug_logs = False
-
-# Functions:
-
-def log_debug(message):
-    log("DEBUG  ", message)
-
-def log_success(message):
-    log("SUCCESS", message)
-
-def log_error(message):
-    log("ERROR  ", message)
-
-def log(log_level, message):
-    if print_debug_logs:
-        print(
-                "[ " +
-                time.strftime("%Y-%m-%d %H:%M:%S") +
-                " | " +
-                log_level +
-                " ] " +
-                message
-        )
+# Custom modules
+from logger import Logger
 
 class GoogleApi:
 
@@ -122,10 +100,10 @@ class GmailApi(GoogleApi):
         message -- String. Message body of the email. Use newlines ("\n")
             for line breaks.
         """
-        log_debug("Mail source:  " + self.source_email)
-        log_debug("Mail target:  " + target_email)
-        log_debug("Mail subject: " + subject)
-        log_debug("Mail message: " + message.replace("\n", "[newline]"))
+        Logger.debug("Mail source:  " + self.source_email)
+        Logger.debug("Mail target:  " + target_email)
+        Logger.debug("Mail subject: " + subject)
+        Logger.debug("Mail message: " + message.replace("\n", "[newline]"))
 
         http_auth = self._get_credentials().authorize(Http())
         service = build("gmail", "v1", http=http_auth)
@@ -137,4 +115,4 @@ class GmailApi(GoogleApi):
         response = service.users().messages() \
                 .send(userId=self.source_email, body=mail).execute()
 
-        log_debug("Mail sent.")
+        Logger.debug("Mail sent.")

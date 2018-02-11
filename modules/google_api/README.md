@@ -4,9 +4,11 @@ Python 3 module which utilizes the [Gmail APIs](https://developers.google.com/gm
 
 ## Setup
 
+Setup the [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger) module in this directory.
+
 ### Authorizing Emails from a Gmail account
 
-Install the following pip 3 dependencies:
+Install the following pip dependencies:
 * argparse
 * google-api-python-client
 * httplib2
