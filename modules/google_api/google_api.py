@@ -1,9 +1,7 @@
 # This Python 3 module provides classes to access the Google API.
 
 import argparse
-import base64
 import os
-import time
 
 from httplib2 import Http
 
@@ -15,25 +13,38 @@ from oauth2client.file import Storage
 from oauth2client.service_account import ServiceAccountCredentials
 
 # Gmail
+import base64
 from email.mime.text import MIMEText
+
+# Google Drive
+import json
+from apiclient.http import MediaFileUpload
 
 # Custom modules
 from logger import Logger
 
 class _GoogleApi:
+    """Template for a wrapper class for the Google API.
+
+    To use, extend this class in the same file.
+    """
 
     _scope = ""
 
     def _get_credentials(self):
-        """Retrieves or generates credentials for Google account access.
+        """Refreshes Google access credentials, authorizing if necessary.
+
+        self._scope must have been set in the subclass.
 
         Requires a client_secret.json file in the same directory. See README
         for instructions to create it.
+        The credentials will be saved to generated_credentials.json.
 
         Arguments:
         scope -- String. Google Authentication scope which allows for a specific
             area of access.
             https://developers.google.com/identity/protocols/googlescopes
+        Returns: OAuth credentials.
         """
         credential_path = os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
@@ -54,9 +65,15 @@ class _GoogleApi:
             flags.noauth_local_webserver = True
             credentials = tools.run_flow(flow, store, flags)
 
+            Logger.debug(
+                    "Google Drive credentials saved to [" +
+                    credential_path + "]"
+            )
+
         return credentials
 
 class GmailApi(_GoogleApi):
+    """Wrapper for the Gmail API."""
 
     _scope = "https://www.googleapis.com/auth/gmail.send"
 
@@ -116,3 +133,58 @@ class GmailApi(_GoogleApi):
                 .send(userId=self.source_email, body=mail).execute()
 
         Logger.debug("Mail sent.")
+
+class GoogleDriveApi(_GoogleApi):
+    """Wrapper for the Google Drive API (v3)."""
+
+    _scope = "https://www.googleapis.com/auth/drive"
+
+    def __init__(self, application_name=None):
+        """Instantiates a GmailApi object and refreshes its credentials.
+
+        Parameters:
+        source_email -- String. Gmail account from which your emails
+            will be sent. This should include the "@gmail.com".
+            E.g. "gmail_source@email.com"
+        application_name -- String. Application name from which the
+            email is sent. Internal to the Google API.
+        """
+        if application_name is None:
+            application_name = "Google Drive Accesser"
+
+        self.application_name = application_name
+
+        http_auth = self._get_credentials().authorize(Http())
+        self.__service = build("drive", "v3", http=http_auth)
+
+    def get_file_list(self):
+        """Retrieves the data of all files in the Google Drive account."""
+        file_list = self.__service.files().list().execute()["files"]
+
+        Logger.debug("File and directory details:")
+        for file in file_list:
+            Logger.debug("  " + json.dumps(file))
+
+        return file_list
+
+    def upload_file(self, file_path_local,
+            file_name_gdrive, parent_dir_id=None):
+        """Uploads a file to a Google Drive account.
+
+        Parameters:
+        file_path_local -- String. Absolute path to the file to be uploaded.
+        file_name_gdrive -- String. Filename for the uploaded file in
+            Google Drive.
+        parent_dir_id -- String (optional). File ID for the parent directory
+            of the uploaded file. See README.md for instructions.
+        """
+        body = {"name": file_name_gdrive}
+        if parent_dir_id is not None:
+            body["parents"] = [parent_dir_id]
+
+        self.__service.files().create(
+                body=body,
+                media_body=MediaFileUpload(file_path_local),
+        ).execute()
+
+        Logger.debug("File [" + file_path_local + "] uploaded to Google Drive.")
