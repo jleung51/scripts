@@ -158,8 +158,18 @@ class GoogleDriveApi(_GoogleApi):
         self.__service = build("drive", "v3", http=http_auth)
 
     def get_file_list(self):
-        """Retrieves the data of all files in the Google Drive account."""
-        file_list = self.__service.files().list().execute()["files"]
+        """Retrieves the data of all files  and dirs in the Google Drive.
+
+        Reference: https://developers.google.com/drive/v3/reference/files/list
+        """
+        file_list = []
+
+        pageToken = ""
+        while(pageToken is not None):
+            file_obj = self.__service.files()\
+                    .list(pageToken=pageToken).execute()
+            file_list.extend(file_obj.get("files"))
+            pageToken = file_obj.get("nextPageToken")
 
         Logger.debug("File and directory details:")
         for file in file_list:
