@@ -20,7 +20,7 @@ from email.mime.text import MIMEText
 # Custom modules
 from logger import Logger
 
-class GoogleApi:
+class _GoogleApi:
 
     _scope = ""
 
@@ -56,7 +56,7 @@ class GoogleApi:
 
         return credentials
 
-class GmailApi(GoogleApi):
+class GmailApi(_GoogleApi):
 
     _scope = "https://www.googleapis.com/auth/gmail.send"
 
