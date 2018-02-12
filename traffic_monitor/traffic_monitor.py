@@ -11,7 +11,7 @@ from httplib2 import Http
 
 # Custom modules
 from logger import Logger
-from gmail_sender import GmailSender
+from google_api import GoogleApi
 
 # Configuration for traffic incident data:
 
@@ -187,7 +187,7 @@ def alert_for_incidents(response_body):
                 "\nSincerely,\n\n" + \
                 "- Your friendly neighborhood Traffic Monitor"
 
-        email_sender = GmailSender(
+        email_sender = GmailApi(
                 mail_source_email, mail_source_application_name
         )
         email_sender.send_email(
