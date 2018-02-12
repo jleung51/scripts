@@ -150,7 +150,7 @@ class BingApi:
 
         if response.status_code != requests.codes.ok:
             raise RuntimeError("HTTP " + str(response.status_code) +
-                    "from server.")
+                    " from server.")
 
         incidents_container = response.json()["resourceSets"]
         if len(incidents_container) is 0:
