@@ -9,6 +9,8 @@ import time
 from argparse import Namespace
 from httplib2 import Http
 
+# Custom modules
+from logger import Logger
 from gmail_sender import GmailSender
 
 # Configuration for traffic incident data:
@@ -108,36 +110,15 @@ report_alert_list = ""
 if report:
     from slack_logger import SlackLogger
 
-# Functions:
-
-def log_debug(message):
-    log("DEBUG  ", message)
-
-def log_success(message):
-    log("SUCCESS", message)
-
-def log_error(message):
-    log("ERROR  ", message)
-
-def log(log_level, message):
-    print(
-            "[ " +
-            time.strftime("%Y-%m-%d %H:%M:%S") +
-            " | " +
-            log_level +
-            " ] " +
-            message
-    )
-
 def slack_report_message(operation_status, message_text):
     if report:
         slack_logger = SlackLogger(
                 report_slack_token, report_channel, report_slackbot_name
         )
         slack_logger.report(operation_status, message_text)
-        log_debug("Slack report sent.")
+        Logger.debug("Slack report sent.")
     else:
-        log_debug("No Slack report sent.")
+        Logger.debug("No Slack report sent.")
 
 def decode_severity(severity):
     string_severity = severity_list[str(severity)]
@@ -220,14 +201,14 @@ def main():
 
     log_message = "Bing Maps response: " + str(response_body)
     if response.status_code == requests.codes.ok:
-        log_debug(log_message)
+        Logger.debug(log_message)
     else:
-        log_error(log_message)
+        Logger.error(log_message)
         sys.exit(1)
 
     alert_for_incidents(response_body)
 
-    log_success("Operation completed.")
+    Logger.success("Operation completed.")
 
 if __name__ == "__main__":
     try:

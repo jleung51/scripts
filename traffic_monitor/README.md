@@ -18,6 +18,8 @@ Sincerely,
 
 ## Setup
 
+Setup the [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger) module in this directory.
+
 Edit the script `traffic_monitor.py` to configure the authentication and authorization variables at the beginning of the file. Each variable has its own explanation; read them carefully.
 
 ### Email Setup
