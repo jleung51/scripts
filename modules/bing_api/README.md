@@ -7,6 +7,8 @@ Python 3 module acting as a simple wrapper for the [Microsoft/Bing Maps Traffic 
 Install the following pip dependency:
 * `requests`
 
+Setup the [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger) module in this directory.
+
 ### Creating a Bing Maps Authentication Key
 
 An authentication key is required to use Bing Maps. A key looks like this: `Aqcn-mAQ276K6K4Xl6gnx-Ld5hDQ8a3MVB-awpLpKLJak3aZsqWf7gs3t1IIKl3v`.

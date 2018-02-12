@@ -2,6 +2,8 @@
 
 import requests
 
+from logger import Logger
+
 class BingApi:
 
     _auth_key = None
@@ -97,7 +99,16 @@ class BingApi:
             type = type,
             key = self._auth_key
         )
-        return requests.get(url, params=request_params)
+
+        response = requests.get(url, params=request_params)
+
+        log_message = "Bing Maps response: " + str(response.json())
+        if response.status_code == requests.codes.ok:
+            Logger.debug(log_message)
+        else:
+            Logger.error(log_message)
+
+        return response
 
     def get_traffic_data_readable(self, coordinate_southwest,
             coordinate_northeast, severity=None, type=None):
@@ -133,11 +144,15 @@ class BingApi:
                 type
         """
 
-        response_body = self.get_traffic_data(
+        response = self.get_traffic_data(
                 coordinate_southwest, coordinate_northeast, severity, type
-                ).json()
+                )
 
-        incidents_container = response_body["resourceSets"]
+        if response.status_code != requests.codes.ok:
+            raise RuntimeError("HTTP " + str(response.status_code) +
+                    "from server.")
+
+        incidents_container = response.json()["resourceSets"]
         if len(incidents_container) is 0:
             incidents = []
         else:
