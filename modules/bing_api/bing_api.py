@@ -102,7 +102,8 @@ class BingApi:
 
         response = requests.get(url, params=request_params)
 
-        log_message = "Bing Maps response: " + str(response.json())
+        log_message = "Bing Maps response: " + \
+                str(response.status_code) + " " + str(response.json())
         if response.status_code == requests.codes.ok:
             Logger.debug(log_message)
         else:
