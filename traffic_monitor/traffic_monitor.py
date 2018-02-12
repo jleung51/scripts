@@ -11,7 +11,7 @@ from httplib2 import Http
 
 # Custom modules
 from logger import Logger
-from google_api import GoogleApi
+from google_api import GmailApi
 
 # Configuration for traffic incident data:
 
