@@ -94,5 +94,5 @@ generated_credentials.json
 
 # Custom modules
 logger.py
+slack_messenger.py
 gmail_api.py
-slack_logger.py

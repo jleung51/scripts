@@ -108,17 +108,23 @@ report_alert_list = ""
 # Conditional imports
 # Do not modify if you are setting up this script!
 if report:
-    from slack_logger import SlackLogger
+    from slack_messenger import SlackMessenger
 
 def slack_report_message(operation_status, message_text):
     if report:
-        slack_logger = SlackLogger(
+        s = SlackMessenger(
                 report_slack_token, report_channel, report_slackbot_name
         )
-        slack_logger.report(operation_status, message_text)
+        s.operation_report(operation_status, message_text)
         Logger.debug("Slack report sent.")
-    else:
-        Logger.debug("No Slack report sent.")
+
+def slack_notify_users(alert_users, message_text):
+    if report:
+        s = SlackMessenger(
+                report_slack_token, report_channel, report_slackbot_name
+        )
+        s.notify(alert_users, message_text)
+        Logger.debug("Slack alert sent.")
 
 def decode_severity(severity):
     string_severity = severity_list[str(severity)]
@@ -215,7 +221,6 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         slack_report_message(
-                "*ERROR* (Alerting user(s) " + report_alert_list + ")",
-                "Internal Error. Please check the logs."
+                report_alert_list, "*ERROR*: Please check the logs."
         )
         raise
