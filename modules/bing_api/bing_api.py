@@ -40,7 +40,7 @@ class BingApi:
         return string_severity
 
     @staticmethod
-    def __decode_type(type):
+    def __decode_type(incident_type):
         # Preset list of incident type meanings
         type_list = {
             "1" : "Accident",
@@ -56,16 +56,16 @@ class BingApi:
             "11" : "Weather alert"
         }
 
-        string_type = type_list[str(type)]
+        string_type = type_list[str(incident_type)]
         if string_type == None:
             raise ValueError(
                     "An unparseable type level was found (" +
-                    str(type) + ")"
+                    str(incident_type) + ")"
             )
         return string_type
 
     def get_traffic_data(self, coordinate_southwest, coordinate_northeast,
-            severity=None, type=None):
+            severity=None, incident_type=None):
         """Retrieves traffic data from Bing Maps.
 
         To find a coordinate, go to Google Maps (yes, I'm aware of the irony),
@@ -82,7 +82,7 @@ class BingApi:
         severity -- String. Requested severities of the incidents and impacts.
             Example: "1, 2, 3, 4"
             More details: https://msdn.microsoft.com/en-ca/library/hh441726.aspx
-        type - String. Requested type of the incidents which occurred.
+        incident_type - String. Requested type of the incidents which occurred.
             Example: "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
             More details: https://msdn.microsoft.com/en-ca/library/hh441726.aspx
 
@@ -96,7 +96,7 @@ class BingApi:
 
         request_params = dict(
             severity = severity,
-            type = type,
+            type = incident_type,
             key = self._auth_key
         )
 
@@ -111,7 +111,7 @@ class BingApi:
         return response
 
     def get_traffic_data_readable(self, coordinate_southwest,
-            coordinate_northeast, severity=None, type=None):
+            coordinate_northeast, severity=None, incident_type=None):
         """Retrieves simplified traffic data from Bing Maps.
 
         To find a coordinate, go to Google Maps (yes, I'm aware of the irony),
@@ -128,7 +128,7 @@ class BingApi:
         severity -- String. Requested severities of the incidents and impacts.
             Example: "1, 2, 3, 4"
             More details: https://msdn.microsoft.com/en-ca/library/hh441726.aspx
-        type - String. Requested type of the incidents which occurred.
+        incident_type - String. Requested type of the incidents which occurred.
             Example: "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
             More details: https://msdn.microsoft.com/en-ca/library/hh441726.aspx
 

@@ -37,19 +37,19 @@ results = b.get_traffic_data(coordinate_southwest, coordinate_northeast)
 print(results.json())
 ```
 
-Or using coordinates as well as severity and type to filter results:
+Or using coordinates as well as incident severity and type to filter results:
 ```
 coordinate_southwest = "45.219, -122.325"
 coordinate_northeast = "46.610, -122.107"
 severity = "1, 2, 3, 4"
-type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
-results = b.get_traffic_data(coordinate_southwest, coordinate_northeast, severity, type)
+incident_type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
+results = b.get_traffic_data(coordinate_southwest, coordinate_northeast, severity, incident_type)
 print(results.json())
 ```
 
 Or do the same, but with simpler human-readable output:
 ```
-results = b.get_traffic_data_readable(coordinate_southwest, coordinate_northeast, severity, type)
+results = b.get_traffic_data_readable(coordinate_southwest, coordinate_northeast, severity, incident_type)
 print(results)
 ```
 
