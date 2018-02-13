@@ -152,8 +152,8 @@ class BingApi:
         """
 
         response = self.get_traffic_data(
-                coordinate_southwest, coordinate_northeast, severity, type
-                )
+                coordinate_southwest, coordinate_northeast,
+                severity, incident_type)
 
         if response.status_code != requests.codes.ok:
             raise RuntimeError("HTTP " + str(response.status_code) +
