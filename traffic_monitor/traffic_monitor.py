@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
 
-import argparse
-import json
-import requests
 import sys
-import time
-
-from argparse import Namespace
-from httplib2 import Http
 
 # Custom modules
 from logger import Logger
+from bing_api import BingApi
 from google_api import GmailApi
 
 # Configuration for traffic incident data:
@@ -44,32 +38,7 @@ coordinate_northeast = "46.610, -122.107"
 # Keep only the security levels and types which you want to be notified of,
 # and remove the rest.
 severity = "1, 2, 3, 4"
-type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
-
-# Preset list of incident severity meanings
-# Do not modify if you are setting up this script!
-severity_list = {
-    "1" : "Low impact",
-    "2" : "Minor",
-    "3" : "Moderate",
-    "4" : "Serious"
-}
-
-# Preset list of incident type meanings
-# Do not modify if you are setting up this script!
-type_list = {
-    "1" : "Accident",
-    "2" : "Congestion",
-    "3" : "Disabled vehicle",
-    "4" : "Mass transit",
-    "5" : "Uncategorized alert",
-    "6" : "Uncategorized alert",
-    "7" : "Planned event",
-    "8" : "Road hazard",
-    "9" : "Construction",
-    "10" : "General alert",
-    "11" : "Weather alert"
-}
+incident_type = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
 
 # Configuration for email notifications:
 
@@ -126,95 +95,51 @@ def slack_notify_users(alert_users, message_text):
         s.notify(alert_users, message_text)
         Logger.debug("Slack alert sent.")
 
-def decode_severity(severity):
-    string_severity = severity_list[str(severity)]
-    if string_severity == None:
-        raise ValueError(
-                "An unparseable severity level was found (" +
-                str(severity) + ")"
-        )
-    return string_severity
-
-def decode_type(type):
-    string_type = type_list[str(type)]
-    if string_type == None:
-        raise ValueError(
-                "An unparseable type level was found (" +
-                str(type) + ")"
-        )
-    return string_type
-
 def string_list_from(original_list):
     string_list = []
     for i in original_list:
         string_list.append(str(i))
     return string_list
 
-def get_traffic_data():
-    map_area = ",".join([coordinate_southwest, coordinate_northeast])
-    url = "http://dev.virtualearth.net/REST/v1/Traffic/Incidents/" + map_area
-
-    req_params = dict(
-        severity = severity,
-        type = type,
-        key = bing_maps_auth_key
-    )
-
-    return requests.get(url, params=req_params)
-
-def alert_for_incidents(response_body):
-    incidents_container = response_body["resourceSets"]
-    if len(incidents_container) is 0:
-        return
-    incidents = incidents_container[0].get("resources")
-
+def send_email_with_incidents(incidents):
     message_text = ""
     for i in incidents:
-        coordinates_float = i.get("point").get("coordinates")
-        coordinates = '(' + ", ".join(string_list_from(coordinates_float)) + ')'
         description = i.get("description")
         description = description[0].lower() + description[1:]
 
         message_text += \
-                decode_severity(i.get("severity")) + " traffic disruption. " + \
-                decode_type(i.get("type")) + " " + \
-                description + " Coordinates: " + \
-                coordinates + "." + \
-                '\n\n'
+                results.get("severity") + " traffic disruption. " + \
+                results.get("type") + " " + \
+                description + " Coordinates: (" + \
+                ", ".join(string_list_from(i.get("coordinates"))) + ")" + \
+                ".\n\n"
 
-    if message_text:
-        message_text += \
-                "\nSincerely,\n\n" + \
-                "- Your friendly neighborhood Traffic Monitor"
+    message_text += \
+            "\nSincerely,\n\n" + \
+            "- Your friendly neighborhood Traffic Monitor"
 
-        email_sender = GmailApi(
-                mail_source_email, mail_source_application_name
-        )
-        email_sender.send_email(
-                mail_target_email, "Traffic Incident Alert", message_text
-        )
+    email_sender = GmailApi(
+            mail_source_email, mail_source_application_name
+    )
+    email_sender.send_email(
+            mail_target_email, "Traffic Incident Alert", message_text
+    )
 
-        slack_report_message(
-                "*SUCCESS*",
-                "Traffic incident alert sent to " + mail_target_email + "."
-        )
-    else:
-        slack_report_message("*SUCCESS*", "No incidents found.")
+    slack_report_message(
+            "*SUCCESS*",
+            "Traffic incident alert sent to " + mail_target_email + "."
+    )
 
 def main():
-    response = get_traffic_data()
-    response_body = response.json()
+    b = BingApi(bing_maps_auth_key)
+    incidents = b.get_traffic_data_readable(
+            coordinate_southwest, coordinate_northeast,
+            severity, incident_type)
 
-    log_message = "Bing Maps response: " + str(response_body)
-    if response.status_code == requests.codes.ok:
-        Logger.debug(log_message)
-    else:
-        Logger.error(log_message)
-        sys.exit(1)
+    if len(incidents) > 0:
+        send_email_with_incidents(incidents)
 
-    alert_for_incidents(response_body)
-
-    Logger.success("Operation completed.")
+    Logger.success("Traffic check completed.")
 
 if __name__ == "__main__":
     try:
