@@ -1,20 +1,12 @@
-#!/usr/bin/env python3
-#
-# This Python 3 script authenticates with pCloud and downloads a file.
-# Authentication details are set in a configuration file.
+# This Python 3 module provides classes to access the PCloud API.
 
-import configparser
 import hashlib
 import requests
-import sys
-import time
 
 # Custom imports
 from logger import Logger
 
-config_filename = "file_distributor.cfg"
-
-class PCloud:
+class PCloudApi:
     """Provides simple methods to access the pCloud API."""
 
     def __init__(self):
@@ -125,9 +117,9 @@ class PCloud:
         self.__must_be_logged_out()
 
         digest = self.__get_digest()
-        password_digest = PCloud.__sha1_encode(
+        password_digest = PCloudApi.__sha1_encode(
                 password +
-                PCloud.__sha1_encode(username.lower()) +
+                PCloudApi.__sha1_encode(username.lower()) +
                 digest
         )
 
@@ -206,27 +198,3 @@ class PCloud:
         )
         self.auth_token = None
         Logger.debug("Successfully logged out.")
-
-def main():
-    config = configparser.ConfigParser()
-    config.read(config_filename)
-
-    section_local = "Local"
-    file_path_local = config[section_local]["file_path"]
-
-    section_pcloud = "pCloud"
-    username_pcloud = config[section_pcloud]["username"]
-    password_pcloud = config[section_pcloud]["password"]
-    dir_path_pcloud = config[section_pcloud]["dir_path"]
-    file_name_pcloud = config[section_pcloud]["file_name"]
-
-    p = PCloud()
-    p.login(username_pcloud, password_pcloud)
-    p.upload_file(file_path_local, dir_path_pcloud, file_name_pcloud)
-    p.logout()
-
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        Logger.error("File not uploaded to pCloud: " + str(e))

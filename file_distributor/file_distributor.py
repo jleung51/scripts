@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
-#
-# This Python 3 script authenticates with Dropbox and downloads a file.
-# Authentication details are set in a configuration file.
 
-import time
-
-import configparser
 from contextlib import closing
+import configparser
+import os
 
 import dropbox
 from dropbox.exceptions import ApiError, AuthError
 
 # Custom imports
 from logger import Logger
+from pcloud_api import PCloudApi
+from google_api import GoogleDriveApi
 
 config_filename = "file_distributor.cfg"
 
@@ -69,12 +67,42 @@ def main():
     dropbox_access_token = config[section_dropbox]["access_token"]
     file_path_dropbox = config[section_dropbox]["file_path"]
 
-    download_dropbox_file(
-            dropbox_access_token, file_path_dropbox, file_path_local
-    )
+    section_pcloud = "pCloud"
+    username_pcloud = config[section_pcloud]["username"]
+    password_pcloud = config[section_pcloud]["password"]
+    dir_path_pcloud = config[section_pcloud]["dir_path"]
+    file_name_pcloud = config[section_pcloud]["file_name"]
 
-if __name__ == "__main__":
+    section_gdrive = "Google Drive"
+    application_name = config[section_gdrive]["application_name"]
+    file_name_gdrive = config[section_gdrive]["file_name"]
+    parent_dir_id = config[section_gdrive]["parent_dir_id"]
+
     try:
-        main()
+        download_dropbox_file(
+                dropbox_access_token, file_path_dropbox, file_path_local
+        )
     except Exception as e:
         Logger.error("File not downloaded from Dropbox: " + str(e))
+        raise
+
+    try:
+        p = PCloudApi()
+        p.login(username_pcloud, password_pcloud)
+        p.upload_file(file_path_local, dir_path_pcloud, file_name_pcloud)
+        p.logout()
+    except Exception as e:
+        Logger.error("File not uploaded to pCloud: " + str(e))
+        raise
+
+    try:
+        g = GoogleDriveApi(application_name)
+        # g.list_files()  # Used to find the FileId of a specific directory
+        g.upload_file(os.path.join(
+                os.path.dirname(os.path.realpath(__file__)), file_path_local
+        ), file_name_gdrive, parent_dir_id)
+    except Exception as e:
+        Logger.error("File not uploaded to Google Drive: " + str(e))
+
+if __name__ == "__main__":
+    main()

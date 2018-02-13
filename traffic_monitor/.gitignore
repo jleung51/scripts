@@ -89,9 +89,11 @@ ENV/
 .ropeproject
 
 # Gmail API files
-client_secret.json
+client_secret*.json
 generated_credentials.json
 
 # Custom modules
-gmail_api.py
-slack_logger.py
+logger.py
+slack_messenger.py
+bing_api.py
+google_api.py

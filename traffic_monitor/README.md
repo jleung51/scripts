@@ -18,6 +18,14 @@ Sincerely,
 
 ## Setup
 
+Setup the following custom modules in this directory:
+
+* [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger)
+* [Slack Messenger](https://github.com/jleung51/scripts/tree/master/modules/slack_messenger)
+* [Google API](https://github.com/jleung51/scripts/tree/master/modules/google_api)
+
+Complete the dependencies and  _Setup_ sections, and set up the Slack team and bot.
+
 Edit the script `traffic_monitor.py` to configure the authentication and authorization variables at the beginning of the file. Each variable has its own explanation; read them carefully.
 
 ### Email Setup
