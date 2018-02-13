@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+from json import JSONDecodeError
 import requests
 
+# Custom modules
 from logger import Logger
 
 class BingApi:
@@ -102,8 +104,12 @@ class BingApi:
 
         response = requests.get(url, params=request_params)
 
-        log_message = "Bing Maps response: " + \
-                str(response.status_code) + " " + str(response.json())
+        log_message = "Bing Maps response: HTTP " + str(response.status_code)
+        try:
+            log_message += " " + str(response.json())
+        except JSONDecodeError:
+            pass
+
         if response.status_code == requests.codes.ok:
             Logger.debug(log_message)
         else:
