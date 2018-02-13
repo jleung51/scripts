@@ -32,13 +32,15 @@ class SlackMessenger:
     def message(self, message_text):
         """Sends a message from the Slackbot.
 
-        Parameters:
-        message_text -- String. The detailed report message.
-            E.g. "Traffic accident on Kingsway and Patterson."
-
         Does not throw exceptions; outputs any error messages.
         For an example report, see:
         https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
+
+        Parameters:
+        message_text -- String. The detailed report message.
+            E.g. "Traffic accident on Kingsway and Patterson."
+        Returns: Dict. Result of the request.
+            Format of response: https://api.slack.com/methods/chat.postMessage
         """
 
         try:
@@ -63,25 +65,33 @@ class SlackMessenger:
                     "Response body: " + json.dumps(result)
             )
 
+        return result
+
     def notify(self, alert_users, message_text):
         """Sends a notification with tagged user(s) from the Slackbot.
+
+        Does not throw exceptions; outputs any error messages.
+        For an example report, see:
+        https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
 
         Parameters:
         alert_users -- String. List of Slack users to be notified.
             E.g. "@jleung51 | @jleung52 | @jleung53"
         message_text -- String. The detailed report message.
             E.g. "Traffic accident on Kingsway and Patterson."
-
-        Does not throw exceptions; outputs any error messages.
-        For an example report, see:
-        https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
+        Returns: Dict. Result of the request.
+            Format of response: https://api.slack.com/methods/chat.postMessage
         """
 
-        self.message("Alerting users " + alert_users + "\n" +
+        return self.message("Alerting users " + alert_users + "\n" +
                 message_text)
 
     def operation_report(self, operation_status, message_text):
         """Sends an report with operation status from the Slackbot.
+
+        Does not throw exceptions; outputs any error messages.
+        For an example report, see:
+        https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
 
         Parameters:
         operation_status -- String. The general message to summarize the report.
@@ -89,11 +99,10 @@ class SlackMessenger:
         message_text -- String. The detailed report message.
             E.g. "Traffic accident on Kingsway and Patterson."
 
-        Does not throw exceptions; outputs any error messages.
-        For an example report, see:
-        https://github.com/jleung51/scripts/blob/master/modules/slack_messenger/README.md
+        Returns: Dict. Result of the request.
+            Format of response: https://api.slack.com/methods/chat.postMessage
         """
 
-        self.message(">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
+        return self.message(">>> _" + time.strftime("%Y-%m-%d %H:%M:%S") + '_' +
                 '\n' + "Operation status: " + operation_status +
                 '\n' + message_text)
