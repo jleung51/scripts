@@ -138,8 +138,13 @@ def main():
 
     if len(incidents) > 0:
         send_email_with_incidents(incidents)
+        log_message = "Traffic check completed. " + str(len(incidents)) + \
+                " incidents reported."
+    else:
+        log_message = "Traffic check completed. No incidents reported."
 
-    Logger.success("Traffic check completed.")
+    Logger.success(log_message)
+    slack_report_message("*SUCCESS*", log_message)
 
 if __name__ == "__main__":
     try:
