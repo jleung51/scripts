@@ -1,6 +1,6 @@
 # jleung51's Scripts
 
-Useful and easy-to-use standalone scripts for making life easier.
+Useful and easy-to-use scripts for making life easier.
 
 Because automating everything is the answer... right?
 
