@@ -30,9 +30,11 @@ Instantiate a SlackMessenger object:
 slack_messenger = SlackMessenger(slack_api_token, slack_channel, slackbot_name)
 ```
 
-And send a report to the Slack team:
+And send a message in a specific format to the Slack team:
 ```
-slack_messenger.report(operation_status, message_text)
+slack_messenger.message(message_text)
+slack_messenger.notify("@jleung51 | @jleung52", message_text)
+slack_messenger.operation_report("*SUCCESS*", message_text)
 ```
 
 For detailed information on the parameters and usage, see the documentation in the `SlackMessenger` class.
