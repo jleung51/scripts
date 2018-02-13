@@ -6,11 +6,11 @@ Python 3 scripts which download a file from Dropbox and upload it to pCloud and 
 
 ### Custom Modules
 
-Complete the _Setup_ sections of the following modules to set them up in this directory:
+Complete the _Setup_ sections of the following Python modules from [Utilities](https://github.com/jleung51/utilities) to set them up in this directory:
 
-* [Logger](https://github.com/jleung51/scripts/tree/master/modules/logger)
-* [Google API](https://github.com/jleung51/scripts/tree/master/modules/google_api)
-* [pCloud API](https://github.com/jleung51/scripts/tree/master/modules/pcloud_api)
+* [Logger](https://github.com/jleung51/utilities/tree/master/python_modules/logger)
+* [Google API](https://github.com/jleung51/utilities/tree/master/python_modules/api_wrappers/google_api)
+* [pCloud API](https://github.com/jleung51/utilities/tree/master/python_modules/api_wrappers/pcloud_api)
 
 ### Dropbox
 
