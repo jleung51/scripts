@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from slackclient import SlackClient
-
 import json
 import sys
 import time
+
+from slack_messenger import SlackMessenger
 
 # SLACK TEAM WHICH THE MESSAGE SHOULD BE SENT TO:
 
@@ -37,9 +37,6 @@ report_slackbot_name = ""
 # E.g. "@jleung51 | @jleung52 | @jleung53"
 report_alert_list = ""
 
-if report:
-    from slack_logger import SlackLogger
-
 def log_result(result):
     message = "[ " + time.strftime("%Y-%m-%d %H:%M:%S") + " | "
     if result.get("ok"):
@@ -50,32 +47,28 @@ def log_result(result):
     print(message)
 
 def report_result(result):
-    if result.get("ok"):
-        report_message = "*SUCCESS*"
-    else:
-        report_message = \
-                "*ERROR* (Alerting user(s) " + report_alert_list + ")"
-
-    slack_logger = SlackLogger(
+    s = SlackMessenger(
             report_slack_token, report_channel, report_slackbot_name
     )
-    slack_logger.report(
-                report_message,
-                "Response body:\n```\n" +
-                json.dumps(result, indent=4, sort_keys=True) + "\n```"
-    )
+
+    result_body = "Response body:\n```\n" + \
+            json.dumps(result, indent=4, sort_keys=True) + "\n```"
+
+    if result.get("ok"):
+        s.operation_report("*SUCCESS*", "Sent message to channel. " + \
+                result_body)
+    else:
+        s.operation_report("*ERROR*", "Failed to send message to " +\
+                "Slack channel." + result_body)
+        s.notify(report_alert_list, "Internal error, please check the logs.")
 
 def main():
     if len(sys.argv) < 2:
         print("Error: One argument (the message to send) must be provided.")
         sys.exit(1)
 
-    result = SlackClient(slack_token).api_call(
-        "chat.postMessage",
-        channel = "#" + channel,
-        username = slackbot_name,
-        text = sys.argv[1]
-    )
+    s = SlackMessenger(slack_token, channel, slackbot_name)
+    result = s.message(sys.argv[1])
 
     log_result(result)
     if report:

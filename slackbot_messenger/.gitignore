@@ -89,4 +89,5 @@ ENV/
 .ropeproject
 
 # Custom Modules
-slack_logger.py
+logger.py
+slack_messenger.py
