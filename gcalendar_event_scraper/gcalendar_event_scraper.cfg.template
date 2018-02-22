@@ -1,0 +1,33 @@
+# Configuration file for the Event Scraper script
+
+[Google Calendar Events]
+
+# ID of the calendar in Google Calendar
+# See the README for specific instructions
+# E.g. primary
+# E.g. john.doe@gmail.com
+# E.g. monei7k719dm21c95l03ktivu8@group.calendar.google.com
+calendar_id =
+
+# Optional
+# Time before which events will not be retrieved
+# ISO 8601
+# E.g. 2017-05-09T20:00:00+09:00
+start_time =
+
+# Optional
+# Time after which events will not be retrieved
+# E.g. 2017-05-23T03:00:00+09:00
+end_time =
+
+# Optional
+# Time zone in which the event data should be returned in
+# Reference: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# E.g. Asia/Tokyo
+time_zone =
+
+# Currency symbol found at the beginning of the event description which
+# identifies that the event should be saved.
+# Unicode format
+# Example for Japanese yen symbol (¥): \u00a5
+currency_symbol =
