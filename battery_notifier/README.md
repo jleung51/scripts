@@ -32,4 +32,4 @@ Customize the list of thresholds in `battery_notifier.py` for which an alert sho
 ./battery_notifier.py
 ```
 
-On the first time that the script is activated, no alert will be sent. An alert is only created when
+On the first time that the script is activated, no alert will be sent. An alert is only created when the previous battery level was above a specific alert level, and the current battery level is below that alert level.
