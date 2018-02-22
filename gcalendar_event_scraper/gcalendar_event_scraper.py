@@ -42,8 +42,8 @@ def remove_events_without_price(events, currency_symbol):
     for e in remove_list:
         events.remove(e)
 
-def isolate_price_in_description(events, currency_symbol):
-    """Removes all characters after the price in the description.
+def description_to_price(events, currency_symbol):
+    """Isolates the price from the description which is deleted.
 
     Assumes that the price is at the beginning of the description.
     """
@@ -53,7 +53,8 @@ def isolate_price_in_description(events, currency_symbol):
             if currency_symbol != char and not char.isdigit():
                 break
             price += char
-        e["description"] = price
+        e["price"] = price
+        del e["description"]
 
 def simplify_start_end_times(events):
     """Removes the sublevel for the start/end times of each event."""
@@ -150,7 +151,7 @@ def main():
     __logger().debug("Retrieved events from Google Calendar.")
 
     remove_events_without_price(events, config["currency_symbol"])
-    isolate_price_in_description(events, config["currency_symbol"])
+    description_to_price(events, config["currency_symbol"])
     simplify_start_end_times(events)
 
     categorize(events)

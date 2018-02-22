@@ -58,7 +58,7 @@ The resulting data will be written to `data.json`, and will be formatted like so
             "category": "lodging",
             "location": "Imano Tokyo Hostel",
             "summary": "Check into Imano Hostel ",
-            "description": "¥11300"
+            "price": "¥11300",
         }
     ]
 }
