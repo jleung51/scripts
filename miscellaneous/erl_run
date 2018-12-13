@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This Bash script compiles and runs an Erlang module.
+# Omit the .erl extension.
+# The required modules must already be compiled.
+
+if [ $# -ge 1 ] ; then
+  erl -compile $1
+  erl -noshell -s $1 start -s init stop
+else
+    echo "Usage: ./erl_run erl_module_name"
+fi
