@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+# This Python 3 script converts all png files to jpg in the current directory.
+
+import os
+from PIL import Image
+
+if __name__ == '__main__':
+    for filename in os.listdir(os.getcwd()):
+        if filename.endswith('.png'):
+            image = Image.open(filename)
+            new_image = image.convert('RGB')
+            new_filename = filename[:-3] + 'jpg'
+
+            new_image.save(new_filename)
+            os.remove(filename)
+            print(new_filename)
