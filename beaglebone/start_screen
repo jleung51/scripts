@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sudo screen /dev/ttyUSB0 11520
+

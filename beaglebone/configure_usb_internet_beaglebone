@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# This Bash script is to be run on the Beagle Bone machine AFTER the network
+# configuration is set up on the host machine.
+
+# Find the host machine IP by running the following command on the host machine:
+#
+#     $ ifconfig
+#
+# and finding the USB IP address.
+HOSTIP=192.168.7.1
+
+echo "Configuring the Beagle Bone to use the host machine as the default gateway..."
+sudo route add default gw $HOSTIP
+
+echo "Adding a new domain nameserver..."
+sudo sh -c 'echo "nameserver 8.8.8.8" >> /etc/resolv.conf'
+
+echo "Configuration complete."
+
