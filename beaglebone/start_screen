@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+echo "Starting serial connection with the screen command..."
+echo "You may be prompted for sudo access for the screen command."
 sudo screen /dev/ttyUSB0 115200
 

@@ -12,6 +12,9 @@
 NETWORK=wlp2s0
 VIRT=enx883f4aaa871e
 
+# Exit if any commands fail
+set -e
+
 echo "Configuring IP tables to route properly..."
 sudo iptables --table nat --append POSTROUTING --out-interface $NETWORK -j MASQUERADE
 sudo iptables --append FORWARD --in-interface $VIRT -j ACCEPT

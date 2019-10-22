@@ -10,6 +10,9 @@
 # and finding the USB IP address.
 HOSTIP=192.168.7.1
 
+# Exit if any commands fail
+set -e
+
 echo "Configuring the Beagle Bone to use the host machine as the default gateway..."
 sudo route add default gw $HOSTIP
 
