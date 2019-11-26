@@ -24,12 +24,12 @@ for line in output.splitlines():
 
     count += 1
     branch = line[ line.find('/')+1 :]
-    print('Deleting branch ' + branch)
+    print('Deleting branch ' + branch + '...')
     print(os.popen('git push origin --delete ' + branch).read())
     time.sleep(1)
 
 if count == 0:
     print('No remote merged branches to delete.')
 else:
-    print('Done.')
+    print('Deleted ' + str(count) + ' branches.')
 
