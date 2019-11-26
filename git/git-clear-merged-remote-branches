@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+#
+# This Python 3 script retrieves all remote merged branches from the
+# Git repository and deletes them.
+
+import os
+import time
+
+print('Updating the repository and its remote branches...')
+os.system('git fetch')
+os.system('git remote update')
+
+print('Removing remote branches which have been deleted...')
+os.system('git remote prune origin')
+
+print('Attempting to delete remote merged branches...')
+
+output = os.popen('git branch --remotes --list --merged HEAD').read()
+count = 0
+
+for line in output.splitlines():
+    if 'origin/master' in line:
+        continue
+
+    count += 1
+    branch = line[ line.find('/')+1 :]
+    print('Deleting branch ' + branch)
+    print(os.popen('git push origin --delete ' + branch).read())
+    time.sleep(1)
+
+if count == 0:
+    print('No remote merged branches to delete.')
+else:
+    print('Done.')
+
