@@ -15,7 +15,7 @@ os.system('git remote prune origin')
 
 print('Attempting to delete remote merged branches...')
 
-output = os.popen('git branch --remotes --list --merged HEAD').read()
+output = os.popen('git branch --remotes --list --merged origin/master').read()
 count = 0
 
 for line in output.splitlines():
