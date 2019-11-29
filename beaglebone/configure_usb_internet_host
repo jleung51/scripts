@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# This Bash script is to be run on the host machine BEFORE the network
+# This Bash script is to be run on the host machine before the network
 # configuration is set up on the Beagle Bone.
 
 # Find the following network adapter handles by running the folloiwng
@@ -20,6 +20,7 @@ sudo iptables --table nat --append POSTROUTING --out-interface $NETWORK -j MASQU
 sudo iptables --append FORWARD --in-interface $VIRT -j ACCEPT
 
 echo "Turning on IP forwarding..."
+echo "You may be prompted for the root password."
 sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
 
 echo
