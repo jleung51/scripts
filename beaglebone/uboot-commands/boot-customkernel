@@ -1,0 +1,3 @@
+setenv ethact usb_ether;setenv ipaddr 192.168.7.2;setenv serverip 192.168.7.1;setenv tftproot /home/jleung/cmpt433/public/;setenv bootfile ${tftproot}5.3.7-jyl52-bone13.zImage;setenv fdtfile ${tftproot}am335x-bonegreen.dtb;tftp ${loadaddr} ${bootfile};sleep 1;tftp ${fdtaddr} ${fdtfile};setenv bootargs console=ttyO0,115200n8 root=/dev/mmcblk1p1 ro rootfstype=ext4 rootwait;bootz ${loadaddr} - ${fdtaddr};
+
+setenv bootenv uEnv-Linux.txt; boot

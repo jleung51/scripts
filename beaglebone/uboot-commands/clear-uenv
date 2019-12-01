@@ -1,0 +1,1 @@
+ext4write mmc 1:1 0x82000000 /uEnv.txt 0

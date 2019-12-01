@@ -1,0 +1,4 @@
+setenv ethact usb_ether;setenv ipaddr 192.168.7.2;setenv serverip 192.168.7.1;setenv loadaddr 0x80000000;setenv tftproot /home/jleung/cmpt433/public/baremetal;setenv bootfile ${tftproot}/download.bin;tftp ${loadaddr} ${bootfile};echo *** Booting to BareMetal ***;go ${loadaddr};
+
+
+setenv bootenv uEnv-BareMetal.txt; boot
