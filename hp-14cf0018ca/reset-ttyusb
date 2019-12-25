@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Exit immediately upon any failure
+set -e
+
+echo "Unloading the USB modules..."
+echo "You may be prompted for the root password."
+sudo modprobe -r ftdi_sio
+sudo modprobe -r usbserial
+
+echo "Reloading the USB module..."
+sudo modprobe ftdi_sio
+
+echo "Done."
+

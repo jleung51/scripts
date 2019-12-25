@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Exit immediately upon error
+set -e
+
+echo "Devices:"
+xinput --list
+
+echo "Touchpad information:"
+TOUCHPAD_ID=10
+xinput --list-props $TOUCHPAD_ID
+
+echo "Setting touchpad to be enabled while typing..."
+echo "You may be prompted for the root password."
+sudo xinput --set-prop 10 288 0
+
+echo "Done."
+
