@@ -13,6 +13,11 @@ from resizeimage import resizeimage
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+def isImageFile(filename):
+    return filename.lower().endswith('.jpg') or
+            filename().lower().endswith('.jpeg') or
+            filename.lower().endswith('.png')
+
 def resize_dimensions(filename, width, height):
     if width < 1 or height < 1:
         print("Width and height must be greater than 0.")
@@ -42,7 +47,7 @@ if __name__ == '__main__':
         exit(1)
 
     for filename in os.listdir(os.getcwd()):
-        if not filename.lower().endswith('.jpg') and not filename.lower().endswith('.png'):
+        if not isImageFile(filename):
             continue
 
         if (len(sys.argv) == 3):
