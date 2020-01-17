@@ -10,7 +10,7 @@ import os
 
 def isImageFile(filename):
     return filename.lower().endswith('.jpg') or \
-            filename().lower().endswith('.jpeg') or \
+            filename.lower().endswith('.jpeg') or \
             filename.lower().endswith('.png')
 
 if __name__ == '__main__':
