@@ -12,7 +12,7 @@ xinput --list-props $TOUCHPAD_ID
 
 echo "Setting touchpad to be enabled while typing..."
 echo "You may be prompted for the root password."
-sudo xinput --set-prop 10 288 0
+sudo xinput --set-prop 10 300 0
 
 echo "Done."
 
