@@ -14,9 +14,9 @@ from resizeimage import resizeimage
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def isImageFile(filename):
-    return filename.lower().endswith('.jpg') or
-            filename().lower().endswith('.jpeg') or
-            filename.lower().endswith('.png')
+    return (filename.lower().endswith('.jpg') or
+            filename.lower().endswith('.jpeg') or
+            filename.lower().endswith('.png'))
 
 def resize_dimensions(filename, width, height):
     if width < 1 or height < 1:
@@ -27,6 +27,8 @@ def resize_dimensions(filename, width, height):
             new = resizeimage.resize_contain(image, [width, height])
             new = new.convert('RGB')
             new.save(filename, image.format)
+            print(filename + ' resized to ' +
+                    str(width) + ' x ' + str(height))
 
 def resize_percent(filename, pct):
     if pct < 1 or pct > 500:
@@ -57,5 +59,3 @@ if __name__ == '__main__':
         else:
             pct = float(sys.argv[1])
             resize_percent(filename, pct)
-
-        print(filename)
