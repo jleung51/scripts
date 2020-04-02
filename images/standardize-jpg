@@ -14,5 +14,8 @@ if __name__ == '__main__':
 
         if last != 0:
             filename_new = filename[:-last] + 'jpg'
-            os.rename(filename, filename_new)
-            print(filename_new)
+            path = os.path.join(os.getcwd(), filename)
+            path_new = os.path.join(os.getcwd(), filename_new)
+
+            os.rename(path, path_new)
+            print(path_new)
