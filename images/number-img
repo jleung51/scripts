@@ -5,8 +5,11 @@
 #   01 - .EXTENSION
 #   02 - .EXTENSION
 #   ...etc.
+#
+# An optional first argument sets the first number to start numbering files by.
 
 import os
+import sys
 
 def isImageFile(filename):
     return filename.lower().endswith('.jpg') or \
@@ -14,7 +17,15 @@ def isImageFile(filename):
             filename.lower().endswith('.png')
 
 if __name__ == '__main__':
-    number = 1
+    # Optional argument: Number to start counting from
+    if (len(sys.argv) == 2):
+        number = int(sys.argv[1])
+        if number < 0:
+            print("Usages: ./number-img [firstNumber]")
+            print("  firstNumber must be 0 or greater.")
+            exit(1)
+    else:
+        number = 1
 
     for filename in sorted(os.listdir(os.getcwd())):
         if not isImageFile(filename):
