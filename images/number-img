@@ -14,7 +14,8 @@ import sys
 def isImageFile(filename):
     return filename.lower().endswith('.jpg') or \
             filename.lower().endswith('.jpeg') or \
-            filename.lower().endswith('.png')
+            filename.lower().endswith('.png') or \
+            filename.lower().endswith('.mov')
 
 if __name__ == '__main__':
     # Optional argument: Number to start counting from
