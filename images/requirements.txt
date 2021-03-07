@@ -1,3 +1,4 @@
 Pillow
 python-resize-image
+image
 
