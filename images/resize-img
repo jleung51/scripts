@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This Python 3 script resizes all images in the current directory to
-# the given dimensions.
+# specific provided dimensions or percentage.
 #
 # Required pip packages:
 #   Pillow
@@ -8,8 +8,6 @@
 
 import os
 import sys
-from PIL import Image, ImageFile
-from resizeimage import resizeimage
 
 # Local modules
 import mediaUtils

@@ -3,6 +3,7 @@
 
 import os
 from PIL import Image, ImageFile
+from resizeimage import resizeimage
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 

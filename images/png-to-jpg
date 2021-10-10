@@ -4,6 +4,10 @@
 import os
 from PIL import Image
 
+# Local packages
+import mediaUtils
+
+
 if __name__ == '__main__':
     for filename in os.listdir(os.getcwd()):
         if mediaUtils.get_extension == 'png':
