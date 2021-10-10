@@ -21,5 +21,5 @@ $SCRIPTS_DIR/resize-img-auto
 echo ""
 echo "____________________________________"
 echo ""
-echo "Auto-organized files:"
-$SCRIPTS_DIR/dimensions
+echo "Auto-organization complete. Image files:"
+$SCRIPTS_DIR/summary
