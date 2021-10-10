@@ -14,7 +14,8 @@ from resizeimage import resizeimage
 # Local packages
 import mediaUtils
 
-BYTES_PER_MEGABYTES = 1000000
+
+BYTES_PER_MEGABYTE = 1000000
 
 if __name__ == '__main__':
     for filename in os.listdir(os.getcwd()):
@@ -23,8 +24,8 @@ if __name__ == '__main__':
 
         filesize = mediaUtils.get_filesize(filename)
 
-        if filesize > BYTES_PER_MEGABYTES:
-            filesize_mb = float(filesize)/BYTES_PER_MEGABYTES
+        if filesize > BYTES_PER_MEGABYTE:
+            filesize_mb = float(filesize)/BYTES_PER_MEGABYTE
 
             # Formula:
             #   At 1.1 MB, resize to 80%
