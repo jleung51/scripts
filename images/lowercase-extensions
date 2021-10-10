@@ -2,20 +2,15 @@
 # This Python 3 script changes image file extensions to all lowercase.
 
 import os
-import sys
 
-def isImageFile(filename):
-    return filename.lower().endswith('.jpg') or \
-            filename.lower().endswith('.jpeg') or \
-            filename.lower().endswith('.png') or \
-            filename.lower().endswith('.mov') or \
-            filename.lower().endswith('.mp4') or \
-            filename.lower().endswith('.avi')
+# Local modules
+import mediaUtils
+
 
 if __name__ == '__main__':
 
     for filename in sorted(os.listdir(os.getcwd())):
-        if not isImageFile(filename):
+        if not mediaUtils.is_image_file(filename):
             continue
 
         # Cut out the extension

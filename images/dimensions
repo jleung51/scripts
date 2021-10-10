@@ -6,21 +6,10 @@
 #   Pillow
 
 import os
-from PIL import Image, ImageFile
 
-ImageFile.LOAD_TRUNCATED_IMAGES = True
+# Local modules
+import mediaUtils
 
-def isImageFile(filename):
-    return (filename.lower().endswith('.jpg') or
-            filename.lower().endswith('.jpeg') or
-            filename.lower().endswith('.png'))
-
-def get_dimensions(filename):
-    with open(filename, 'rb') as f:
-        with Image.open(f) as image:
-            width = image.size[0]
-            height = image.size[1]
-            return (width, height)
 
 if __name__ == '__main__':
 
@@ -29,17 +18,20 @@ if __name__ == '__main__':
 
     # Collect dimensions
     for filename in os.listdir(os.getcwd()):
-        if not isImageFile(filename):
+        if not mediaUtils.is_image_file(filename):
             continue
 
         all_filenames.append(filename)
-        all_dimensions.append(get_dimensions(filename))
+        all_dimensions.append(mediaUtils.get_dimensions(filename))
+
+    # Exit early if no files in directory
+    if all_filenames == []:
+        exit(0)
 
     # Print filenames and dimensions, formatted
     max_len = len( max(all_filenames, key=len) )
 
     for filename, dimensions in zip(all_filenames, all_dimensions):
-
         padding = max_len - len(filename) + 1
         print(filename + ":" + " "*padding +
             str(dimensions[0]) + " x " + str(dimensions[1]))

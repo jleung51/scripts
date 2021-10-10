@@ -11,27 +11,24 @@
 import os
 import sys
 
-def isImageFile(filename):
-    return filename.lower().endswith('.jpg') or \
-            filename.lower().endswith('.jpeg') or \
-            filename.lower().endswith('.png') or \
-            filename.lower().endswith('.mov') or \
-            filename.lower().endswith('.mp4') or \
-            filename.lower().endswith('.avi')
+# Local modules
+import mediaUtils
+
 
 if __name__ == '__main__':
+
     # Optional argument: Number to start counting from
     if (len(sys.argv) == 2):
         number = int(sys.argv[1])
         if number < 0:
-            print("Usages: ./number-img [firstNumber]")
+            print("Usage: ./number-img [firstNumber]")
             print("  firstNumber must be 0 or greater.")
             exit(1)
     else:
         number = 1
 
     for filename in sorted(os.listdir(os.getcwd())):
-        if not isImageFile(filename):
+        if not mediaUtils.is_media_file(filename):
             continue
 
         # Cut out the extension
