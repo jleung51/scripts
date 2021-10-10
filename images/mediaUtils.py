@@ -26,6 +26,9 @@ def get_dimensions(filename):
             height = image.size[1]
             return (width, height)
 
+def get_filesize(filename):
+    return os.path.getsize(filename)
+
 def resize_dimensions(filename, width, height):
     """Resize image to a certain width and height"""
     if width < 1 or height < 1:

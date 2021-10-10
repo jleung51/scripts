@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+# This Python 3 script resizes all images in the current directory to
+# be under 1MB each.
+#
+# Required pip packages:
+#   Pillow
+#   python-resize-image
+
+import os
+import sys
+from PIL import Image, ImageFile
+from resizeimage import resizeimage
+
+# Local packages
+import mediaUtils
+
+BYTES_PER_MEGABYTES = 1000000
+
+if __name__ == '__main__':
+    for filename in os.listdir(os.getcwd()):
+        if not mediaUtils.is_image_file(filename):
+            continue
+
+        filesize = mediaUtils.get_filesize(filename)
+
+        if filesize > BYTES_PER_MEGABYTES:
+            filesize_mb = float(filesize)/BYTES_PER_MEGABYTES
+
+            # Formula:
+            #   At 1.1 MB, resize to 80%
+            #   At 4.0+MB, resize to 25%
+
+            # Math:
+            #   1.1*(filesize) + offset = 0.8
+            #   4*(filesize) + offset = 0.25
+            #
+            #   Result: Percent = 1.01 - 0.19 (filesize)
+            pct = 1.01 - 0.19 * filesize_mb
+            pct = pct * 100  # Converting to XY% format
+
+            # Manually handle sizes greater than 4 MB
+            if filesize_mb > 4:
+                pct = 25
+
+            mediaUtils.resize_percent(filename, pct)
+
