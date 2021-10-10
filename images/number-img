@@ -31,15 +31,12 @@ if __name__ == '__main__':
         if not mediaUtils.is_media_file(filename):
             continue
 
-        # Cut out the extension
-        last = 4
-        if filename.lower().endswith('.jpeg'):
-            last = 5
-        extension = filename[-last:]
-
         # Generate the new filename
-        number_str = str(number) if (number > 9) else '0'+str(number)
-        filename_new = number_str + ' - ' + extension
+        number_str = str(number)
+        if number < 10:
+            number_str = '0' + number_str
+
+        filename_new = number_str + ' - .' + mediaUtils.get_extension(filename)
 
         os.rename(filename, filename_new)
         print(filename_new)

@@ -14,16 +14,13 @@ if __name__ == '__main__':
             continue
 
         # Cut out the extension
-        last = 4
-        if filename.lower().endswith('.jpeg'):
-            last = 5
-        extension = filename[-last:]
+        extension = mediaUtils.get_extension(filename)
 
         if extension == extension.lower():
             continue
 
         # Format the new filename
-        filename_base = filename[:filename.rfind('.')]
+        filename_base = filename[:filename.rfind('.') + 1]
         extension = extension.lower()
 
         # Generate the new filename

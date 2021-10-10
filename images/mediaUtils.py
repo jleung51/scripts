@@ -8,15 +8,15 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def is_image_file(filename):
-    return (filename.lower().endswith('.jpg') or
-            filename.lower().endswith('.jpeg') or
-            filename.lower().endswith('.png'))
+    return get_extension(filename) in ['jpg', 'jpeg', 'png']
 
 def is_media_file(filename):
     return is_image_file(filename) or \
-            filename.lower().endswith('.mov') or \
-            filename.lower().endswith('.mp4') or \
-            filename.lower().endswith('.avi')
+            get_extension(filename) in ['mov', 'mp4', 'avi']
+
+def get_extension(filename):
+    """Returns the file extension without period."""
+    return filename.split('.')[-1]
 
 def get_dimensions(filename):
     with open(filename, 'rb') as f:

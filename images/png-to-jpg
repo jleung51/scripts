@@ -6,7 +6,7 @@ from PIL import Image
 
 if __name__ == '__main__':
     for filename in os.listdir(os.getcwd()):
-        if filename.endswith('.png'):
+        if mediaUtils.get_extension == 'png':
             image = Image.open(filename)
             new_image = image.convert('RGB')
             new_filename = filename[:-3] + 'jpg'

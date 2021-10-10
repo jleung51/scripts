@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 # This Python 3 script renames all files in the current directory with
-# extensions JPG, JPEG, or jpeg to jpg.
+# extensions jpeg (case-insensitive) to jpg.
 
 import os
 
+# Local modules
+import mediaUtils
+
+
 if __name__ == '__main__':
     for filename in os.listdir(os.getcwd()):
-        last = 0
-        if filename.endswith('.JPG'):
-            last = 3
-        elif filename.endswith('.JPEG') or filename.endswith('.jpeg'):
-            last = 4
+        extension = mediaUtils.get_extension(filename)
 
-        if last != 0:
-            filename_new = filename[:-last] + 'jpg'
+        if extension.lower() == 'jpeg':
+            filename_new = filename[:-4] + 'jpg'
             path = os.path.join(os.getcwd(), filename)
             path_new = os.path.join(os.getcwd(), filename_new)
 
