@@ -9,11 +9,11 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def is_image_file(filename):
-    return get_extension(filename) in ['jpg', 'jpeg', 'png']
+    return get_extension(filename).lower() in ['jpg', 'jpeg', 'png']
 
 def is_media_file(filename):
     return is_image_file(filename) or \
-            get_extension(filename) in ['mov', 'mp4', 'avi']
+            get_extension(filename).lower() in ['mov', 'mp4', 'avi']
 
 def get_extension(filename):
     """Returns the file extension without period."""

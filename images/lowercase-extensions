@@ -10,7 +10,7 @@ import mediaUtils
 if __name__ == '__main__':
 
     for filename in sorted(os.listdir(os.getcwd())):
-        if not mediaUtils.is_image_file(filename):
+        if not mediaUtils.is_media_file(filename):
             continue
 
         # Cut out the extension
