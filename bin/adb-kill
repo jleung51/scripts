@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "List of running ADB processes:"
+lsof -i -P | grep LISTEN | grep ":5037 "
+echo
+
+echo "Killing processes:"
+kill -9 $(lsof -i -P | grep LISTEN | grep ":5037 " | awk '{print $2}')
+
